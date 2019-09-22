@@ -18,28 +18,19 @@ export default class NavMenu extends React.Component {
     });
   }
   render () {
-    return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light >
-          <Container>
-            <NavbarBrand tag={Link} to="/">aptmgt.webui</NavbarBrand>
-            <NavbarToggler onClick={this.toggle} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
-          </Container>
-        </Navbar>
-      </header>
+    return ( 
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                <Navbar.Brand tag={Link} to="/">WINSGate</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="mr-auto">
+                        <Nav.Link tag={Link} to="/">Home</Nav.Link>
+                        <Nav.Link tag={Link} to="/">Counter</Nav.Link>
+                        <Nav.Link tag={Link} to="/">Fetch data</Nav.Link>
+                    </Nav> 
+                </Navbar.Collapse>
+            </Navbar>
+       
     );
   }
 }
