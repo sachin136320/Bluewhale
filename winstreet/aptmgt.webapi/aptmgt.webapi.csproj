@@ -18,10 +18,6 @@
     <ProjectReference Include="..\aptmgt.utility\aptmgt.utility.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Startup.cs" />
-    <Compile Remove="Program.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="appsettings.json" />
     <Content Remove="appsettings.Development.json" />
     <Content Remove="Properties\launchSettings.json" />

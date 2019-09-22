@@ -7,4 +7,12 @@
   <ItemGroup>
     <ProjectReference Include="..\aptmgt.utility\aptmgt.utility.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="intfc\" />
+    <Folder Include="impl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="interface\User.cs" />
+    <Compile Remove="impl\EmptyInterface.cs" />
+  </ItemGroup>
 </Project>
