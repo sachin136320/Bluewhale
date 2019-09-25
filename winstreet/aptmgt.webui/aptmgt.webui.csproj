@@ -20,7 +20,6 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -28,6 +27,9 @@
     <ProjectReference Include="..\aptmgt.entity\aptmgt.entity.csproj" />
     <ProjectReference Include="..\aptmgt.utility\aptmgt.utility.csproj" />
     <ProjectReference Include="..\aptmgt.webapi\aptmgt.webapi.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ClientApp\package-lock.json" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
