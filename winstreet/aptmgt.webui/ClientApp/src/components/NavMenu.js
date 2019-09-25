@@ -18,7 +18,8 @@ export default class NavMenu extends React.Component {
     });
   }
   render () {
-    return ( 
+    return (
+        <header>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                 <Navbar.Brand tag={Link} to="/">WINSGate</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -30,7 +31,7 @@ export default class NavMenu extends React.Component {
                     </Nav> 
                 </Navbar.Collapse>
             </Navbar>
-       
+      </header>
     );
   }
 }
