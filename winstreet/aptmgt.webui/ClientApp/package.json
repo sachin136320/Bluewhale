@@ -1,40 +1,59 @@
 {
-  "name": "aptmgt.webui",
-  "version": "0.1.0",
-  "private": true,
+  "name": "material-dashboard-react",
+  "version": "1.8.0",
+  "description": "Material Dashboard React. Coded by Creative Tim",
+  "private": false,
+  "main": "dist/index.js",
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "jquery": "3.4.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.2.1",
-    "react-redux": "^5.0.6",
-    "react-router-bootstrap": "^0.24.4",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^5.0.0-alpha.8",
-    "react-scripts": "^3.1.2",
-    "reactstrap": "^6.3.0",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "rimraf": "^2.6.2"
-  },
-  "devDependencies": {
-    "ajv": "^6.0.0",
-    "cross-env": "^5.2.0",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.50.3",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.11.1"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "@material-ui/core": "4.3.2",
+    "@material-ui/icons": "4.2.1",
+    "chartist": "0.10.1",
+    "classnames": "2.2.6",
+    "history": "4.9.0",
+    "perfect-scrollbar": "1.4.0",
+    "prop-types": "15.7.2",
+    "react": "16.9.0",
+    "react-chartist": "0.13.3",
+    "react-dom": "16.9.0",
+    "react-google-maps": "9.4.5",
+    "react-router-dom": "5.0.1",
+    "react-scripts": "3.1.0",
+    "react-swipeable-views": "0.13.3"
   },
   "scripts": {
-    "start": "rimraf ./build && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "lint:check": "eslint . --ext=js,jsx;  exit 0",
+    "lint:fix": "eslint . --ext=js,jsx --fix;  exit 0",
+    "build-package-css": "cp src/assets/css/material-dashboard-react.css dist/material-dashboard-react.css",
+    "build-package": "npm run build-package-css && babel src --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/creativetimofficial/material-dashboard-react.git"
+  },
+  "keywords": [],
+  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/creativetimofficial/material-dashboard-react/issues"
+  },
+  "homepage": "https://creativetimofficial.github.io/material-dashboard-react/#/dashboard",
+  "optionalDependencies": {
+    "@types/googlemaps": "3.37.3",
+    "@types/markerclustererplus": "2.1.33",
+    "ajv": "6.10.2",
+    "typescript": "3.5.3"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "gulp": "4.0.2",
+    "gulp-append-prepend": "1.0.8",
+    "prettier": "1.18.2"
   },
   "browserslist": {
     "production": [
@@ -42,10 +61,6 @@
       "not dead",
       "not op_mini all"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "development": []
   }
 }
