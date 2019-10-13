@@ -44,12 +44,12 @@ const useStyles = makeStyles(styles);
 export default function Dashboard() {
   const classes = useStyles();
   return (
-    <div>
+    <div>  
       <GridContainer>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
                 <Icon>content_copy</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>Used Space</p>
@@ -121,26 +121,35 @@ export default function Dashboard() {
           </Card>
         </GridItem>
       </GridContainer>
+      
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader color="success">
-              <ChartistGraph
+            <CardHeader color="info">
+              {/*<ChartistGraph
                 className="ct-chart"
                 data={dailySalesChart.data}
                 type="Line"
                 options={dailySalesChart.options}
                 listener={dailySalesChart.animation}
-              />
+              />*/}
+               <p className={classes.cardTitleBlack}>HiLife Whistling Winds</p>
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
+            <Table 
+                tableData={[
+                  ["Blocks/Wings", "6"],
+                  ["Facilities Available", "5"],
+                  ["Bookable Facilities", "4"] 
+                ]}
+              />
+              {/*<h4 className={classes.cardTitle}>Daily Sales</h4>
               <p className={classes.cardCategory}>
                 <span className={classes.successText}>
                   <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                 </span>{" "}
                 increase in today sales.
-              </p>
+              </p>*/}
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -152,6 +161,7 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="warning">
+               <p className={classes.cardTitleBlack}>Owners</p> 
               <ChartistGraph
                 className="ct-chart"
                 data={emailsSubscriptionChart.data}
@@ -159,11 +169,120 @@ export default function Dashboard() {
                 options={emailsSubscriptionChart.options}
                 responsiveOptions={emailsSubscriptionChart.responsiveOptions}
                 listener={emailsSubscriptionChart.animation}
-              />
+              /> 
             </CardHeader>
-            <CardBody>
+            <CardBody> 
+              <h4 className={classes.cardTitle}>Email Subscriptions</h4> 
+            <Table 
+                tableData={[
+                  ["Total No of Flats", "256"],
+                  ["Unoccupied", "32"],
+                  ["Total Rented", "70"],
+                  ["Total Occupied", "154"] 
+                ]}
+              /> 
+              <p className={classes.cardCategory}>Last Campaign Performance</p> 
+              </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> updated 7 minutes ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="danger">
+               <p className={classes.cardTitleBlack}>Visitors in Society</p> 
+              <ChartistGraph
+                className="ct-chart"
+                data={completedTasksChart.data}
+                type="Line"
+                options={completedTasksChart.options}
+                listener={completedTasksChart.animation}
+              /> 
+            </CardHeader>
+            <CardBody> 
+              <h4 className={classes.cardTitle}>Completed Tasks</h4>
+              <p className={classes.cardCategory}>Last Campaign Performance</p> 
+            <Table 
+                tableData={[
+                  ["Current Checked in Visitors", "6"],
+                  ["Resident Visitors", "4"],
+                  ["Non Resident Visitors", "1"],
+                  ["Delivery Visitors", "0"] 
+                ]}
+              />
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> updated 1 minutes ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="success">
+               <p className={classes.cardTitleBlack}>Parking</p> 
+              <ChartistGraph
+                className="ct-chart"
+                data={dailySalesChart.data}
+                type="Line"
+                options={dailySalesChart.options}
+                listener={dailySalesChart.animation}
+              /> 
+            </CardHeader>
+            <CardBody> 
+              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <p className={classes.cardCategory}>
+                <span className={classes.successText}>
+                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                </span>{" "}
+                increase in today sales.
+              </p> 
+              <Table 
+                tableData={[
+                  ["Total vehicles in society", "7"],
+                  ["Assigned parking slots", "3"],
+                  ["Unassigned parking slots", "323"],
+                  ["Assigned and Occupied", "2"],
+                  ["Assigned but oncccupied", "3"]  
+                ]}
+              />
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> updated 4 minutes ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="warning">
+               <p className={classes.cardTitleBlack}>Assets</p> 
+              <ChartistGraph
+                className="ct-chart"
+                data={emailsSubscriptionChart.data}
+                type="Bar"
+                options={emailsSubscriptionChart.options}
+                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
+                listener={emailsSubscriptionChart.animation}
+              /> 
+            </CardHeader>
+            <CardBody> 
               <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <p className={classes.cardCategory}>Last Campaign Performance</p> 
+              <Table 
+                tableData={[
+                  ["Total Assets", "7"],
+                  ["Upcoming assets for service", "0"],
+                  ["Overdue assets for service", "4"]
+                ]}
+              />
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -175,17 +294,26 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="danger">
+               <p className={classes.cardTitleBlack}>Facility Booking Status</p> 
               <ChartistGraph
                 className="ct-chart"
                 data={completedTasksChart.data}
                 type="Line"
                 options={completedTasksChart.options}
                 listener={completedTasksChart.animation}
-              />
+              /> 
             </CardHeader>
-            <CardBody>
+            <CardBody> 
               <h4 className={classes.cardTitle}>Completed Tasks</h4>
               <p className={classes.cardCategory}>Last Campaign Performance</p>
+         
+              <Table 
+                tableData={[
+                  ["Bookable Facility", "4"],
+                  ["Facility Booked for next 7 days", "0"],
+                  ["Booking pending approvals", "0"]
+                ]}
+              />
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -196,13 +324,13 @@ export default function Dashboard() {
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <CustomTabs
-            title="Tasks:"
+            title="Complaints Helpdesk:"
             headerColor="primary"
             tabs={[
               {
-                tabName: "Bugs",
+                tabName: "New Tickets",
                 tabIcon: BugReport,
                 tabContent: (
                   <Tasks
@@ -213,7 +341,7 @@ export default function Dashboard() {
                 )
               },
               {
-                tabName: "Website",
+                tabName: "Open Tickets",
                 tabIcon: Code,
                 tabContent: (
                   <Tasks
@@ -224,7 +352,7 @@ export default function Dashboard() {
                 )
               },
               {
-                tabName: "Server",
+                tabName: "Closed Tickets",
                 tabIcon: Cloud,
                 tabContent: (
                   <Tasks
@@ -237,29 +365,29 @@ export default function Dashboard() {
             ]}
           />
         </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        
+      </GridContainer>
+      <GridContainer>
+      <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+              <h4 className={classes.cardTitleWhite}>Housing Keeping Status</h4>
               <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
+                Current housekeeping items
               </p>
             </CardHeader>
             <CardBody>
               <Table
                 tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableHead={["ID", "Item", "Status", "Priority"]}
                 tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
+                  ["1", "Daily clening", "InProgress", "High"]
                 ]}
               />
             </CardBody>
           </Card>
         </GridItem>
-      </GridContainer>
+        </GridContainer>
     </div>
   );
 }

@@ -2,7 +2,8 @@ import {
   successColor,
   whiteColor,
   grayColor,
-  hexToRgb
+  hexToRgb,
+  blackColor
 } from "assets/jss/material-dashboard-react.js";
 
 const dashboardStyle = {
@@ -65,6 +66,20 @@ const dashboardStyle = {
   },
   cardTitleWhite: {
     color: whiteColor,
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+    "& small": {
+      color: grayColor[1],
+      fontWeight: "400",
+      lineHeight: "1"
+    }
+  },
+  cardTitleBlack: {
+    color: blackColor,
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",

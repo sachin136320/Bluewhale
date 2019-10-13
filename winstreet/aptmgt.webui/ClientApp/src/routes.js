@@ -40,26 +40,30 @@ import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 // core components/views for RTL layout
 import RTLPage from "views/RTLPage/RTLPage.js";
 
+import OwnersCorner from "apt.views/owners/OwnersCorner.js";
+import HouseKeeping from "apt.views/housekeeping/Housekeeping.js";
+import AptDashboard from "apt.views/dashboard/AptDashboard.js";
+
 const dashboardRoutes = [
   {
     path: "/dashboard",
     name: "Home", 
     icon: HomeOutlined,
-    component: DashboardPage,
+    component: AptDashboard, //AptDashboard, //DashboardPage
     layout: "/admin"
   },
   {
     path: "/table",
     name: "Owner's Corner", 
     icon: "content_paste",
-    component: TableList,
+    component: OwnersCorner, //TableList, //OwnersCorner,
     layout: "/admin"
   },
   {
     path: "/typography",
     name: "Housekeeping", 
     icon: LibraryBooks,
-    component: Typography,
+    component: HouseKeeping, //Typography, //HouseKeeping,
     layout: "/admin"
   },
   {

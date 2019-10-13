@@ -107,6 +107,19 @@ const headerLinksStyle = theme => ({
       margin: "10px 15px 0"
     },
     display: "inline-block"
+  },
+  root: {
+    width: '100%',
+  },
+  paper: {
+    marginTop: 3,
+    width: '100%',
+    overflowX: 'auto',
+    marginBottom: 2,
+  },
+  table: {
+    minWidth: 900,
+    width:'100%'
   }
 });
 
