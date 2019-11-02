@@ -4,10 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js"; 
-import Card from "components/Card/Card.js"; 
-import CardBody from "components/Card/CardBody.js";
 
-import AddOwner from "apt.views/owners/AddOwner.js";
+import AddApartmentCommunity from "apt.views/configuresettings/apartmentdetails.js";
+import BlockDetails from "apt.views/configuresettings/blockdetails.js";
+import FacilityDetails from "apt.views/configuresettings/facilitydetails.js";
+import BasicSettingSummary from "apt.views/configuresettings/basicsettingsummary.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import VerifiedUser from "@material-ui/icons/VerifiedUser";
 import Tasks from "components/Tasks/Tasks.js";
@@ -15,11 +16,6 @@ import { bugs, website, server } from "variables/general.js";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
  
-import ModifyOwner1 from "apt.views/owners/ModifyOwner";
-import avatar from "assets/img/faces/marc.jpg";
-import Button from "components/CustomButtons/Button.js"; 
-import CardAvatar from "components/Card/CardAvatar.js";
-
 const styles = {
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
@@ -52,71 +48,44 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function OwnersCorner() {
+export default function ConfigureBasicSettings() {
     const classes = useStyles();
     return (
         <GridContainer>
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem xs={12} sm={12} md={12}>
                 <CustomTabs
                     headerColor="primary"
                     tabs={[
                         {
-                            tabName: "Add Users",
+                            tabName: "Apartment Details",
                             tabIcon: VerifiedUser,
                             tabContent: (
-                                <AddOwner />
+                                <AddApartmentCommunity/>
                             )
                         },
                         {
-                            tabName: "Modify User",
+                            tabName: "Block Details",
                             tabIcon: Code,
                             tabContent: (
-                                <ModifyOwner1 />
+                                <BlockDetails/>
                             )
                         },
                         {
-                            tabName: "Tenants",
+                            tabName: "Facility Details",
                             tabIcon: Cloud,
                             tabContent: (
-                                <Tasks
-                                    checkedIndexes={[1]}
-                                    tasksIndexes={[0, 1, 2]}
-                                    tasks={server}
-                                />
+                                <FacilityDetails />
                             )
                         },
                         {
-                            tabName: "Socialize",
+                            tabName: "Summary",
                             tabIcon: Cloud,
                             tabContent: (
-                                <Tasks
-                                    checkedIndexes={[1]}
-                                    tasksIndexes={[0, 1, 2]}
-                                    tasks={server}
-                                />
+                                <BasicSettingSummary/>
                             )
                         }
                     ]}
                 />
-            </GridItem>
-            <GridItem xs={12} sm={12} md={4}>
-                <Card profile>
-                    <CardAvatar profile>
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                            <img src={avatar} alt="..." />
-                        </a>
-                    </CardAvatar>
-                    <CardBody profile>
-                        <h2 className={classes.cardCategory}>Name</h2>
-                        <h5 className={classes.cardTitle}>Flat No</h5>
-                        <h5 className={classes.cardTitle}>Owner Type</h5>
-                        <h5 className={classes.cardTitle}>Contact Number</h5> 
-                    </CardBody>
-                </Card>
-
-                <Button color="primary" round>
-                Share
-                </Button>
             </GridItem>
         </GridContainer>
     );

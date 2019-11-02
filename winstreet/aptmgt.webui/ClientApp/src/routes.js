@@ -43,6 +43,7 @@ import RTLPage from "views/RTLPage/RTLPage.js";
 import OwnersCorner from "apt.views/owners/OwnersCorner.js";
 import HouseKeeping from "apt.views/housekeeping/Housekeeping.js";
 import AptDashboard from "apt.views/dashboard/AptDashboard.js";
+import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSettings.js";
 
 const dashboardRoutes = [
   {
@@ -102,10 +103,10 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/upgrade-to-pro",
+    path: "/configurebasicsettings",
     name: "Configure Basic Settings", 
     icon: SettingsTowTone,
-    component: UpgradeToPro,
+    component: ConfigureBasicSettings,
     layout: "/admin"
   }
 ];
