@@ -23,6 +23,8 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 import API from "apt.utils/API.js";
 import axios from "axios";
 
+import authService from 'components/Authorization/AuthorizeService.js';
+
 const useStyles = makeStyles(styles);
 
 
@@ -37,10 +39,14 @@ export default function AptDashboard() {
   const [facilityCard, setFacilityCard] = useState([]);
 
   useEffect(() => {
+    
+    const token = authService.getAccessToken(); 
+
     API.get('/DashboardCard', {
       params: {
         cardID: 'primary'
-      }
+      },
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     }).then(({ data }) => {
       setPrimaryCard(prepareArray(data.dashboardCardItems));
     });

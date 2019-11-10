@@ -44,6 +44,7 @@ import OwnersCorner from "apt.views/owners/OwnersCorner.js";
 import HouseKeeping from "apt.views/housekeeping/Housekeeping.js";
 import AptDashboard from "apt.views/dashboard/AptDashboard.js";
 import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSettings.js";
+import VisitorDashBoard from "apt.views/visitors/VisitorDashBoard.js";
 
 const dashboardRoutes = [
   {
@@ -71,7 +72,7 @@ const dashboardRoutes = [
     path: "/icons",
     name: "Visitor Management", 
     icon: BubbleChart,
-    component: Icons,
+    component: VisitorDashBoard, //Icons,
     layout: "/admin"
   },
   {

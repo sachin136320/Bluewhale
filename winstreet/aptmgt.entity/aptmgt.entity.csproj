@@ -1,15 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-
+  
+  <ItemGroup>        
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+        
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" /> 
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
+  </ItemGroup>
+    
   <ItemGroup>
     <ProjectReference Include="..\aptmgt.utility\aptmgt.utility.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="intfc\" />
     <Folder Include="impl\" />
+    <Folder Include="impl\user\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="interface\User.cs" />

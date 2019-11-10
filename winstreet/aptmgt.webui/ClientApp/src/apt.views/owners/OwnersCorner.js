@@ -19,6 +19,8 @@ import ModifyOwner1 from "apt.views/owners/ModifyOwner";
 import avatar from "assets/img/faces/marc.jpg";
 import Button from "components/CustomButtons/Button.js"; 
 import CardAvatar from "components/Card/CardAvatar.js";
+import Tenants from "apt.views/owners/Tenants.js";
+
 
 const styles = {
     cardCategoryWhite: {
@@ -78,11 +80,7 @@ export default function OwnersCorner() {
                             tabName: "Tenants",
                             tabIcon: Cloud,
                             tabContent: (
-                                <Tasks
-                                    checkedIndexes={[1]}
-                                    tasksIndexes={[0, 1, 2]}
-                                    tasks={server}
-                                />
+                                <Tenants />
                             )
                         },
                         {

@@ -12,6 +12,7 @@
     "classnames": "2.2.6",
     "history": "4.9.0",
     "material-table": "^1.52.0",
+    "oidc-client": "^1.9.1",
     "perfect-scrollbar": "1.4.0",
     "prop-types": "15.7.2",
     "qrcode.react": "^0.9.3",
@@ -21,7 +22,8 @@
     "react-google-maps": "9.4.5",
     "react-router-dom": "5.0.1",
     "react-scripts": "3.1.0",
-    "react-swipeable-views": "0.13.3"
+    "react-swipeable-views": "0.13.3",
+    "react-webcam": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
