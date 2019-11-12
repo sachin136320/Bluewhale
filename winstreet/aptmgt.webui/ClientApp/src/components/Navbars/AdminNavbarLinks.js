@@ -27,11 +27,46 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
+//import { useHistory } from "react-router-dom";
+import authService from "components/Authorization/AuthorizeService.js";
+import { ApplicationPaths } from "components/Authorization/ApiAuthorizationConstants.js";
+import Logout from "components/Authorization/Logout.js";
+
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
+
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [userName, setUserName] = React.useState(null);
+
+  React.useEffect(() => {
+    const _subscription = authService.subscribe(() => populateState());
+    populateState();
+    console.log("willmoount");
+    // returned function will be called on component unmount 
+    return () => {
+      console.log("willunmount");
+      authService.unsubscribe(_subscription);
+    }
+  }, [])
+
+  const populateState = async () => {
+    const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
+    setIsAuthenticated(isAuthenticated);
+    setUserName(user && user.name);
+  };
+
+  const handleLogOut = () => {
+    const profilePath = `${ApplicationPaths.Profile}`;
+    const logoutPath = { pathname: `${ApplicationPaths.LogOut}`, state: { local: true } };
+    console.log(logoutPath);
+    console.log(profilePath);  
+    setOpenProfile(null);
+  };
+
+
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
@@ -55,6 +90,7 @@ export default function AdminNavbarLinks() {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+
   return (
     <div>
       {/*
@@ -152,10 +188,9 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogOut}
                       className={classes.dropdownItem}
-                    >
-                      Logout
+                    > Logout
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -164,7 +199,7 @@ export default function AdminNavbarLinks() {
           )}
         </Poppers>
       </div>
-      
+
       {/*
         Notification icon just after dashbboard icon
         */}
@@ -255,7 +290,7 @@ export default function AdminNavbarLinks() {
           Apartment & Soceity Management System
               </Typography>
       </div>
-      
+
       {/*} <Table className={classes.table} size="small">
         <TableBody >
           <TableRow>

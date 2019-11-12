@@ -54,6 +54,9 @@ namespace aptmgt.webui
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -72,6 +75,7 @@ namespace aptmgt.webui
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -107,14 +111,14 @@ namespace aptmgt.webui
                         });
             */
             app.UseSpa(spa =>
-            {
+            {  
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            });
+            }); 
         }
     }
 }

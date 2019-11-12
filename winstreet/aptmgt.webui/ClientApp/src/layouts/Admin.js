@@ -78,6 +78,7 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
+  
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -96,6 +97,8 @@ export default function Admin({ ...rest }) {
       window.removeEventListener("resize", resizeFunction);
     };
   }, [mainPanel]);
+
+
   return (
     <div className={classes.wrapper}>
       <Sidebar

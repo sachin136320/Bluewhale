@@ -23,22 +23,37 @@ import AuthorizeRoute from './components/Authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/Authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/Authorization/ApiAuthorizationConstants';
 
+//import 'bootstrap/dist/css/bootstrap.css'; 
+import { BrowserRouter } from 'react-router-dom';
+import App from 'App.js';
+
 // core components
 import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
+
+//const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
+const rootElement = document.getElementById('root');
+
+
 const hist = createBrowserHistory();
 
 ReactDOM.render(
+  <Router history={hist} basename={"https://localhost:5001"}>
+    <App />
+  </Router>,
+  rootElement);
+
+/*ReactDOM.render(
   <Router history={hist}>
     <Switch>
-      <AuthorizeRoute path="/admin" component={Admin} />
+      <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
-      <Redirect from="/" to="/admin/dashboard" />
-      <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+      <Redirect from="/" to="/admin/dashboard" /> 
     </Switch>
   </Router>,
   document.getElementById("root")
 );
+*/

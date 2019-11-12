@@ -50,6 +50,7 @@ export class LoginMenu extends Component {
                 <NavLink tag={Link} className="text-dark" to={profilePath}>Hello {userName}</NavLink>
             </NavItem>
             <NavItem>
+                {console.log(logoutPath)}
                 <NavLink tag={Link} className="text-dark" to={logoutPath}>Logout</NavLink>
             </NavItem>
         </Fragment>);
