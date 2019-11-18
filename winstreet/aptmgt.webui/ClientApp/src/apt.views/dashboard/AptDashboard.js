@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
 // @material-ui/icons 
 import AccessTime from "@material-ui/icons/AccessTime";
 import BugReport from "@material-ui/icons/BugReport";
@@ -26,7 +26,7 @@ import axios from "axios";
 import authService from 'components/Authorization/AuthorizeService.js';
 
 const useStyles = makeStyles(styles);
- 
+
 
 export default function AptDashboard() {
   const classes = useStyles();
@@ -39,61 +39,89 @@ export default function AptDashboard() {
   const [facilityCard, setFacilityCard] = useState([]);
 
   useEffect(() => {
+
+    // Create an scoped async function in the hook
+    async function loadData() {
+      const token = await authService.getAccessToken();
+      console.log(token);
+
+      await API.get('/DashboardCard', {
+        params: {
+          cardID: 'primary'
+        },
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+      }).then(({ data }) => {
+        setPrimaryCard(prepareArray(data.dashboardCardItems));
+      });
+
+
+      await API.get('/DashboardCard', {
+        params: {
+          cardID: 'owner'
+        },
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+      }).then(({ data }) => {
+        setOwnerCard(prepareArray(data.dashboardCardItems));
+      });
+  
+  
+      await API.get('/DashboardCard', {
+        params: {
+          cardID: 'visitors'
+        },
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+      }).then(({ data }) => {
+        setVisitorsCard(prepareArray(data.dashboardCardItems));
+      });
+  
+      await API.get('/DashboardCard', {
+        params: {
+          cardID: 'assets'
+        },
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+      }).then(({ data }) => {
+        setAssetsCard(prepareArray(data.dashboardCardItems));
+      });
+  
+      await API.get('/DashboardCard', {
+        params: {
+          cardID: 'parking'
+        },
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+      }).then(({ data }) => {
+        setParkingCard(prepareArray(data.dashboardCardItems));
+      });
+  
+      await API.get('/DashboardCard', {
+        params: {
+          cardID: 'facility'
+        },
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+      }).then(({ data }) => {
+        setFacilityCard(prepareArray(data.dashboardCardItems));
+      });
+
+    }
+
+    // Execute the created function directly
+    loadData();
+
+    console.log("crosseD");
+
+
+    /*
+        API.get('/DashboardCard', {
+          params: {
+            cardID: 'primary'
+          },
+          headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }).then(({ data }) => {
+          setPrimaryCard(prepareArray(data.dashboardCardItems));
+        });
     
-    const token = authService.getAccessToken(); 
-    console.log(token);
-
-    API.get('/DashboardCard', {
-      params: {
-        cardID: 'primary'
-      },
-      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-    }).then(({ data }) => {
-      setPrimaryCard(prepareArray(data.dashboardCardItems));
-    });
-
-    API.get('/DashboardCard', {
-      params: {
-        cardID: 'owner'
-      }
-    }).then(({ data }) => {
-      setOwnerCard(prepareArray(data.dashboardCardItems));
-    });
-
-
-    API.get('/DashboardCard', {
-      params: {
-        cardID: 'visitors'
-      }
-    }).then(({ data }) => {
-      setVisitorsCard(prepareArray(data.dashboardCardItems));
-    });
-
-    API.get('/DashboardCard', {
-      params: {
-        cardID: 'assets'
-      }
-    }).then(({ data }) => {
-      setAssetsCard(prepareArray(data.dashboardCardItems));
-    });
-
-    API.get('/DashboardCard', {
-      params: {
-        cardID: 'parking'
-      }
-    }).then(({ data }) => {
-      setParkingCard(prepareArray(data.dashboardCardItems));
-    });
-
-    API.get('/DashboardCard', {
-      params: {
-        cardID: 'facility'
-      }
-    }).then(({ data }) => {
-      setFacilityCard(prepareArray(data.dashboardCardItems));
-    });
+        */
   }, []);
- 
+
 
   const prepareArray = (data) => {
     const dataRows = [];
