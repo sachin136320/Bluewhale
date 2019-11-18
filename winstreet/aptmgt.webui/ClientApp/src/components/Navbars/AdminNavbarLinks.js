@@ -18,26 +18,14 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-
-//import { useHistory } from "react-router-dom";
-import authService from "components/Authorization/AuthorizeService.js";
-import { ApplicationPaths } from "components/Authorization/ApiAuthorizationConstants.js";
-import Logout from "components/Authorization/Logout.js";
+import { LoginMenu1 } from "components/Authorization/LoginMenu1";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
-
+/*
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [userName, setUserName] = React.useState(null);
 
@@ -65,7 +53,7 @@ export default function AdminNavbarLinks() {
     console.log(profilePath);  
     setOpenProfile(null);
   };
-
+*/
 
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
@@ -117,8 +105,7 @@ export default function AdminNavbarLinks() {
 
       {/*
        Dashboard icon just after search button
-       */}
-      {/*
+       */} 
       <Button
         color={window.innerWidth > 959 ? "transparent" : "white"}
         justIcon={window.innerWidth > 959}
@@ -130,8 +117,7 @@ export default function AdminNavbarLinks() {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button>
-       */}
+      </Button> 
 
       {/*
         Profile icon just after notification icon
@@ -188,9 +174,9 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleLogOut}
+                      onClick={handleCloseProfile}
                       className={classes.dropdownItem}
-                    > Logout
+                    >  <LoginMenu1 />
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -282,33 +268,6 @@ export default function AdminNavbarLinks() {
           )}
         </Poppers>
       </div>
-      {/*
-        Profile icon just after notification icon
-      */}
-      <div className={classes.manager}>
-        <Typography className={classes.title} variant="h6" noWrap>
-          Apartment & Soceity Management System
-              </Typography>
-      </div>
-
-      {/*} <Table className={classes.table} size="small">
-        <TableBody >
-          <TableRow>
-            <TableCell align="left">99161013010</TableCell>
-            <TableCell align="right">Date</TableCell>
-            <TableCell rowSpan={2} align="right">
-            </TableCell>
-            <TableCell rowSpan={2} align="right">
-              
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="left">Subodh Kumar</TableCell>
-            <TableCell align="right">Time</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-            */}
     </div>
   );
 }

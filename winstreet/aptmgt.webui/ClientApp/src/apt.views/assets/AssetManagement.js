@@ -63,35 +63,24 @@ export default function AssetManagement() {
                     headerColor="primary"
                     tabs={[
                         {
-                            tabName: "Add Users",
+                            tabName: "Add Assets",
                             tabIcon: VerifiedUser,
                             tabContent: (
                                 <AddOwner />
                             )
                         },
                         {
-                            tabName: "Modify User",
+                            tabName: "Procure New Asset",
                             tabIcon: Code,
                             tabContent: (
                                 <ModifyOwner1 />
                             )
                         },
                         {
-                            tabName: "Tenants",
+                            tabName: "Service Record",
                             tabIcon: Cloud,
                             tabContent: (
                                 <Tenants />
-                            )
-                        },
-                        {
-                            tabName: "Socialize",
-                            tabIcon: Cloud,
-                            tabContent: (
-                                <Tasks
-                                    checkedIndexes={[1]}
-                                    tasksIndexes={[0, 1, 2]}
-                                    tasks={server}
-                                />
                             )
                         }
                     ]}

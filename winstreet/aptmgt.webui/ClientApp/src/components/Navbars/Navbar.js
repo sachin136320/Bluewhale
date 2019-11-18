@@ -16,6 +16,8 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
 
+import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
@@ -38,12 +40,23 @@ export default function Header(props) {
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         {/* Here we create navbar brand, based on route name */}
-        {/*<div className={classes.flex}>
+        <div className={classes.flex}>
           <Button color="purple" href="#" className={classes.title}>
             {makeBrand()}
           </Button>
-        </div>*/}
-       
+        </div>
+
+
+        {/*
+        Application Name
+      */}
+        <div className={classes.manager}>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Apartment & Soceity Management System
+              </Typography>
+        </div>
+
+
         <Hidden smDown implementation="css">
           {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
         </Hidden>
@@ -57,7 +70,7 @@ export default function Header(props) {
           </IconButton>
 
         </Hidden>
-        
+
       </Toolbar>
     </AppBar>
   );

@@ -10,9 +10,7 @@ import BlockDetails from "apt.views/configuresettings/blockdetails.js";
 import FacilityDetails from "apt.views/configuresettings/facilitydetails.js";
 import BasicSettingSummary from "apt.views/configuresettings/basicsettingsummary.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import VerifiedUser from "@material-ui/icons/VerifiedUser";
-import Tasks from "components/Tasks/Tasks.js";
-import { bugs, website, server } from "variables/general.js";
+import VerifiedUser from "@material-ui/icons/VerifiedUser"; 
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
  

@@ -31,8 +31,13 @@ import App from 'App.js';
 import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
 
+import { Layout } from "apt.utils/Layout.js";
+import { Home } from 'apt.utils/Home.js';
+
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
+import { FetchData } from 'apt.utils/FetchData.js';
+import { Counter } from 'apt.utils/Counter.js'; 
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -41,17 +46,30 @@ const rootElement = document.getElementById('root');
 const hist = createBrowserHistory();
 
 ReactDOM.render(
+  <Router history={hist}>
+    <Switch>
+      <AuthorizeRoute path="/admin" component={Admin} />
+      <AuthorizeRoute exact path='/' component={Admin} />
+      <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+    </Switch>
+  </Router>,
+  rootElement);
+
+
+/*
+ReactDOM.render(
   <Router history={hist} basename={"https://localhost:5001"}>
     <App />
   </Router>,
   rootElement);
+*/
 
 /*ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
-      <Redirect from="/" to="/admin/dashboard" /> 
+      <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </Router>,
   document.getElementById("root")

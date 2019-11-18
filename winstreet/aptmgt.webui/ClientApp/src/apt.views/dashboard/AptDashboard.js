@@ -26,7 +26,7 @@ import axios from "axios";
 import authService from 'components/Authorization/AuthorizeService.js';
 
 const useStyles = makeStyles(styles);
-
+ 
 
 export default function AptDashboard() {
   const classes = useStyles();
@@ -41,6 +41,7 @@ export default function AptDashboard() {
   useEffect(() => {
     
     const token = authService.getAccessToken(); 
+    console.log(token);
 
     API.get('/DashboardCard', {
       params: {

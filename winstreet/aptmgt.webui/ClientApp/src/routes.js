@@ -45,6 +45,7 @@ import HouseKeeping from "apt.views/housekeeping/Housekeeping.js";
 import AptDashboard from "apt.views/dashboard/AptDashboard.js";
 import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSettings.js";
 import VisitorDashBoard from "apt.views/visitors/VisitorDashBoard.js";
+import AssetManagement from "apt.views/assets/AssetManagement";
 
 const dashboardRoutes = [
   {
@@ -86,8 +87,8 @@ const dashboardRoutes = [
     path: "/rtl-page",
     name: "Asset Management", 
     icon: Language,
-    component: RTLPage,
-    layout: "/rtl"
+    component: AssetManagement, //RTLPage,
+    layout: "/admin", // "/rtl"
   },
   {
     path: "/user",

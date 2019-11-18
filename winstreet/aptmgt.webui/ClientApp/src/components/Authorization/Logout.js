@@ -56,7 +56,7 @@ export class Logout extends Component {
                     return (<div>Processing logout</div>);
                 case LogoutActions.LogoutCallback:
                     return (<div>Processing logout callback</div>);
-                case LogoutActions.LoggedOut:
+                case LogoutActions.LoggedOut: 
                     return (<div>{message}</div>);
                 default:
                     throw new Error(`Invalid action '${action}'`);
@@ -82,9 +82,10 @@ export class Logout extends Component {
                     throw new Error("Invalid authentication result status.");
             }
         } else {
-            this.setState({ message: "You successfully logged out!" });
+            this.setState({ message: "You successfully logged out!" }); 
         }
     }
+
 
     async processLogoutCallback() {
         const url = window.location.href;
@@ -124,5 +125,10 @@ export class Logout extends Component {
 
     navigateToReturnUrl(returnUrl) {
         return window.location.replace(returnUrl);
+    }
+
+    navigateToLogin() {
+        const loginPath = `${ApplicationPaths.Login}`;
+        return window.location.replace(loginPath);
     }
 }
