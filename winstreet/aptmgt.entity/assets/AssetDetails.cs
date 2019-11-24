@@ -37,6 +37,7 @@ namespace aptmgt.entity.assets
         private string _type;
         private string _name;
         private string _nr;
+        private string _abc;
 
         public int AssetId { get => assetId; set => assetId = value; }
         public string Nr { get => _nr; set => _nr = value; }
@@ -46,6 +47,6 @@ namespace aptmgt.entity.assets
         public string ServiceFrequency { get => _serviceFrequency; set => _serviceFrequency = value; }
         public DateTime LstService { get => _lstService; set => _lstService = value; }
         public byte[] Image { get => _image; set => _image = value; }
-
+        public string Abc { get => _abc; set => _abc = value; }
     }
 }
