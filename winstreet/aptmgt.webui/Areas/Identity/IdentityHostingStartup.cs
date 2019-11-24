@@ -1,5 +1,5 @@
 ﻿using System;
-using aptmgt.entity.impl.user;
+using aptmgt.entity.user;
 using aptmgt.webui.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

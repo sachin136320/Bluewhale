@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 
 
-namespace aptmgt.entity.impl.user
+namespace aptmgt.entity.user
 {
     public class ApplicationUser : IdentityUser
     {

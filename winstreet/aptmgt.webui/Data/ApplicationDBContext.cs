@@ -1,4 +1,5 @@
-﻿using aptmgt.entity.impl.user;
+﻿using aptmgt.entity.user;
+using aptmgt.entity.assets;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -6,15 +7,14 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 
 namespace aptmgt.webui.Data
 {
-	public class ApplicationDBContext : ApiAuthorizationDbContext<ApplicationUser>
+	public class ApplicationDBContext : DbContext
 	{
 		public ApplicationDBContext(
-			DbContextOptions options,
-			IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+			DbContextOptions<ApplicationDBContext> options ) : base(options)
 		{
 		}
 
@@ -24,5 +24,9 @@ namespace aptmgt.webui.Data
 			builder.HasDefaultSchema(SchemaName);
 			base.OnModelCreating(builder);
 		}
+
+		public DbSet<CommunityUser> CommunityUser { get; set; }		
+		public DbSet<AssetDetails> AssetDeails { get; set; }
+
 	}
 }

@@ -236,7 +236,7 @@ namespace aptmgt.webui.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("aptmgt.entity.impl.user.ApplicationUser", b =>
+            modelBuilder.Entity("aptmgt.entity.user.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -311,7 +311,7 @@ namespace aptmgt.webui.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("aptmgt.entity.impl.user.ApplicationUser", null)
+                    b.HasOne("aptmgt.entity.user.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,7 +320,7 @@ namespace aptmgt.webui.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("aptmgt.entity.impl.user.ApplicationUser", null)
+                    b.HasOne("aptmgt.entity.user.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -335,7 +335,7 @@ namespace aptmgt.webui.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("aptmgt.entity.impl.user.ApplicationUser", null)
+                    b.HasOne("aptmgt.entity.user.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -344,7 +344,7 @@ namespace aptmgt.webui.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("aptmgt.entity.impl.user.ApplicationUser", null)
+                    b.HasOne("aptmgt.entity.user.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

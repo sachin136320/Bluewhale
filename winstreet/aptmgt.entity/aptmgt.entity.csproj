@@ -22,10 +22,22 @@
   <ItemGroup>
     <Folder Include="intfc\" />
     <Folder Include="impl\" />
-    <Folder Include="impl\user\" />
+    <Folder Include="assets\" />
+    <Folder Include="community\" />
+    <Folder Include="complaints\" />
+    <Folder Include="facility\" />
+    <Folder Include="maintainence\" />
+    <Folder Include="parking\" />
+    <Folder Include="servicehistory\" />
+    <Folder Include="user\" />
+    <Folder Include="vehicles\" />
+    <Folder Include="visitors\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="interface\User.cs" />
     <Compile Remove="impl\EmptyInterface.cs" />
+    <Compile Remove="intfc\user\ApplicationUser.cs" />
+    <Compile Remove="impl\user\ApplicationUser.cs" />
+    <Compile Remove="Class1.cs" />
   </ItemGroup>
 </Project>

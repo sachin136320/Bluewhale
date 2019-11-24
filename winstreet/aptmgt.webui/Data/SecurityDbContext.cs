@@ -1,4 +1,4 @@
-using aptmgt.entity.impl.user;
+using aptmgt.entity.user;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +12,9 @@ namespace aptmgt.webui.Data
 {
     public class SecurityDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        //This was working DbContextOptions options,
         public SecurityDbContext(
-            DbContextOptions options,
+            DbContextOptions<SecurityDbContext> options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }

@@ -1,5 +1,5 @@
 using System.Reflection;
-using aptmgt.entity.impl.user;
+using aptmgt.entity.user;
 using aptmgt.webui.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
