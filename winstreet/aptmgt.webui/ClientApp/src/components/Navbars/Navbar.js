@@ -44,19 +44,15 @@ export default function Header(props) {
           <Button color="purple" href="#" className={classes.title}>
             {makeBrand()}
           </Button>
-        </div>
-
-
+        </div> 
         {/*
         Application Name
-      */}
+        */}
         <div className={classes.manager}>
           <Typography className={classes.title} variant="h6" noWrap>
             Apartment & Soceity Management System
               </Typography>
-        </div>
-
-
+        </div> 
         <Hidden smDown implementation="css">
           {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
         </Hidden>

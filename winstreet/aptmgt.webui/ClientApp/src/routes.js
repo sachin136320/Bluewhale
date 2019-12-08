@@ -46,6 +46,7 @@ import AptDashboard from "apt.views/dashboard/AptDashboard.js";
 import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSettings.js";
 import VisitorDashBoard from "apt.views/visitors/VisitorDashBoard.js";
 import AssetManagement from "apt.views/assets/AssetManagement";
+import Parking from "apt.views/parking/Parking.js";
 
 const dashboardRoutes = [
   {
@@ -80,7 +81,7 @@ const dashboardRoutes = [
     path: "/maps",
     name: "Parking Management", 
     icon: LocationOn,
-    component: Maps,
+    component: Parking, //Maps,
     layout: "/admin"
   },
   {
