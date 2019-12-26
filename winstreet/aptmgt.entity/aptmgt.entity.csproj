@@ -29,7 +29,6 @@
     <Folder Include="maintainence\" />
     <Folder Include="parking\" />
     <Folder Include="servicehistory\" />
-    <Folder Include="user\" />
     <Folder Include="vehicles\" />
     <Folder Include="visitors\" />
   </ItemGroup>

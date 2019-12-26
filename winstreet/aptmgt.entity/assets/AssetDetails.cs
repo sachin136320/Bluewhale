@@ -11,7 +11,7 @@ CREATE TABLE `aptasset` (
   `aptassetsrvcflag` varchar(45) DEFAULT NULL,
   `aptassetprdate` date DEFAULT NULL,
   `datechng` date DEFAULT NULL,
-  `srvcrdmnt` varchar(45) DEFAULT NULL,
+  `srvcrdmnt` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`aptassetid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -37,8 +37,7 @@ namespace aptmgt.entity.assets
         private string _type;
         private string _name;
         private string _nr;
-        private string _abc;
-
+        
         public int AssetId { get => assetId; set => assetId = value; }
         public string Nr { get => _nr; set => _nr = value; }
         public string Name { get => _name; set => _name = value; }
@@ -47,6 +46,6 @@ namespace aptmgt.entity.assets
         public string ServiceFrequency { get => _serviceFrequency; set => _serviceFrequency = value; }
         public DateTime LstService { get => _lstService; set => _lstService = value; }
         public byte[] Image { get => _image; set => _image = value; }
-        public string Abc { get => _abc; set => _abc = value; }
+        
     }
 }
