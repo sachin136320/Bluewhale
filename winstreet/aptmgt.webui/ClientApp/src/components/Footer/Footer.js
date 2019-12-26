@@ -32,24 +32,24 @@ export default function Footer(props) {
                 Portfolio
               </a>
             </ListItem>
-            <ListItem className={classes.inlineBlock}>
+            {/*<ListItem className={classes.inlineBlock}>
               <a href="#blog" className={classes.block}>
                 Blog
               </a>
-            </ListItem>
+            </ListItem>*/}
           </List>
         </div>
         <p className={classes.right}>
           <span>
             &copy; {1900 + new Date().getYear()}{" "}
             <a
-              href="https://www.creative-tim.com?ref=mdr-footer"
+              href="https://www.google.com"
               target="_blank"
               className={classes.a}
             >
-              Creative Tim
+              Wins Street
             </a>
-            , made with love for a better web
+            , made with love
           </span>
         </p>
       </div>
