@@ -21,14 +21,7 @@ namespace aptmgt.entity.user
         private byte[] _ownrpic;
         private byte[] _ownrqr;
 
-        private string ocutype;
-
-
-
-
-        
-
-
+        private string _ocutype;
 
         public string Fname { get => _fname; set => _fname = value; }
         public string Lname { get => _lname; set => _lname = value; }
@@ -38,5 +31,6 @@ namespace aptmgt.entity.user
         public string Email { get => _email; set => _email = value; }
         public byte[] Ownrpic { get => _ownrpic; set => _ownrpic = value; }
         public byte[] Ownrqr { get => _ownrqr; set => _ownrqr = value; }
+        public string Ocutype { get => _ocutype; set => _ocutype = value; }
     }
 }

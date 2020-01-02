@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using aptmgt.webui.Data;
@@ -9,9 +10,10 @@ using aptmgt.webui.Data;
 namespace aptmgt.webui.Migrations.ApplicationDB
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191124080543_MyFirstMigration1")]
+    partial class MyFirstMigration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,38 +32,26 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<int>("AssetId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Asset_NR")
+                    b.Property<string>("Category")
                         .HasColumnType("text");
 
-                    b.Property<string>("Asset_Type")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Asset_category")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Asset_last_servce")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Asset_name")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Asset_procure_Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<byte[]>("Asset_qr_img")
+                    b.Property<byte[]>("Image")
                         .HasColumnType("bytea");
 
-                    b.Property<string>("Asset_service_Freq")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Asset_service_flag")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
+                    b.Property<DateTime>("LstService")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nr")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ServiceFrequency")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
 
                     b.HasKey("ID");
 

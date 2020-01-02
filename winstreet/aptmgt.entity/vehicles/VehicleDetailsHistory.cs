@@ -1,19 +1,17 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace aptmgt.entity.parking
-
+namespace aptmgt.entity.vehicles
 {
-    public class VehicleDetails
+    public class VehicleDetailsHistory
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int ID { get; set; }
 
 
         private string commid;
         private DateTime _currdate;
-
         private string _vehicle_ID;
         private string _owner_fname;
         private string _owner_lname;
@@ -22,9 +20,6 @@ namespace aptmgt.entity.parking
         private string _owner_email;
         private string _owner_slotno;
         private string _vehicle_no;
-        private byte[] _parking_qr_img;
-
-
 
         public string Commid { get => commid; set => commid = value; }
         public DateTime Currdate { get => _currdate; set => _currdate = value; }
@@ -36,6 +31,5 @@ namespace aptmgt.entity.parking
         public string Owner_email { get => _owner_email; set => _owner_email = value; }
         public string Owner_slotno { get => _owner_slotno; set => _owner_slotno = value; }
         public string Vehicle_no { get => _vehicle_no; set => _vehicle_no = value; }
-        public byte[] Parking_qr_img { get => _parking_qr_img; set => _parking_qr_img = value; }
     }
 }

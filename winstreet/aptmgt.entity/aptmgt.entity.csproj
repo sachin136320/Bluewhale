@@ -22,14 +22,11 @@
   <ItemGroup>
     <Folder Include="intfc\" />
     <Folder Include="impl\" />
-    <Folder Include="assets\" />
     <Folder Include="community\" />
     <Folder Include="complaints\" />
     <Folder Include="facility\" />
     <Folder Include="maintainence\" />
-    <Folder Include="parking\" />
     <Folder Include="servicehistory\" />
-    <Folder Include="vehicles\" />
     <Folder Include="visitors\" />
   </ItemGroup>
   <ItemGroup>

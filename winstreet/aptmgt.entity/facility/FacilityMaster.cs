@@ -11,11 +11,11 @@ namespace aptmgt.entity.facility
         public int ID { get; set; }
 
         private string commId;
-        private string _name;
+        private string _facility_name;
         private string _bkable;
 
-        public string Name { get => _name; set => _name = value; }
         public string CommId { get => commId; set => commId = value; }
         public string Bkable { get => _bkable; set => _bkable = value; }
+        public string Facility_name { get => _facility_name; set => _facility_name = value; }
     }
 }
