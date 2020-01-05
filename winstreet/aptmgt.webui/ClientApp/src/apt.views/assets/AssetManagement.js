@@ -7,19 +7,14 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js"; 
 import CardBody from "components/Card/CardBody.js";
 
-import AddOwner from "apt.views/owners/AddOwner.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import VerifiedUser from "@material-ui/icons/VerifiedUser";
-import Tasks from "components/Tasks/Tasks.js";
-import { bugs, website, server } from "variables/general.js";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
  
-import ModifyOwner1 from "apt.views/owners/ModifyOwner";
-import avatar from "assets/img/faces/marc.jpg";
-import Button from "components/CustomButtons/Button.js"; 
-import CardAvatar from "components/Card/CardAvatar.js";
-import Tenants from "apt.views/owners/Tenants.js";
+import ProcureNewAsset from "apt.views/assets/ProcureNewAsset";
+import AddAsset from "apt.views/assets/AddAsset";
+import ServiceRecord from "apt.views/assets/ServiceRecord";
 
 
 const styles = {
@@ -58,35 +53,35 @@ export default function AssetManagement() {
     const classes = useStyles();
     return (
         <GridContainer>
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem xs={12} sm={12} md={12}>
                 <CustomTabs
                     headerColor="primary"
                     tabs={[
                         {
-                            tabName: "Add Assets",
-                            tabIcon: VerifiedUser,
-                            tabContent: (
-                                <AddOwner />
-                            )
-                        },
-                        {
                             tabName: "Procure New Asset",
                             tabIcon: Code,
                             tabContent: (
-                                <ModifyOwner1 />
+                                <ProcureNewAsset />
+                            )
+                        },
+                        {
+                            tabName: "Add Assets",
+                            tabIcon: VerifiedUser,
+                            tabContent: (
+                                <AddAsset />
                             )
                         },
                         {
                             tabName: "Service Record",
                             tabIcon: Cloud,
                             tabContent: (
-                                <Tenants />
+                                <ServiceRecord />
                             )
                         }
                     ]}
                 />
             </GridItem>
-            <GridItem xs={12} sm={12} md={4}>
+            {/*<GridItem xs={12} sm={12} md={4}>
                 <Card profile>
                     <CardAvatar profile>
                         <a href="#pablo" onClick={e => e.preventDefault()}>
@@ -104,7 +99,7 @@ export default function AssetManagement() {
                 <Button color="primary" round>
                 Share
                 </Button>
-            </GridItem>
+                </GridItem>*/}
         </GridContainer>
     );
 }
