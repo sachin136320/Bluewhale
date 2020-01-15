@@ -30,7 +30,7 @@ namespace aptmgt.webui
             services
             .AddMvc()
             .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            .AddApplicationPart(Assembly.Load(new AssemblyName("aptmgt.webapi")))
+            //.AddApplicationPart(Assembly.Load(new AssemblyName("aptmgt.webapi")))
             .AddControllersAsServices();
 
             services.AddEntityFrameworkNpgsql()

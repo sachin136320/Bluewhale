@@ -17,9 +17,6 @@
   </ItemGroup>
     
   <ItemGroup>
-    <ProjectReference Include="..\aptmgt.utility\aptmgt.utility.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="intfc\" />
     <Folder Include="impl\" />
     <Folder Include="community\" />

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,25 +7,22 @@ namespace aptmgt.entity.community
 {
     public class CommunityBlock
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
-        private String commID;
+        private string _blockID;
         private string _blckname;
         private int _blcknoflrs;
         private int _blcknoflts;
-
-        public string CommID { get => commID; set => commID = value; }
+ 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public string BlockID { get => _blockID; set => _blockID = "BckID_" + value; }
         public string Blckname { get => _blckname; set => _blckname = value; }
-        public int Blcknoflrs { get => _blcknoflrs; set => _blcknoflrs = value; }
-        public int Blcknoflts { get => _blcknoflts; set => _blcknoflts = value; }
+        public int NumberofFloors { get => _blcknoflrs; set => _blcknoflrs = value; }
+        public int NumberofFlats { get => _blcknoflts; set => _blcknoflts = value; }
+ 
+        public ICollection<CommunityFlats> Flats { get; set; }
 
-
-
-        
-
-        
-
-
+        public string CommunityID { get; set; }
+        [ForeignKey("CommunityID")]
+        public community.CommunityDetails ParentCommunity { get; set; }
     }
 }

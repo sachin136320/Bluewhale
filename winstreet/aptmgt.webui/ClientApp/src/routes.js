@@ -47,6 +47,7 @@ import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSe
 import VisitorDashBoard from "apt.views/visitors/VisitorDashBoard.js";
 import AssetManagement from "apt.views/assets/AssetManagement";
 import Parking from "apt.views/parking/Parking.js";
+import FacilityBooking from "apt.views/facility/FacilityBooking"; 
 
 const dashboardRoutes = [
   {
@@ -95,7 +96,7 @@ const dashboardRoutes = [
     path: "/user",
     name: "Facility Booking", 
     icon: Person,
-    component: UserProfile,
+    component: FacilityBooking, //UserProfile,
     layout: "/admin"
   },
   {

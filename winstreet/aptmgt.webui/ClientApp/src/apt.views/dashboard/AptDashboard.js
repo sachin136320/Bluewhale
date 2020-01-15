@@ -43,7 +43,7 @@ export default function AptDashboard() {
     // Create an scoped async function in the hook
     async function loadData() {
       const token = await authService.getAccessToken();
-      console.log(token);
+      //console.log(token);
 
       await API.get('/DashboardCard', {
         params: {

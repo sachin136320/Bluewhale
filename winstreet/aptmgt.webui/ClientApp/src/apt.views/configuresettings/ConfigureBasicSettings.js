@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js"; 
 
+import AddBuilder from "apt.views/configuresettings/AddBuilder";
 import AddApartmentCommunity from "apt.views/configuresettings/apartmentdetails.js";
 import BlockDetails from "apt.views/configuresettings/blockdetails.js";
 import FacilityDetails from "apt.views/configuresettings/facilitydetails.js";
@@ -54,6 +55,13 @@ export default function ConfigureBasicSettings() {
                 <CustomTabs
                     headerColor="primary"
                     tabs={[
+                        {
+                            tabName: "Builder Details",
+                            tabIcon: VerifiedUser,
+                            tabContent: (
+                                <AddBuilder/>
+                            )
+                        },
                         {
                             tabName: "Apartment Details",
                             tabIcon: VerifiedUser,

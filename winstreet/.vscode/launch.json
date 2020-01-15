@@ -12,6 +12,7 @@
             "program": "${workspaceFolder}/aptmgt.webui/bin/Debug/netcoreapp3.0/aptmgt.webui.dll",
             "args": [],
             "cwd": "${workspaceFolder}/aptmgt.webui",
+            "requireExactSource": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

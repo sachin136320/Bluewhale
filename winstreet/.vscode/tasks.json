@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/aptmgt.webapi/aptmgt.webapi.csproj"
+                "${workspaceFolder}/aptmgt.entity/aptmgt.entity.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -5,18 +5,33 @@
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
-    "@material-ui/core": "4.3.2",
+    "@material-ui/core": "^4.3.2",
     "@material-ui/icons": "4.2.1",
     "axios": "^0.19.0",
+    "body-parser": "^1.18.2",
     "chartist": "0.10.1",
     "classnames": "2.2.6",
+    "cors": "^2.8.4",
+    "date-fns": "^2.1.0",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "fibers": "^4.0.2",
+    "fsevents": "^2.1.2",
     "history": "4.9.0",
+    "lodash": "^4.17.12",
     "material-table": "^1.52.0",
+    "material-ui": "^0.20.2",
+    "moment": "^2.24.0",
+    "moments": "0.0.2",
+    "node-gyp": "^6.0.1",
+    "node-sass": "^4.13.0",
     "oidc-client": "^1.9.1",
     "perfect-scrollbar": "1.4.0",
     "prop-types": "15.7.2",
     "qrcode.react": "^0.9.3",
     "react": "16.9.0",
+    "react-big-calendar": "^0.23.0",
+    "react-big-scheduler": "^0.2.7",
     "react-chartist": "0.13.3",
     "react-dom": "16.9.0",
     "react-google-maps": "9.4.5",
@@ -24,7 +39,10 @@
     "react-scripts": "^3.3.0",
     "react-swipeable-views": "0.13.3",
     "react-webcam": "^4.0.0",
-    "reactstrap": "^8.1.1"
+    "reactstrap": "^8.1.1",
+    "sass": "^1.24.2",
+    "sass-loader": "^8.0.0",
+    "sweetalert": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,7 +60,7 @@
     "url": "git+https://github.com/creativetimofficial/material-dashboard-react.git"
   },
   "keywords": [],
-  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
+  "author": "Winstreet",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/creativetimofficial/material-dashboard-react/issues"
@@ -55,6 +73,8 @@
     "typescript": "3.5.3"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
+    "react-scripts": "1.1.1",
     "eslint-config-prettier": "6.0.0",
     "eslint-plugin-prettier": "3.1.0",
     "gulp": "4.0.2",
