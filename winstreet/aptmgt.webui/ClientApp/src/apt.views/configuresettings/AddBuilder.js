@@ -54,32 +54,7 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
-
-
-
-async function processData(data) {
-    console.log(data);
-    const token = await authService.getAccessToken();
-    const config = {
-        headers: {
-            authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        }
-    };
-
-
-    await API.post('/Builder', data, config)
-        .then(({ data }) => {
-            return (data.builderId);
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response);
-        });
-
-    console.log("service call done");
-}
-
+ 
 export default function AddBuilder() {
     const classes = useStyles();
 
@@ -91,19 +66,33 @@ export default function AddBuilder() {
     const [builderId, setBuilderId] = React.useState('Not Generated');
 
 
-    const saveBuilder = async () => {
-        console.log(parseInt(pincode));
-        const d = await processData(JSON.stringify({
+    const saveBuilder = async () => { 
+        const requestBody = JSON.stringify({
             Name: buildername,
             Address: builderaddress,
             State: state,
             City: city,
             PinCode: pincode
-        }))
+        });
+        const token = await authService.getAccessToken();
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        };
 
-        console.log(d);
-        setBuilderId(d);
-        console.log(d);
+
+        await API.post('/Builder', requestBody, config)
+            .then(({ data }) => {
+                console.log(data);
+                setBuilderId(data.builderId); 
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
+
 
     }
 

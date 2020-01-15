@@ -43,25 +43,6 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
-
-async function processData(data) { 
-    const token = await authService.getAccessToken();
-    const config = {
-        headers: {
-            authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        }
-    }; 
-
-    await API.post('/Community', data, config)
-        .then(({ data }) => { 
-            return (data);
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response);
-        }); 
-    }
  
 
 export default function AddApartmentCommunity() {
@@ -111,23 +92,31 @@ export default function AddApartmentCommunity() {
     const [apartmentid, setApartmentID] = React.useState('Not Generated');
 
 
-    const saveCommunity = () => { 
-        const d = processData(JSON.stringify({
+    const saveCommunity = async () => {
+        const requestBody = JSON.stringify({
             Name: apartmentname,
             Address: address,
             State: state,
             City: city,
             Pincode: parseInt(pincode),
             BuilderID: selectedbuilderid
-        })).then((data) => {
-            console.log('Data from processDataAsycn() with async( When promise gets resolved ): ' + data);
-        }).catch((error) => {
-            console.log('Error from processDataAsycn() with async( When promise gets rejected ): ' + error);
         });
-        console.log("Repsonse from processData");
-        console.log(d);
-        setApartmentID(d);
-        console.log(apartmentid);
+        const token = await authService.getAccessToken();
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await API.post('/Community', requestBody, config)
+            .then(communityData => { 
+                setApartmentID(communityData.data.commID); 
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
     }
 
     const handleBuilderNameChange = event => { 
@@ -234,6 +223,7 @@ export default function AddApartmentCommunity() {
                             label="Apartment Id"
                             className={classes.textField}
                             margin="normal"
+                            value={apartmentid}
                             fullWidth
                             helperText="Enter Apartment Id"
                             //onChange={apartmentid}
