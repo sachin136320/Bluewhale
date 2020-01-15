@@ -218,16 +218,18 @@ export default function AddApartmentCommunity() {
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                         <TextField
-                            required
+                            id="outlined-read-only-input" 
                             id="apartmentid"
                             label="Apartment Id"
                             className={classes.textField}
                             margin="normal"
+                            InputProps={{
+                                readOnly: true,
+                            }}
                             value={apartmentid}
-                            fullWidth
-                            helperText="Enter Apartment Id"
-                            //onChange={apartmentid}
-                        />
+                            variant="outlined"
+                            fullWidth 
+                        /> 
                     </GridItem>
                 </GridContainer>
 
