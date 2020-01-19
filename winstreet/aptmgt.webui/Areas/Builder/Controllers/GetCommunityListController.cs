@@ -14,11 +14,11 @@ namespace aptmgt.webui.Builder.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class BuilderController : Controller
+    public class GetCommunityListController : Controller
     {
         private readonly ApplicationDBContext appDBContext;
 
-        public BuilderController(ApplicationDBContext applicationDBContext)
+        public GetCommunityListController(ApplicationDBContext applicationDBContext)
         {
             appDBContext = applicationDBContext;
 
@@ -29,26 +29,16 @@ namespace aptmgt.webui.Builder.Controllers
         [HttpGet()]
         public JsonResult Get(string builderID)
         {
-            if (builderID.ToLower().Equals("all"))
-            {
-                var listofBuilder = appDBContext.Builder.Select(build =>
-                              new
-                              {
-                                  BuilderID = build.BuilderId,
-                                  BuilderName = build.Name
-                              }).ToList();
-                return new JsonResult(listofBuilder);
-            }
+            var builder = appDBContext.Builder
+                    .Where(condition => condition.BuilderId == builderID);
+            
+
+            //foreach(aptmgt.entity.community.CommunityDetails commDetails in builder.FirstOrDefault().Communities){
+
+            //}
+             
  
-            return Json(appDBContext.Builder
-                    .Where(condition => condition.BuilderId == builderID)
-                    .Select(build =>
-                                new
-                                {
-                                    BuilderID = build.BuilderId,
-                                    BuilderName = build.Name,
-                                    Communities = build.Communities
-                                }));
+            return Json(builder.FirstOrDefault().Communities);
         }
 
         // GET api/values/5
@@ -62,13 +52,7 @@ namespace aptmgt.webui.Builder.Controllers
         // POST api/values
         [HttpPost]
         public IActionResult Post(aptmgt.entity.builder.Builder builder)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest("Bad Request");
-
-            appDBContext.Builder.Add(builder);
-            appDBContext.SaveChanges();
-
+        {  
             return new JsonResult(builder);
         }
 

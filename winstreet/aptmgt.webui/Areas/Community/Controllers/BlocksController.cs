@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -14,11 +14,11 @@ namespace aptmgt.webui.Areas.Community.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class CommunityController : Controller
+    public class BlocksController : Controller
     {
         private readonly ApplicationDBContext appDBContext;
 
-        public CommunityController(ApplicationDBContext applicationDBContext)
+        public BlocksController(ApplicationDBContext applicationDBContext)
         {
             appDBContext = applicationDBContext;
 
@@ -32,36 +32,43 @@ namespace aptmgt.webui.Areas.Community.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public JsonResult Get(string commID)
+        public string Get(int id)
         {
-            return Json(appDBContext.CommunityDetails
-                    .Where(condition => condition.CommID == commID)
-                    );
+            return "value";
         }
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post(aptmgt.entity.community.CommunityDetails communityDetails)
-        {
+        public IActionResult Post(aptmgt.entity.community.CommunityBlock communityBlock)
+        { 
             if (!ModelState.IsValid)
                 return BadRequest("Bad Request");
 
-            appDBContext.CommunityDetails.Add(communityDetails);
+            appDBContext.CommunityBlock.Add(communityBlock);
             appDBContext.SaveChanges();
 
-            return new JsonResult(communityDetails);
+            return new JsonResult(communityBlock); 
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
+            Console.WriteLine(value.ToString());
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+        public void Delete(string blockID)
+        { 
+            appDBContext.CommunityBlock
+            .RemoveRange(
+                appDBContext.CommunityBlock
+                .Where(
+                    condition => condition.BlockID == blockID
+                )
+            );
+            appDBContext.SaveChanges();
         }
     }
 }
