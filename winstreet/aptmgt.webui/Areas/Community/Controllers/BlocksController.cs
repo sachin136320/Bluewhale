@@ -39,15 +39,29 @@ namespace aptmgt.webui.Areas.Community.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post(aptmgt.entity.community.CommunityBlock communityBlock)
+        public JsonResult Post(aptmgt.entity.community.CommunityBlock communityBlock)
         { 
             if (!ModelState.IsValid)
-                return BadRequest("Bad Request");
+                return new JsonResult("Bad Request");
 
             appDBContext.CommunityBlock.Add(communityBlock);
             appDBContext.SaveChanges();
 
             return new JsonResult(communityBlock); 
+        }
+
+        // POST api/values
+        [Route("[action]")]
+        [HttpPost]
+        public JsonResult Update(aptmgt.entity.community.CommunityBlock communityBlock)
+        {
+            if (!ModelState.IsValid)
+                return new JsonResult("Bad Request");
+
+            appDBContext.CommunityBlock.Update(communityBlock); 
+            appDBContext.SaveChanges();
+
+            return new JsonResult(communityBlock);
         }
 
         // PUT api/values/5
@@ -58,7 +72,9 @@ namespace aptmgt.webui.Areas.Community.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
+        //[HttpDelete("{id}")]
+        [Route("[action]")]
+        [HttpGet("{id}")]
         public void Delete(string blockID)
         { 
             appDBContext.CommunityBlock

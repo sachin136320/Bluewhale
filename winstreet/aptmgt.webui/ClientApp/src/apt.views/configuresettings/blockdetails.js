@@ -73,9 +73,9 @@ const tabledata = [
 ];
  */
 const tablecolumns = [
-    { title: 'Block Name', field: 'blockName', editable: 'onUpdate' },
-    { title: 'Number of Floors', field: 'numberOfFloors', editable: 'never' },
-    { title: 'Number of Flats', field: 'numberOfFlats', editable: 'onUpdate', type: 'text' },
+    { title: 'Block Name', field: 'blockName', type: 'string' },
+    { title: 'Number of Floors', field: 'numberOfFloors', type: 'numeric' },
+    { title: 'Number of Flats', field: 'numberOfFlats', type: 'numeric' },
 ];
 
 export default function BlockDetails() {
@@ -90,8 +90,8 @@ export default function BlockDetails() {
     const [selectedcommunityid, setSelectedCommunityId] = React.useState('');
 
     const [tabledata, setTableData] = React.useState([
-        { blockName: 'Mehmet', numberOfFloors: 'Baran', numberOfFlats: 'D' },
-        { blockName: 'Mehmet', numberOfFloors: 'Baran', numberOfFlats: 'D' },
+        { blockName: 'Mehmet', numberOfFloors: 'Baran', numberOfFlats: 'D', blockID: "1" },
+        { blockName: 'Mehmet', numberOfFloors: 'Baran', numberOfFlats: 'D', blockID: "1" },
     ]);
 
 
@@ -112,9 +112,7 @@ export default function BlockDetails() {
                         label: value.builderName
                     };
                     dataRows.push(obj);
-                });
-
-                console.log(dataRows);
+                }); 
                 setBuilderList(dataRows);
             });
         }
@@ -125,8 +123,7 @@ export default function BlockDetails() {
 
     const handleBuilderName = async (event) => { 
         setSelectedBuilderName(event.target.value);
-        await setSelectedBuilderId(event.target.value);
-        console.log(selectedbuilderid);
+        await setSelectedBuilderId(event.target.value); 
 
         // Set Apartment Name Drop down to blank
         const token = await authService.getAccessToken();
@@ -136,41 +133,38 @@ export default function BlockDetails() {
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         }).then(({ data }) => {
-            console.log("response form GetCommunityList query");
-            console.log(data);
             const dataRows = [];
             data.map(function (value, key) {
                 let obj = {
-                    value: value.builderID,
-                    label: value.builderName
+                    value: value.communityID,
+                    label: value.commName
                 };
                 dataRows.push(obj);
-            });
+            }); 
             setCommunityList(dataRows);
         });
     };
 
-    const handleCommunityNameChange = async() => {
+    const handleCommunityNameChange = async (event) => {
         // Check if builder name is available
         setSelectedCommunityName(event.target.value);
-        setSelectedCommunityId(event.target.value)
+        await setSelectedCommunityId(event.target.value) 
 
         // Make a request to get the list Blocks
         const token = await authService.getAccessToken();
         await API.get('/Community', {
             params: {
-                commID: selectedcommunityid
+                commID: event.target.value
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }).then(({ data }) => {
-            console.log("community request");
-            console.log(data);
+        }).then(({ data }) => { 
             const dataRows = [];
             data.map(function (value, key) {
                 let obj = {
-                    blockName: value.apartmnetID,
+                    blockName: value.blockName,
                     numberOfFloors: value.apartmentName,
-                    numberOfFlats: value.apartmentName
+                    numberOfFlats: value.apartmentName,
+                    blockID: value.commBlockID
                 };
                 dataRows.push(obj);
             });
@@ -179,8 +173,19 @@ export default function BlockDetails() {
 
     };
 
-    const updateBlockDetail = async () => {
-        const requestBody = JSON.stringify(newData);
+    const updateBlockDetail = async (newData, oldData) => {
+        console.log(newData);
+        console.log(oldData);
+
+        const requestBody = JSON.stringify({
+            Blckname: newData.blockName,
+            NumberofFloors: parseInt(newData.numberOfFloors),
+            NumberofFlats: parseInt(newData.numberOfFlats),
+            CommunityID: selectedcommunityid,
+            BlockID: newData.blockID
+        });
+
+        console.log(requestBody);
         const token = await authService.getAccessToken();
         const config = {
             headers: {
@@ -189,8 +194,24 @@ export default function BlockDetails() {
             }
         };
 
-        await API.put('/Blocks', requestBody, config)
+        await API.put('/Blocks/Update', requestBody, config)
             .then(communityData => {
+
+                let tempData = tabledata;
+                const index = tempData.indexOf(oldData);
+                tempData[index] = newData; 
+                const dataRows = [];
+                tempData.map(function (value, key) {
+                    let obj = {
+                        blockName: value.blockName,
+                        numberOfFloors: value.apartmentName,
+                        numberOfFlats: value.apartmentName,
+                        blockID: value.blockID
+                    };
+                    dataRows.push(obj);
+                });
+                setTableData(dataRows); 
+
             })
             .catch(function (response) {
                 //handle error
@@ -198,8 +219,14 @@ export default function BlockDetails() {
             });
     }
 
-    const addBlockDetail = async (newData) => {
-        const requestBody = JSON.stringify(newData);
+    const addBlockDetail = async (newData) => { 
+        const requestBody = JSON.stringify({
+            Blckname: newData.blockName,
+            NumberofFloors: parseInt(newData.numberOfFloors),
+            NumberofFlats: parseInt(newData.numberOfFlats),
+            CommunityID: selectedcommunityid
+        });
+         
         const token = await authService.getAccessToken();
         const config = {
             headers: {
@@ -210,8 +237,26 @@ export default function BlockDetails() {
 
         await API.post('/Blocks', requestBody, config)
             .then(communityData => {
-                console.log(communityData);
-                console.log("Success");
+                let newBlock = {
+                    blockName: communityData.data.blckname,
+                    numberOfFloors: communityData.data.numberofFloors,
+                    numberOfFlats: communityData.data.numberofFlats,
+                    blockID: communityData.data.blockID
+                };
+                const dataRows = [];
+                let tempData = tabledata;
+                tempData.map(function (value, key) {
+                    let obj = {
+                        blockName: value.blockName,
+                        numberOfFloors: value.apartmentName,
+                        numberOfFlats: value.apartmentName,
+                        blockID: value.blockID
+                    };
+                    dataRows.push(obj);
+                });
+                dataRows.push(newBlock);
+                setTableData(dataRows);
+                console.log(tabledata);
             })
             .catch(function (response) {
                 //handle error
@@ -221,14 +266,26 @@ export default function BlockDetails() {
 
     const deleteBlockDetail = async (newData) => { 
         const token = await authService.getAccessToken(); 
-
-        await API.delete('/Blocks', {
+        await API.get('/Blocks/delete', {
             params: {
-                BlockID: newData.BlockID
+                blockID: newData.blockID
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }).then(communityData => {
-            console.log("Delete Block Successful");
+        }).then(communityData => { 
+            let tempData = tabledata;
+            const index = tempData.indexOf(newData);
+            tempData.splice(index, 1); 
+            const dataRows = []; 
+            tempData.map(function (value, key) {
+                let obj = {
+                    blockName: value.blockName,
+                    numberOfFloors: value.apartmentName,
+                    numberOfFlats: value.apartmentName,
+                    blockID: value.blockID
+                };
+                dataRows.push(obj);
+            }); 
+            setTableData(dataRows); 
         }).catch(function (response) {
             //handle error
             console.log(response);
@@ -282,15 +339,7 @@ export default function BlockDetails() {
 
                     </GridItem>
                 </GridContainer>
-
-                <GridContainer>
-                    <GridItem xs={6} sm={6} md={6}>
-                        <Button variant="contained" color="primary" className={classes.button}>
-                            Add
-                        </Button>
-                    </GridItem>
-                </GridContainer>
-
+                 
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                         <MaterialTable
@@ -301,18 +350,17 @@ export default function BlockDetails() {
                                 onRowAdd: newData =>
                                     new Promise((resolve, reject) => {
                                         addBlockDetail(newData);
-                                        resolve()
+                                        resolve();
                                     }),
                                 onRowUpdate: (newData, oldData) =>
                                     new Promise((resolve, reject) => {
-                                        updateBlockDetail(newData);
+                                        updateBlockDetail(newData, oldData);
                                         resolve();
                                     }),
                                 onRowDelete: oldData =>
                                     new Promise((resolve, reject) => {
                                         deleteBlockDetail(oldData);
-                                        resolve();
-
+                                        resolve(); 
                                     }),
                             }}
                         />

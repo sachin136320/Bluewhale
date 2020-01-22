@@ -24,19 +24,28 @@ namespace aptmgt.webui.Areas.Community.Controllers
 
         }
         // GET: api/values
-        [HttpGet]
+        /*[HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
-        }
+        }*/
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        [HttpGet]
         public JsonResult Get(string commID)
-        {
-            return Json(appDBContext.CommunityDetails
-                    .Where(condition => condition.CommID == commID)
-                    );
+        { 
+            var communityList = appDBContext.CommunityBlock.Where(community => community.CommunityID == commID).Select(comm => new
+            {
+                CommBlockID = comm.BlockID,
+                BlockName = comm.Blckname
+            });
+
+            return Json(communityList);
+
+            //return Json(appDBContext.CommunityDetails
+            //        .Where(condition => condition.CommID == commID).
+            //        );
         }
 
         // POST api/values

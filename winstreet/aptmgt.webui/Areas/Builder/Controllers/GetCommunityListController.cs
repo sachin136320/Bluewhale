@@ -30,15 +30,16 @@ namespace aptmgt.webui.Builder.Controllers
         public JsonResult Get(string builderID)
         {
             var builder = appDBContext.Builder
-                    .Where(condition => condition.BuilderId == builderID);
-            
+                    .Where(condition => condition.BuilderId == builderID).ToList();
 
-            //foreach(aptmgt.entity.community.CommunityDetails commDetails in builder.FirstOrDefault().Communities){
-
-            //}
+            var communityList = appDBContext.CommunityDetails.Where(community => community.BuilderID == builder.FirstOrDefault().BuilderId).Select(comm => new
+            {
+                CommunityID = comm.CommID,
+                CommName = comm.Name
+            });
              
- 
-            return Json(builder.FirstOrDefault().Communities);
+            return Json(communityList);
+            
         }
 
         // GET api/values/5
