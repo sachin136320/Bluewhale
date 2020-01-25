@@ -43,11 +43,24 @@ namespace aptmgt.webui.Areas.Community.Controllers
                 numberOfFloors = comm.NumberofFloors
             });
 
-            return Json(communityList);
+            return Json(communityList); 
+        }
+ 
+        [Route("[action]")]
+        [HttpGet]
+        public JsonResult GetCommunityDetail(string commID)
+        { 
+            var communityList = appDBContext.CommunityDetails.Where(community => community.CommID == commID).Select(comm => new
+            {
+                CommID = comm.CommID,
+                Name = comm.Name,
+                Address = comm.Address,
+                State = comm.State,
+                City = comm.City,
+                Pincode = comm.Pincode
+            });
 
-            //return Json(appDBContext.CommunityDetails
-            //        .Where(condition => condition.CommID == commID).
-            //        );
+            return Json(communityList); 
         }
 
         // POST api/values
@@ -62,17 +75,6 @@ namespace aptmgt.webui.Areas.Community.Controllers
 
             return new JsonResult(communityDetails);
         }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+ 
     }
 }
