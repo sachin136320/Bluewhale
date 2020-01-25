@@ -14,11 +14,7 @@ namespace aptmgt.entity.community
         
         public string FlatNumber { get; set; }
         public int FloorNumber { get; set; }
-
-        public int OwnerID { get; set; }
-        [ForeignKey("OwnerID")] 
-        public user.OwnerMaster owner { get; set; }
-
+ 
         public string BlockID { get; set; }
         [ForeignKey("BlockID")]
         public community.CommunityBlock Block { get; set; }

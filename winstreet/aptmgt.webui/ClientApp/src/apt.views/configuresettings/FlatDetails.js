@@ -53,11 +53,11 @@ const styles = {
     },
 };
 
-const useStyles = makeStyles(styles);  
+const useStyles = makeStyles(styles);
 
 const tablecolumns = [
     { title: 'Flat Number', field: 'flatnumber', type: 'string' },
-    { title: 'Floor Number', field: 'floornumber', type: 'numeric' }
+    { title: 'Floor Number', field: 'floornumber', type: 'string' }
 ];
 
 export default function FlatDetails() {
@@ -66,8 +66,14 @@ export default function FlatDetails() {
 
     const [builderlist, setBuilderList] = React.useState([]);
     const [communitylist, setCommunityList] = React.useState([]);
+    const [blocklist, setBlockList] = React.useState([]);
+
+    const [selectedblock, setSelectedBlock] = React.useState('');
+    const [selectedblockid, setSelectedBlockId] = React.useState('');
+
     const [selectedbuildername, setSelectedBuilderName] = React.useState('');
     const [selectedbuilderid, setSelectedBuilderId] = React.useState('');
+
     const [selectedcommunityname, setSelectedCommunityName] = React.useState('');
     const [selectedcommunityid, setSelectedCommunityId] = React.useState('');
 
@@ -141,11 +147,43 @@ export default function FlatDetails() {
         }).then(({ data }) => {
             const dataRows = [];
             data.map(function (value, key) {
+                let objForBlockDropdown = {
+                    value: value.commBlockID,
+                    label: value.blockName
+                };
                 let obj = {
                     blockName: value.blockName,
                     numberOfFloors: value.apartmentName,
                     numberOfFlats: value.apartmentName,
                     blockID: value.commBlockID
+                };
+                dataRows.push(objForBlockDropdown);
+            });
+            setBlockList(dataRows);
+            setTableData([]);
+        });
+
+    };
+
+    const handleBlockChange = async (event) => {
+        // Check if builder name is available
+        setSelectedBlock(event.target.value);
+        await setSelectedBlockId(event.target.value)
+
+        // Make a request to get the list Blocks
+        const token = await authService.getAccessToken();
+        await API.get('/Flats', {
+            params: {
+                blockID: event.target.value
+            },
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }).then(({ data }) => {
+            const dataRows = [];
+            data.map(function (value, key) {
+                let obj = {
+                    flatID: value.flatID,
+                    flatnumber: value.flatNumber,
+                    floornumber: value.floorNumber
                 };
                 dataRows.push(obj);
             });
@@ -154,16 +192,14 @@ export default function FlatDetails() {
 
     };
 
-    const updateBlockDetail = async (newData, oldData) => {
+    const updateFlatDetail = async (newData, oldData) => {
         console.log(newData);
         console.log(oldData);
 
         const requestBody = JSON.stringify({
-            Blckname: newData.blockName,
-            NumberofFloors: parseInt(newData.numberOfFloors),
-            NumberofFlats: parseInt(newData.numberOfFlats),
-            CommunityID: selectedcommunityid,
-            BlockID: newData.blockID
+            FlatID: newData.flatID,
+            FlatNumber: newData.flatnumber,
+            FloorNumber: parseInt(newData.floornumber)
         });
 
         console.log(requestBody);
@@ -175,18 +211,17 @@ export default function FlatDetails() {
             }
         };
 
-        await API.put('/Blocks/Update', requestBody, config)
-            .then(communityData => { 
+        await API.post('/Flats/Update', requestBody, config)
+            .then(communityData => {
                 let tempData = tabledata;
                 const index = tempData.indexOf(oldData);
                 tempData[index] = newData;
                 const dataRows = [];
                 tempData.map(function (value, key) {
                     let obj = {
-                        blockName: value.blockName,
-                        numberOfFloors: value.apartmentName,
-                        numberOfFlats: value.apartmentName,
-                        blockID: value.blockID
+                        flatID: flatData.data.flatID,
+                        flatnumber: flatData.data.flatNumber,
+                        floornumber: flatData.data.floorNumber
                     };
                     dataRows.push(obj);
                 });
@@ -199,12 +234,11 @@ export default function FlatDetails() {
             });
     }
 
-    const addBlockDetail = async (newData) => {
+    const addFlatDetail = async (newData) => {
         const requestBody = JSON.stringify({
-            Blckname: newData.blockName,
-            NumberofFloors: parseInt(newData.numberOfFloors),
-            NumberofFlats: parseInt(newData.numberOfFlats),
-            CommunityID: selectedcommunityid
+            BlockID: selectedblockid,
+            FlatNumber: newData.flatnumber,
+            FloorNumber: parseInt(newData.floornumber)
         });
 
         const token = await authService.getAccessToken();
@@ -215,26 +249,26 @@ export default function FlatDetails() {
             }
         };
 
-        await API.post('/Blocks', requestBody, config)
-            .then(communityData => {
-                let newBlock = {
-                    blockName: communityData.data.blckname,
-                    numberOfFloors: communityData.data.numberofFloors,
-                    numberOfFlats: communityData.data.numberofFlats,
-                    blockID: communityData.data.blockID
+        await API.post('/Flats', requestBody, config)
+            .then(flatData => {
+                console.log(flatData);
+                let newFlat = {
+                    flatID: flatData.data.flatID,
+                    flatnumber: flatData.data.flatNumber,
+                    floornumber: flatData.data.floorNumber
                 };
                 const dataRows = [];
                 let tempData = tabledata;
                 tempData.map(function (value, key) {
                     let obj = {
-                        blockName: value.blockName,
-                        numberOfFloors: value.apartmentName,
-                        numberOfFlats: value.apartmentName,
-                        blockID: value.blockID
+                        flatID: value.flatid,
+                        flatnumber: value.flatnumber,
+                        floornumber: value.floornumber
                     };
                     dataRows.push(obj);
                 });
-                dataRows.push(newBlock);
+                dataRows.push(newFlat);
+                console.log(dataRows);
                 setTableData(dataRows);
                 console.log(tabledata);
             })
@@ -244,11 +278,11 @@ export default function FlatDetails() {
             });
     }
 
-    const deleteBlockDetail = async (newData) => {
+    const deleteFlatDetail = async (newData) => {
         const token = await authService.getAccessToken();
         await API.get('/Blocks/delete', {
             params: {
-                blockID: newData.blockID
+                flatID: newData.flatID
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         }).then(communityData => {
@@ -258,10 +292,9 @@ export default function FlatDetails() {
             const dataRows = [];
             tempData.map(function (value, key) {
                 let obj = {
-                    blockName: value.blockName,
-                    numberOfFloors: value.apartmentName,
-                    numberOfFlats: value.apartmentName,
-                    blockID: value.blockID
+                    flatID: value.flatid,
+                    flatnumber: value.flatnumber,
+                    floornumber: value.floornumber
                 };
                 dataRows.push(obj);
             });
@@ -274,7 +307,7 @@ export default function FlatDetails() {
 
     return (
         <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
+            <GridItem xs={4} sm={4} md={4}>
                 <TextField
                     required
                     id="buildername"
@@ -295,7 +328,7 @@ export default function FlatDetails() {
                 </TextField>
             </GridItem>
 
-            <GridItem xs={12} sm={12} md={6}>
+            <GridItem xs={4} sm={4} md={4}>
                 <TextField
                     id="apartmentname"
                     label="Apartment Name"
@@ -314,7 +347,27 @@ export default function FlatDetails() {
                         </MenuItem>
                     ))}
                 </TextField>
-
+            </GridItem>
+            
+            <GridItem xs={4} sm={4} md={4}>
+                <TextField
+                    required
+                    id="block"
+                    label="Block"
+                    select
+                    value={selectedblock}
+                    className={classes.textField}
+                    margin="normal"
+                    fullWidth
+                    onChange={handleBlockChange}
+                    variant="outlined"
+                >
+                    {blocklist.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
             </GridItem>
 
             <GridItem xs={12} sm={12} md={12}>
@@ -325,17 +378,17 @@ export default function FlatDetails() {
                     editable={{
                         onRowAdd: newData =>
                             new Promise((resolve, reject) => {
-                                addBlockDetail(newData);
+                                addFlatDetail(newData);
                                 resolve();
                             }),
                         onRowUpdate: (newData, oldData) =>
                             new Promise((resolve, reject) => {
-                                updateBlockDetail(newData, oldData);
+                                updateFlatDetail(newData, oldData);
                                 resolve();
                             }),
                         onRowDelete: oldData =>
                             new Promise((resolve, reject) => {
-                                deleteBlockDetail(oldData);
+                                deleteFlatDetail(oldData);
                                 resolve();
                             }),
                     }}
