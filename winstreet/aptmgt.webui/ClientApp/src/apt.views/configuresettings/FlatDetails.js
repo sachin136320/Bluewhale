@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js"; 
+import GridContainer from "components/Grid/GridContainer.js";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
 
-import TextField from '@material-ui/core/TextField'; 
+
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import MaterialTable from "material-table";
- 
 import API from "apt.utils/API.js";
 import authService from 'components/Authorization/AuthorizeService.js';
 import MenuItem from '@material-ui/core/MenuItem';
+
 
 const styles = {
     cardCategoryWhite: {
@@ -45,19 +49,20 @@ const styles = {
     textField: {
         marginLeft: 1,
         marginRight: 1,
+        width: 200,
     },
 };
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles(styles);  
 
 const tablecolumns = [
-    { title: 'Facility Name', field: 'facilityname', type: 'string' },
-    { title: 'Bookable', field: 'bookable', lookup: { 'Yes': 'Yes', 'No': 'No' } },
+    { title: 'Flat Number', field: 'flatnumber', type: 'string' },
+    { title: 'Floor Number', field: 'floornumber', type: 'numeric' }
 ];
 
-export default function FacilityDetails() {
-    const classes = useStyles();
+export default function FlatDetails() {
 
+    const classes = useStyles();
 
     const [builderlist, setBuilderList] = React.useState([]);
     const [communitylist, setCommunityList] = React.useState([]);
@@ -67,6 +72,7 @@ export default function FacilityDetails() {
     const [selectedcommunityid, setSelectedCommunityId] = React.useState('');
 
     const [tabledata, setTableData] = React.useState([]);
+
 
     useEffect(() => {
         // Create an scoped async function in the hook
@@ -127,7 +133,7 @@ export default function FacilityDetails() {
 
         // Make a request to get the list Blocks
         const token = await authService.getAccessToken();
-        await API.get('/facility', {
+        await API.get('/Community', {
             params: {
                 commID: event.target.value
             },
@@ -136,9 +142,10 @@ export default function FacilityDetails() {
             const dataRows = [];
             data.map(function (value, key) {
                 let obj = {
-                    facilityname: value.facilityName,
-                    bookable: value.bookable,
-                    facilityID: value.facilityID
+                    blockName: value.blockName,
+                    numberOfFloors: value.apartmentName,
+                    numberOfFlats: value.apartmentName,
+                    blockID: value.commBlockID
                 };
                 dataRows.push(obj);
             });
@@ -147,61 +154,16 @@ export default function FacilityDetails() {
 
     };
 
-
-    const addFacilityDetail = async (newData) => {
-        const requestBody = JSON.stringify({
-            FacilityName: newData.facilityname,
-            Bookable: newData.bookable, 
-            CommunityID: selectedcommunityid
-        });
-
-        const token = await authService.getAccessToken();
-        const config = {
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        };
-
-        await API.post('/Facility', requestBody, config)
-            .then(facilityData => { 
-                let newFacility = {
-                    facilityname: facilityData.data.facilityName,
-                    bookable: facilityData.data.bookable,  
-                    facilityID: facilityData.data.id
-                };
-                const dataRows = [];
-                let tempData = tabledata; 
-                tempData.map(function (value, key) {
-                    let obj = {
-                        facilityname: value.facilityname,
-                        bookable: value.bookable,  
-                        facilityID: value.ID
-                    };
-                    dataRows.push(obj);
-                }); 
-                dataRows.push(newFacility);
-
-                console.log(dataRows);
-                setTableData(dataRows);
-                console.log(tabledata);
-            })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
-            });
-    }
-
-
-    const updateFacilityDetail = async (newData, oldData) => {
+    const updateBlockDetail = async (newData, oldData) => {
         console.log(newData);
         console.log(oldData);
 
         const requestBody = JSON.stringify({
-            FacilityName: newData.facilityname,
-            Bookable: newData.bookable, 
+            Blckname: newData.blockName,
+            NumberofFloors: parseInt(newData.numberOfFloors),
+            NumberofFlats: parseInt(newData.numberOfFlats),
             CommunityID: selectedcommunityid,
-            ID: newData.facilityID
+            BlockID: newData.blockID
         });
 
         console.log(requestBody);
@@ -213,7 +175,7 @@ export default function FacilityDetails() {
             }
         };
 
-        await API.post('/Facility/Update', requestBody, config)
+        await API.put('/Blocks/Update', requestBody, config)
             .then(communityData => { 
                 let tempData = tabledata;
                 const index = tempData.indexOf(oldData);
@@ -221,9 +183,10 @@ export default function FacilityDetails() {
                 const dataRows = [];
                 tempData.map(function (value, key) {
                     let obj = {
-                        facilityname: value.facilityname,
-                        bookable: value.bookable,  
-                        facilityID: value.ID
+                        blockName: value.blockName,
+                        numberOfFloors: value.apartmentName,
+                        numberOfFlats: value.apartmentName,
+                        blockID: value.blockID
                     };
                     dataRows.push(obj);
                 });
@@ -236,11 +199,56 @@ export default function FacilityDetails() {
             });
     }
 
-    const deleteFacilityDetail = async (newData) => {
+    const addBlockDetail = async (newData) => {
+        const requestBody = JSON.stringify({
+            Blckname: newData.blockName,
+            NumberofFloors: parseInt(newData.numberOfFloors),
+            NumberofFlats: parseInt(newData.numberOfFlats),
+            CommunityID: selectedcommunityid
+        });
+
         const token = await authService.getAccessToken();
-        await API.get('/Facility/delete', {
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await API.post('/Blocks', requestBody, config)
+            .then(communityData => {
+                let newBlock = {
+                    blockName: communityData.data.blckname,
+                    numberOfFloors: communityData.data.numberofFloors,
+                    numberOfFlats: communityData.data.numberofFlats,
+                    blockID: communityData.data.blockID
+                };
+                const dataRows = [];
+                let tempData = tabledata;
+                tempData.map(function (value, key) {
+                    let obj = {
+                        blockName: value.blockName,
+                        numberOfFloors: value.apartmentName,
+                        numberOfFlats: value.apartmentName,
+                        blockID: value.blockID
+                    };
+                    dataRows.push(obj);
+                });
+                dataRows.push(newBlock);
+                setTableData(dataRows);
+                console.log(tabledata);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
+    }
+
+    const deleteBlockDetail = async (newData) => {
+        const token = await authService.getAccessToken();
+        await API.get('/Blocks/delete', {
             params: {
-                facilityID: newData.facilityID
+                blockID: newData.blockID
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         }).then(communityData => {
@@ -250,9 +258,10 @@ export default function FacilityDetails() {
             const dataRows = [];
             tempData.map(function (value, key) {
                 let obj = {
-                    FacilityName: value.facilityname,
-                    Bookable: value.bookable,  
-                    facilityID: value.ID
+                    blockName: value.blockName,
+                    numberOfFloors: value.apartmentName,
+                    numberOfFlats: value.apartmentName,
+                    blockID: value.blockID
                 };
                 dataRows.push(obj);
             });
@@ -262,7 +271,6 @@ export default function FacilityDetails() {
             console.log(response);
         });
     }
-
 
     return (
         <GridContainer>
@@ -296,8 +304,8 @@ export default function FacilityDetails() {
                     value={selectedcommunityname}
                     className={classes.textField}
                     margin="normal"
-                    onChange={handleCommunityNameChange}
                     fullWidth
+                    onChange={handleCommunityNameChange}
                     variant="outlined"
                 >
                     {communitylist.map(option => (
@@ -308,6 +316,7 @@ export default function FacilityDetails() {
                 </TextField>
 
             </GridItem>
+
             <GridItem xs={12} sm={12} md={12}>
                 <MaterialTable
                     title=""
@@ -316,40 +325,78 @@ export default function FacilityDetails() {
                     editable={{
                         onRowAdd: newData =>
                             new Promise((resolve, reject) => {
-                                addFacilityDetail(newData);
+                                addBlockDetail(newData);
                                 resolve();
                             }),
                         onRowUpdate: (newData, oldData) =>
                             new Promise((resolve, reject) => {
-                                updateFacilityDetail(newData, oldData);
+                                updateBlockDetail(newData, oldData);
                                 resolve();
                             }),
                         onRowDelete: oldData =>
                             new Promise((resolve, reject) => {
-                                deleteFacilityDetail(oldData);
+                                deleteBlockDetail(oldData);
                                 resolve();
                             }),
                     }}
                 />
             </GridItem>
         </GridContainer>
-
-
     );
 }
 
 /*
+ *
 
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <FormGroup row>
-                        <FormControlLabel
-                            label="Bookable"
-                            control={
-                            <Switch checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-                            }
-                        />
-                        </FormGroup>
-                    </GridItem>
-                </GridContainer>
-*/
+            <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                    <Button variant="contained" color="primary" className={classes.button}>
+                        Back
+                        </Button>
+                    <Button variant="contained" color="primary" className={classes.button}>
+                        NExt
+                        </Button>
+                </GridItem>
+            </GridContainer>
+
+
+
+            onRowAdd: newData =>
+                                    new Promise((resolve, reject) => {
+                                        addBlockDetail(newData);
+                                        resolve()
+                                        setTimeout(() => {
+                                            {
+                                                const data = tabledata;
+                                                data.push(newData);
+                                                this.setState({ data }, () => resolve());
+                                            }
+                                            resolve()
+                                        }, 1000)
+                                    }),
+                                onRowUpdate: (newData, oldData) =>
+                                    new Promise((resolve, reject) => {
+                                        setTimeout(() => {
+                                            {
+                                                const data = tabledata;
+                                                const index = data.indexOf(oldData);
+                                                data[index] = newData;
+                                                this.setState({ data }, () => resolve());
+                                            }
+                                            resolve()
+                                        }, 1000)
+                                    }),
+                                onRowDelete: oldData =>
+                                    new Promise((resolve, reject) => {
+                                        setTimeout(() => {
+                                            {
+                                                let data = tabledata;
+                                                const index = data.indexOf(oldData);
+                                                data.splice(index, 1);
+                                                this.setState({ data }, () => resolve());
+                                            }
+                                            resolve()
+                                        }, 1000)
+                                    }),
+                            }}
+ */

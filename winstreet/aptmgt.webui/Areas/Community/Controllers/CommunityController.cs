@@ -38,7 +38,9 @@ namespace aptmgt.webui.Areas.Community.Controllers
             var communityList = appDBContext.CommunityBlock.Where(community => community.CommunityID == commID).Select(comm => new
             {
                 CommBlockID = comm.BlockID,
-                BlockName = comm.Blckname
+                BlockName = comm.Blckname,
+                numberOfFlats = comm.NumberofFlats,
+                numberOfFloors = comm.NumberofFloors
             });
 
             return Json(communityList);

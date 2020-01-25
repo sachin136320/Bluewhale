@@ -2,18 +2,16 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using aptmgt.webui.Data;
 
-namespace aptmgt.webui.Migrations.ApplicationDB
+namespace aptmgt.webui.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20200111194349_CommunityDetails1")]
-    partial class CommunityDetails1
+    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,6 +177,28 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.ToTable("CommunityFlats");
                 });
 
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Bookable")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CommunityID");
+
+                    b.ToTable("FacilityMaster");
+                });
+
             modelBuilder.Entity("aptmgt.entity.user.CommunityUser", b =>
                 {
                     b.Property<int>("ID")
@@ -267,6 +287,13 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                         .HasForeignKey("OwnerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany("facility")
+                        .HasForeignKey("CommunityID");
                 });
 #pragma warning restore 612, 618
         }

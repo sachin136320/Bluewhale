@@ -2,28 +2,39 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace aptmgt.webui.Migrations.ApplicationDB
+namespace aptmgt.webui.Migrations
 {
-    public partial class CommunityDetails1 : Migration
+    public partial class LoadFacilityTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AssetDeails",
-                schema: "AppData",
-                table: "AssetDeails");
+            migrationBuilder.EnsureSchema(
+                name: "AppData");
 
-            migrationBuilder.RenameTable(
-                name: "AssetDeails",
+            migrationBuilder.CreateTable(
+                name: "AssetDetails",
                 schema: "AppData",
-                newName: "AssetDetails",
-                newSchema: "AppData");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_AssetDetails",
-                schema: "AppData",
-                table: "AssetDetails",
-                column: "ID");
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Commid = table.Column<string>(nullable: true),
+                    Currdate = table.Column<DateTime>(nullable: false),
+                    Asset_NR = table.Column<string>(nullable: true),
+                    Asset_name = table.Column<string>(nullable: true),
+                    Asset_Type = table.Column<string>(nullable: true),
+                    Asset_category = table.Column<string>(nullable: true),
+                    Asset_service_Freq = table.Column<string>(nullable: true),
+                    Asset_last_servce = table.Column<DateTime>(nullable: false),
+                    Asset_qr_img = table.Column<byte[]>(nullable: true),
+                    Asset_service_flag = table.Column<string>(nullable: true),
+                    Asset_procure_Date = table.Column<DateTime>(nullable: false),
+                    AssetId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssetDetails", x => x.ID);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Builder",
@@ -40,6 +51,21 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Builder", x => x.BuilderId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommunityUser",
+                schema: "AppData",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserID = table.Column<string>(nullable: true),
+                    CommunityID = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommunityUser", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +141,28 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                 });
 
             migrationBuilder.CreateTable(
+                name: "FacilityMaster",
+                schema: "AppData",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    Bookable = table.Column<string>(nullable: true),
+                    FacilityName = table.Column<string>(nullable: true),
+                    CommunityID = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FacilityMaster", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_FacilityMaster_CommunityDetails_CommunityID",
+                        column: x => x.CommunityID,
+                        principalSchema: "AppData",
+                        principalTable: "CommunityDetails",
+                        principalColumn: "CommID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CommunityFlats",
                 schema: "AppData",
                 columns: table => new
@@ -167,12 +215,30 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                 schema: "AppData",
                 table: "CommunityFlats",
                 column: "OwnerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FacilityMaster_CommunityID",
+                schema: "AppData",
+                table: "FacilityMaster",
+                column: "CommunityID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AssetDetails",
+                schema: "AppData");
+
+            migrationBuilder.DropTable(
                 name: "CommunityFlats",
+                schema: "AppData");
+
+            migrationBuilder.DropTable(
+                name: "CommunityUser",
+                schema: "AppData");
+
+            migrationBuilder.DropTable(
+                name: "FacilityMaster",
                 schema: "AppData");
 
             migrationBuilder.DropTable(
@@ -190,23 +256,6 @@ namespace aptmgt.webui.Migrations.ApplicationDB
             migrationBuilder.DropTable(
                 name: "Builder",
                 schema: "AppData");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AssetDetails",
-                schema: "AppData",
-                table: "AssetDetails");
-
-            migrationBuilder.RenameTable(
-                name: "AssetDetails",
-                schema: "AppData",
-                newName: "AssetDeails",
-                newSchema: "AppData");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_AssetDeails",
-                schema: "AppData",
-                table: "AssetDeails",
-                column: "ID");
         }
     }
 }

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using aptmgt.webui.Data;
 
-namespace aptmgt.webui.Migrations.ApplicationDB
+namespace aptmgt.webui.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20200114201100_FixBuilder")]
-    partial class FixBuilder
+    [Migration("20200122194617_LoadFacilityTable")]
+    partial class LoadFacilityTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,6 +179,28 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.ToTable("CommunityFlats");
                 });
 
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Bookable")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CommunityID");
+
+                    b.ToTable("FacilityMaster");
+                });
+
             modelBuilder.Entity("aptmgt.entity.user.CommunityUser", b =>
                 {
                     b.Property<int>("ID")
@@ -267,6 +289,13 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                         .HasForeignKey("OwnerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany("facility")
+                        .HasForeignKey("CommunityID");
                 });
 #pragma warning restore 612, 618
         }

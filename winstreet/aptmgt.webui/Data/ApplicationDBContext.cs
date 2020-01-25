@@ -1,5 +1,6 @@
 ﻿using aptmgt.entity.user;
 using aptmgt.entity.assets;
+using aptmgt.entity.facility;
 using aptmgt.entity.community;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -31,9 +32,14 @@ namespace aptmgt.webui.Data
 
         public DbSet<CommunityUser> CommunityUser { get; set; }
         public DbSet<AssetDetails> AssetDetails { get; set; }
+
         public DbSet<entity.builder.Builder> Builder { get; set; }
+        
         public DbSet<CommunityBlock> CommunityBlock { get; set; }
         public DbSet<CommunityDetails> CommunityDetails { get; set; }
         public DbSet<CommunityFlats> CommunityFlats { get; set; }
+        
+        public DbSet<FacilityMaster> FacilityMaster { get; set; }
+
     }
 }
