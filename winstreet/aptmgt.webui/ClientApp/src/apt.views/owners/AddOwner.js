@@ -115,7 +115,7 @@ export default function AddOwner() {
             <CardHeader plain color="primary">
                 <h4 className={classes.cardTitleWhite}>
                     Add new owner
-                                        </h4>
+                </h4>
             </CardHeader>
             <CardBody>
                 <GridContainer>
