@@ -99,15 +99,11 @@ export default function Tenants() {
     const classes = useStyles();
     const [ownertype, setOwnerType] = React.useState('Community Member');
     const [memebershiptype, setMemberShipType] = React.useState('Community Member');
-    const handleChangeOwnerType = event => {
-        setOwnerType(event.target.value);
-      };
-      const handleMemberShipType = event => {
-        setMemberShipType(event.target.value);
-      };
+    
+
     return (
     <GridContainer>
-        <GridItem xs={12} sm={8} md={12}>
+        <GridItem xs={12} sm={8} md={4}>
           <Card chart>
             <CardHeader color="info" stats icon>
             <ChartistGraph
@@ -136,7 +132,7 @@ export default function Tenants() {
             </CardBody> 
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={8} md={12}>
+        <GridItem xs={12} sm={8} md={4}>
           <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
@@ -155,7 +151,7 @@ export default function Tenants() {
             </CardBody> 
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={8} md={12}>
+        <GridItem xs={12} sm={8} md={4}>
           <Card>
             <CardHeader color="danger" stats icon>
               <CardIcon color="danger">

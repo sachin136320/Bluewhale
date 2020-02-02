@@ -9,6 +9,9 @@ import CardBody from "components/Card/CardBody.js";
 
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Table from "components/Table/Table.js";
+import API from "apt.utils/API.js";
+import authService from 'components/Authorization/AuthorizeService.js';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = {
     cardCategoryWhite: {
@@ -42,79 +45,112 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-class ModifyOwner1 extends React.Component {
-    constructor(props) { 
-        super(props);
-        this.state = {
-            columns: [
-                { title: 'Name', field: 'name', editable: 'onUpdate' },
-                { title: 'Surname', field: 'surname', editable: 'never' },
-                { title: 'Flat', field: 'flatNumber', type: 'text' },
-                {
-                    title: 'Block',
-                    field: 'block',
-                    lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-                },
-            ],
-            data: [
-                { name: 'Mehmet', surname: 'Baran', flatNumber: 'D', block: 63 },
-                { name: 'Zerya Betül', surname: 'Baran', flatNumber: 'D', block: 34 },
-            ]
-        }
-    }
- 
+const columns = [
+    { title: 'Name', field: 'name', type: 'text' },
+    { title: 'BlockID', field: 'blockid', type: 'text' },
+    { title: 'Flat', field: 'flatNumber', type: 'text' },
+    { title: 'Cell', field: 'cellnumber', type: 'text' },
+    { title: 'Email', field: 'email', type: 'text' },
+    { title: 'Notes', field: 'notes', type: 'text' },
+    { title: 'Occupied', field: 'occupied', type: 'text' },
+    { title: 'Active', field: 'active', type: 'text' }
+]
 
-    render() {
-        return (
-            <Card>
-                <CardHeader plain color="primary">
-                    <h5>Modify existing user</h5>
-                </CardHeader> 
-                    <MaterialTable
-                        title=""
-                        columns={this.state.columns}
-                        data={this.state.data}
-                        editable={{
-                            onRowAdd: newData =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        {
-                                            const data = this.state.data;
-                                            data.push(newData);
-                                            this.setState({ data }, () => resolve());
-                                        }
-                                        resolve()
-                                    }, 1000)
-                                }),
-                            onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        {
-                                            const data = this.state.data;
-                                            const index = data.indexOf(oldData);
-                                            data[index] = newData;
-                                            this.setState({ data }, () => resolve());
-                                        }
-                                        resolve()
-                                    }, 1000)
-                                }),
-                            onRowDelete: oldData =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        {
-                                            let data = this.state.data;
-                                            const index = data.indexOf(oldData);
-                                            data.splice(index, 1);
-                                            this.setState({ data }, () => resolve());
-                                        }
-                                        resolve()
-                                    }, 1000)
-                                }),
-                        }}
-                    /> 
-            </Card>
-        )
+
+export default function ModifyOwner1() {
+
+    const classes = useStyles();
+
+    useEffect(() => {
+        // Create an scoped async function in the hook
+        async function loadOwners(builderid) {
+            const token = await authService.getAccessToken();
+            await API.get('/owner/GetAll', {
+                params: {
+                    builderID: builderid
+                },
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            }).then(({ data }) => {
+                const dataRows = [];
+                data.map(function (value, key) {
+                    let obj = {
+                        value: value.builderID,
+                        label: value.builderName
+                    };
+                    dataRows.push(obj);
+                });
+                setBuilderList(dataRows);
+            });
+        }
+
+        // Execute the created function directly
+        loadOwners('all');
+    }, []);
+
+
+    const updateOwnerDetail = async (newData, oldData) => {
+        console.log(newData);
+        console.log(oldData);
+
+        const requestBody = JSON.stringify({
+            Blckname: newData.blockName,
+            NumberofFloors: parseInt(newData.numberOfFloors),
+            NumberofFlats: parseInt(newData.numberOfFlats),
+            CommunityID: selectedcommunityid,
+            BlockID: newData.blockID
+        });
+
+        console.log(requestBody);
+        const token = await authService.getAccessToken();
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await API.put('/Blocks/Update', requestBody, config)
+            .then(communityData => {
+
+                let tempData = tabledata;
+                const index = tempData.indexOf(oldData);
+                tempData[index] = newData;
+                const dataRows = [];
+                tempData.map(function (value, key) {
+                    let obj = {
+                        blockName: value.blockName,
+                        numberOfFloors: value.apartmentName,
+                        numberOfFlats: value.apartmentName,
+                        blockID: value.blockID
+                    };
+                    dataRows.push(obj);
+                });
+                setTableData(dataRows);
+
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
     }
+
+    return (
+        <Card>
+            <MaterialTable
+                title=""
+                columns={columns}
+                data={this.state.data}
+                editable={{
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve, reject) => {
+                            updateOwnerDetail(newData, oldData);
+                            resolve();
+                        })
+                }}
+            />
+        </Card>
+    )
+
 }
 export default ModifyOwner1;
 

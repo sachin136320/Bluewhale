@@ -6,7 +6,5 @@ namespace aptmgt.entity.user
 {
     public class ApplicationUser : IdentityUser
     {
-        public string CommunityID {get; set;}
-        
     }
 }

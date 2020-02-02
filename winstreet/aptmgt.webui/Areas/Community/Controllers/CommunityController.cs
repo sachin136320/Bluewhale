@@ -48,6 +48,19 @@ namespace aptmgt.webui.Areas.Community.Controllers
  
         [Route("[action]")]
         [HttpGet]
+        public JsonResult GetAllCommunities()
+        { 
+            var communityList = appDBContext.CommunityDetails.Select(comm => new
+            {
+                CommID = comm.CommID,
+                Name = comm.Name
+            });
+
+            return Json(communityList); 
+        }
+
+        [Route("[action]")]
+        [HttpGet]
         public JsonResult GetCommunityDetail(string commID)
         { 
             var communityList = appDBContext.CommunityDetails.Where(community => community.CommID == commID).Select(comm => new

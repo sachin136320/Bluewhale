@@ -30,16 +30,32 @@ namespace aptmgt.webui.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<CommunityUser> CommunityUser { get; set; }
-        public DbSet<AssetDetails> AssetDetails { get; set; }
 
+        #region Assets
+        public DbSet<AssetDetails> AssetDetails { get; set; }
+        #endregion Assets
+
+        #region Builder
         public DbSet<entity.builder.Builder> Builder { get; set; }
+        #endregion Builder
         
+        #region Community
         public DbSet<CommunityBlock> CommunityBlock { get; set; }
         public DbSet<CommunityDetails> CommunityDetails { get; set; }
         public DbSet<CommunityFlats> CommunityFlats { get; set; }
-        
+        #endregion Community
+
+        #region Facility
         public DbSet<FacilityMaster> FacilityMaster { get; set; }
+        #endregion Facility
+        
+        #region User
+        public DbSet<CommunityUser> CommunityUser { get; set; }
+        public DbSet<OwnerMaster> OwnerMaster { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<Tenants> Tenants { get; set; }
+        public DbSet<Vendor> Vendor { get; set; }
+        #endregion User
 
     }
 }
