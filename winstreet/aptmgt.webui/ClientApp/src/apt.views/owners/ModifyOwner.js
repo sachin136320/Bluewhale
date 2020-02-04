@@ -46,7 +46,8 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 const columns = [
-    { title: 'Name', field: 'name', type: 'text' },
+    { title: 'First Name', field: 'firstname', type: 'text' },
+    { title: 'Last Name', field: 'lastname', type: 'text' },
     { title: 'BlockID', field: 'blockid', type: 'text' },
     { title: 'Flat', field: 'flatNumber', type: 'text' },
     { title: 'Cell', field: 'cellnumber', type: 'text' },
@@ -74,8 +75,15 @@ export default function ModifyOwner1() {
                 const dataRows = [];
                 data.map(function (value, key) {
                     let obj = {
-                        value: value.builderID,
-                        label: value.builderName
+                        firstname: value.firstName,
+                        lastname: value.lastName,
+                        blockid: value.blockID,
+                        flatNumber: value.lastNumber,
+                        cellnumber: value.mobileNumber,
+                        email: value.email,
+                        notes: value.notes,
+                        occupied: value.occupied,
+                        active: value.active 
                     };
                     dataRows.push(obj);
                 });
@@ -93,11 +101,16 @@ export default function ModifyOwner1() {
         console.log(oldData);
 
         const requestBody = JSON.stringify({
-            Blckname: newData.blockName,
-            NumberofFloors: parseInt(newData.numberOfFloors),
-            NumberofFlats: parseInt(newData.numberOfFlats),
-            CommunityID: selectedcommunityid,
-            BlockID: newData.blockID
+            FirstName: newData.firstname,
+            LastName: newData.lastname,
+            BlockID: newData.blockid,
+            FlatNumber: newData.flatNumber,
+            Occupied: true,
+            MobileNumber: newData.cellnumber,
+            Email: newData.email,
+            QRText: newData.firstname + newData.lastname + newData.blockid + newData.flatNumber + newData.cellnumber,
+            Active: newData.active,
+            notes: newData.notes
         });
 
         console.log(requestBody);
@@ -109,7 +122,7 @@ export default function ModifyOwner1() {
             }
         };
 
-        await API.put('/Blocks/Update', requestBody, config)
+        await API.put('/owner/Update', requestBody, config)
             .then(communityData => {
 
                 let tempData = tabledata;
@@ -118,10 +131,15 @@ export default function ModifyOwner1() {
                 const dataRows = [];
                 tempData.map(function (value, key) {
                     let obj = {
-                        blockName: value.blockName,
-                        numberOfFloors: value.apartmentName,
-                        numberOfFlats: value.apartmentName,
-                        blockID: value.blockID
+                        firstname: value.firstName,
+                        lastname: value.lastName,
+                        blockid: value.blockID,
+                        flatNumber: value.lastNumber,
+                        cellnumber: value.mobileNumber,
+                        email: value.email,
+                        notes: value.notes,
+                        occupied: value.occupied,
+                        active: value.active 
                     };
                     dataRows.push(obj);
                 });
