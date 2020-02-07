@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
@@ -172,7 +172,7 @@ export default function ModifyOwner1() {
     )
 
 }
-export default ModifyOwner1;
+//export default ModifyOwner1;
 
 
 {/*
