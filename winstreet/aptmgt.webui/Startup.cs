@@ -1,10 +1,18 @@
+using System.Reflection;
+using aptmgt.entity.user;
+using aptmgt.webui.Data;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System.IO;
+using System;
 
 namespace aptmgt.webui
 {
@@ -20,21 +28,55 @@ namespace aptmgt.webui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+            .AddMvc()
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            //.AddApplicationPart(Assembly.Load(new AssemblyName("aptmgt.webapi")))
+            .AddControllersAsServices();
+
+            services.AddEntityFrameworkNpgsql()
+        .AddDbContext<SecurityDbContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+        .AddDbContext<ApplicationDBContext>((options) =>
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                );
+
+            //services.AddDbContext<SecurityDbContext>(options =>
+            //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<SecurityDbContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, SecurityDbContext>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -47,22 +89,50 @@ namespace aptmgt.webui
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseIdentityServer();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
 
+            /* 
+                        app.UseMvc(routes =>
+                        {
+                            routes.MapRoute(
+                                name: "default",
+                                template: "{controller}/{action=Index}/{id?}");
+                        });
+            */
             app.UseSpa(spa =>
-            {
+            {  
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            });
+            }); 
+
+            #if DEBUG
+                try
+                {
+                    File.WriteAllText("browsersync-update.txt", DateTime.Now.ToString());
+                }
+                catch { 
+                    // ignore
+                }
+            #endif
+
         }
     }
 }
+
+
