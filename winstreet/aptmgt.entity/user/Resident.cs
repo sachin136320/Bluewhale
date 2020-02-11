@@ -13,6 +13,7 @@ namespace aptmgt.entity.user
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string BlockID { get; set; }
+        public string CommID { get; set; }
         public string FlatNumber { get; set; }
         public bool Occupied { get; set; }
         public string MobileNumber { get; set; }

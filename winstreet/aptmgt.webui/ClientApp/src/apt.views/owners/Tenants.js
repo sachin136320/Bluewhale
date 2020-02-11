@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -19,6 +19,11 @@ import LocalOffer from "@material-ui/icons/LocalOffer";
 import Table from "components/Table/Table.js";
 import Update from "@material-ui/icons/Update";
 import Accessibility from "@material-ui/icons/Accessibility";
+import { UserContext } from "store/UserContext";
+
+import API from "apt.utils/API.js"; 
+import authService from 'components/Authorization/AuthorizeService.js';
+
 import {
   dailySalesChart,
   emailsSubscriptionChart,
@@ -97,30 +102,39 @@ const useStyles = makeStyles(styles);
 
 export default function Tenants() {
   const classes = useStyles();
+  const [communityid, setCommunityID] = useContext(UserContext);
 
   const [tenantcompliant, setTenantCompliant] = React.useState('');
   const [tenantnoncompliant, setTenantNonCompliant] = React.useState('');
   const [agreementsubmitted, setAgreementSubmitted] = React.useState('');
   const [agreementnotsubmitted, setAgreementNotSubmitted] = React.useState('');
   const [expiringrentagreement, setExpiringRentAgreement] = React.useState('');
-
+ 
+  
   useEffect(() => {
     // Create an scoped async function in the hook
     async function loadMetrics() {
       const token = await authService.getAccessToken();
       await API.get('/TenantMetrics', { 
+        params: {
+          commID: communityid
+        },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
       }).then(({ data }) => {  
+        console.log(data.agreementCopyNotSubmitted);
         setTenantCompliant(data.tenantCompliant);
         setTenantNonCompliant(data.tenantNonCompliant);
-        setAgreementSubmitted(data.agreementSubmitted);
-        setAgreementNotSubmitted(data.agreementNonSubmitted);
+        setAgreementSubmitted(data.agreementCopySubmitted);
+        setAgreementNotSubmitted(data.agreementCopyNotSubmitted);
         setExpiringRentAgreement(data.expiringRentAgreement); 
       });
     }
-
-    // Execute the created function directly
-    loadMetrics();
+    if (!communityid) {
+      alert("Please select communty ID.")
+    } else {
+      loadMetrics();
+    }
+    // Execute the created function directly 
   }, []);
 
   return (
@@ -147,8 +161,8 @@ export default function Tenants() {
           <CardBody>
             <Table
               tableData={[
-                ["Police Verification Compliant Status", { tenantcompliant }],
-                ["Police Verification Non-compliant Status", { tenantnoncompliant }]
+                ["Police Verification Compliant Status", tenantcompliant],
+                ["Police Verification Non-compliant Status", tenantnoncompliant]
               ]}
             />
           </CardBody>
@@ -160,14 +174,14 @@ export default function Tenants() {
             <CardIcon color="success">
               <Store />
             </CardIcon>
-            <p className={classes.cardCategory}>Agreement Copy Submitted</p>
+            <p className={classes.cardCategory}>{agreementsubmitted} Agreement Copy Submitted</p>
             <h3 className={classes.cardTitle}>{agreementnotsubmitted} pending</h3>
           </CardHeader>
           <CardBody>
             <Table
               tableData={[
-                ["Agreement Copy Submitted", { agreementsubmitted }],
-                ["Agreement Copy Not Submitted", { agreementnotsubmitted }]
+                ["Agreement Copy Submitted", agreementsubmitted],
+                ["Agreement Copy Not Submitted", agreementnotsubmitted]
               ]}
             />
           </CardBody>
@@ -185,7 +199,7 @@ export default function Tenants() {
           <CardBody>
             <Table
               tableData={[
-                ["Expiring rent agreement in next 30 days", { expiringrentagreement }],
+                ["Expiring rent agreement in next 30 days", expiringrentagreement],
               ]}
             />
           </CardBody>

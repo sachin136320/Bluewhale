@@ -62,8 +62,45 @@ namespace aptmgt.webui.Areas.Community.Controllers
         [Route("[action]")]
         [HttpGet]
         public JsonResult GetAll()
-        { 
-            var owners = appDBContext.OwnerMaster.Select(own => own);
+        {   
+            var owners = appDBContext.OwnerMaster
+            .Join(
+                appDBContext.CommunityBlock,
+                owner => owner.BlockID,
+                block => block.BlockID,
+                (owner, block) => new 
+                {
+                    blockID = owner.BlockID,
+                    blockName = block.Blckname, 
+                    email = owner.Email,
+                    firstName = owner.FirstName,
+                    flatNumber = owner.FlatNumber, 
+                    lastName = owner.LastName,
+                    mobileNumber = owner.MobileNumber,
+                    notes = owner.notes,
+                    occupied = owner.Occupied,
+                    residentid = owner.ResidentID
+                }
+            )
+            .Join(
+                appDBContext.CommunityFlats,
+                owner => owner.flatNumber,
+                flat => flat.FlatID,
+                (owner, flat) => new
+                {
+                    blockID = owner.blockName, 
+                    bkID = owner.blockID,
+                    email = owner.email,
+                    firstName = owner.firstName,
+                    flatID = owner.flatNumber,
+                    flatNumber = flat.FlatNumber, 
+                    lastName = owner.lastName,
+                    mobileNumber = owner.mobileNumber,
+                    notes = owner.notes,
+                    occupied = owner.occupied,
+                    residentid = owner.residentid
+                }
+            ).Select(own => own);
             return Json(owners); 
         }
 

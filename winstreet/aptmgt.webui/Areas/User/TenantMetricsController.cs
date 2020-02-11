@@ -22,15 +22,46 @@ namespace aptmgt.webui.Areas.Community.Controllers
         {
             appDBContext = applicationDBContext;
 
-        } 
-         
-        [HttpGet]
-        public JsonResult Get(int ownerID)
-        { 
-            var owner = appDBContext.OwnerMaster.Where(o => o.ResidentID == ownerID).Select(own => own); 
-            return Json(owner); 
         }
- 
+
+        [HttpGet]
+        public JsonResult Get(string commID)
+        {
+            /*
+                            
+                const [tenantcompliant, setTenantCompliant] = React.useState('');
+                const [tenantnoncompliant, setTenantNonCompliant] = React.useState('');
+                
+                const [agreementsubmitted, setAgreementSubmitted] = React.useState('');
+                const [agreementnotsubmitted, setAgreementNotSubmitted] = React.useState('');
+                Tenanats.AgreementCopySubmitted
+
+                const [expiringrentagreement, setExpiringRentAgreement] = React.useState('');
+                
+            */
+            var AgreementCopySubmitted = appDBContext.Tenants
+            .Where(
+                    condition => condition.CommID == commID
+                )
+                .Where(
+                    condition => condition.AgreementCopySubmitted == true
+                ).Count();
+
+            var AgreementCopyNotSubmitted = appDBContext.Tenants
+            .Where(
+                    condition => condition.CommID == commID
+                )
+                .Where(
+                    condition => condition.AgreementCopySubmitted == false
+                ).Count();
+
+            return Json(new
+            {
+                AgreementCopyNotSubmitted = AgreementCopyNotSubmitted,
+                AgreementCopySubmitted = AgreementCopySubmitted
+            });
+        }
+
 
     }
 }

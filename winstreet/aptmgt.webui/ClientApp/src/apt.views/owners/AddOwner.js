@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import CardFooter from "components/Card/CardFooter.js";
+import ReactToPrint from 'react-to-print';
+import ImageUploader from 'react-images-upload';
 
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
@@ -16,6 +19,7 @@ import authService from 'components/Authorization/AuthorizeService.js';
 
 import avatar from "assets/img/faces/marc.jpg";
 import CardAvatar from "components/Card/CardAvatar.js";
+import { UserContext } from "store/UserContext";
 
 var QRCode = require('qrcode.react');
 
@@ -108,6 +112,9 @@ const MemberShipTypes = [
 ];
 export default function AddOwner() {
 
+    const {communityid, setCommunityID} = useContext(UserContext);
+    const componentRef = useRef();
+
     const classes = useStyles();
     const [ownertype, setOwnerType] = React.useState('');
     const [memebershiptype, setMemberShipType] = React.useState('');
@@ -132,6 +139,8 @@ export default function AddOwner() {
     const [email, setEmail] = useState('');
     const [notes, setNotes] = useState('');
     const [qrtext, setQRText] = useState('');
+
+    const [pictures, setPictures] = useState([]);
 
     const handleCommunityNameChange = async (event) => {
         setSelectedCommunityName(event.target.value);
@@ -193,6 +202,7 @@ export default function AddOwner() {
             BlockID: selectedblockid,
             FlatNumber: selectedflatid,
             Occupied: true,
+            Picture: pictures,
             MobileNumber: contactnumber,
             Email: email,
             QRText: firstname + lastname + selectedblockid + selectedflatid + contactnumber,
@@ -261,6 +271,30 @@ export default function AddOwner() {
         loadCommunityList('all');
     }, []);
 
+    const onDrop = (picture) => {
+        console.log(picture);
+        setPictures(picture);
+    };
+
+    const readFileDataAsBase64 = (e) => {
+        console.log(e);
+        const file = e.target.files[0];
+    
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+    
+            reader.onload = (event) => {
+                resolve(event.target.result);
+            };
+    
+            reader.onerror = (err) => {
+                reject(err);
+            };
+    
+            reader.readAsDataURL(file);
+        });
+    };
+
 
     return (
         <GridContainer>
@@ -318,7 +352,7 @@ export default function AddOwner() {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                            </GridItem> 
+                            </GridItem>
                         </GridContainer>
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={6}>
@@ -460,6 +494,15 @@ export default function AddOwner() {
                             </GridItem>
                         </GridContainer>
                     </CardBody>
+                    <CardFooter chart>
+                    <ImageUploader
+                        withIcon={true}
+                        buttonText='Choose images'
+                        onChange={onDrop}
+                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                        maxFileSize={5242880}
+                    />
+                    </CardFooter>
                     <GridContainer>
                         <Button
                             color="primary"
@@ -471,8 +514,8 @@ export default function AddOwner() {
                 </Card>
             </GridItem>
             <GridItem xs={12} sm={12} md={4}>
-                <Card profile>
-                    <CardHeader> 
+                <Card profile ref={componentRef} >
+                    <CardHeader>
                     </CardHeader>
                     <CardAvatar profile>
                         <a href="#pablo" onClick={e => e.preventDefault()}>
@@ -488,9 +531,10 @@ export default function AddOwner() {
                     </CardBody>
                 </Card>
 
-                <Button color="primary" round>
-                    Share
-                </Button>
+                <ReactToPrint
+                    trigger={() => <Button round>Print this out!</Button>}
+                    content={() => componentRef.current}
+                />
             </GridItem>
         </GridContainer>
     );

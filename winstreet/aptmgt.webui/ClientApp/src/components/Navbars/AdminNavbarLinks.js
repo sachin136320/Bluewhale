@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,43 +18,54 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-import { LoginMenu1 } from "components/Authorization/LoginMenu1";
+import { LoginMenu1 } from "components/Authorization/LoginMenu1"; 
+import { UserContext } from "store/UserContext";
 
+import API from "apt.utils/API.js";
+import TextField from '@material-ui/core/TextField';
+import authService from 'components/Authorization/AuthorizeService.js';
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
-/*
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [userName, setUserName] = React.useState(null);
+  /*
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+    const [userName, setUserName] = React.useState(null);
+  
+    React.useEffect(() => {
+      const _subscription = authService.subscribe(() => populateState());
+      populateState();
+      console.log("willmoount");
+      // returned function will be called on component unmount 
+      return () => {
+        console.log("willunmount");
+        authService.unsubscribe(_subscription);
+      }
+    }, [])
+  
+    const populateState = async () => {
+      const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
+      setIsAuthenticated(isAuthenticated);
+      setUserName(user && user.name);
+    };
+  
+    const handleLogOut = () => {
+      const profilePath = `${ApplicationPaths.Profile}`;
+      const logoutPath = { pathname: `${ApplicationPaths.LogOut}`, state: { local: true } };
+      console.log(logoutPath);
+      console.log(profilePath);  
+      setOpenProfile(null);
+    };
+  */
 
-  React.useEffect(() => {
-    const _subscription = authService.subscribe(() => populateState());
-    populateState();
-    console.log("willmoount");
-    // returned function will be called on component unmount 
-    return () => {
-      console.log("willunmount");
-      authService.unsubscribe(_subscription);
-    }
-  }, [])
 
-  const populateState = async () => {
-    const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
-    setIsAuthenticated(isAuthenticated);
-    setUserName(user && user.name);
-  };
+ const {communityid, setCommunityID} = useContext(UserContext);
+ const [communitylist, setCommunityList] = useState([]); 
 
-  const handleLogOut = () => {
-    const profilePath = `${ApplicationPaths.Profile}`;
-    const logoutPath = { pathname: `${ApplicationPaths.LogOut}`, state: { local: true } };
-    console.log(logoutPath);
-    console.log(profilePath);  
-    setOpenProfile(null);
-  };
-*/
-
+ //const [selectedcommunityid, setSelectedCommunityId] = useState('');
+ const [selectedcommunityname, setSelectedCommunityName] = useState('');
+ 
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
@@ -77,14 +88,44 @@ export default function AdminNavbarLinks() {
   };
   const handleCloseProfile = () => {
     setOpenProfile(null);
+    //setShowCommunitySelectionWindow(true)
   };
+
+  useEffect(() => {
+    async function loadCommunityList(builderid) {
+        const token = await authService.getAccessToken();
+        await API.get('/Community/GetAllCommunities', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }).then(({ data }) => {
+            const dataRows = [];
+            data.map(function (value, key) {
+                let obj = {
+                    value: value.commID,
+                    label: value.name
+                };
+                dataRows.push(obj);
+            });
+            setCommunityList(dataRows);
+        });
+    }
+
+    // Execute the created function directly
+    loadCommunityList('all');
+}, []);
+
+const handleCommunityNameChange = async (event) => {
+  setSelectedCommunityName(event.target.value);
+  //await setSelectedCommunityId(event.target.value)
+  setCommunityID(event.target.value);
+}
+
 
   return (
     <div>
       {/*
        SEARCH BUTTON AND EDIT BOX
        */}
-      {/*
+      { /*
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -101,11 +142,32 @@ export default function AdminNavbarLinks() {
           <Search />
         </Button>
       </div>
-        */}
+        */ }
 
+      <div className={classes.manager}>
+        <TextField
+          required
+          id="communityname"
+          select 
+          value={communityid}
+          className={classes.textField}
+          margin="normal"
+          fullWidth 
+          maxLength={15}
+          minLength={5}
+          onChange={handleCommunityNameChange}
+        >
+          {communitylist.map(option => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
       {/*
        Dashboard icon just after search button
-       */} 
+       */}
+      {/* 
       <Button
         color={window.innerWidth > 959 ? "transparent" : "white"}
         justIcon={window.innerWidth > 959}
@@ -117,7 +179,8 @@ export default function AdminNavbarLinks() {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button> 
+      </Button>
+       */}
 
       {/*
         Profile icon just after notification icon
@@ -184,6 +247,7 @@ export default function AdminNavbarLinks() {
             </Grow>
           )}
         </Poppers>
+ 
       </div>
 
       {/*
@@ -268,6 +332,9 @@ export default function AdminNavbarLinks() {
           )}
         </Poppers>
       </div>
+
+
+
     </div>
   );
 }

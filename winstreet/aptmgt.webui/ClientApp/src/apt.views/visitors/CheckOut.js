@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
@@ -9,6 +9,10 @@ import CardBody from "components/Card/CardBody.js";
 
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Table from "components/Table/Table.js";
+
+import { UserContext } from "store/UserContext";
+import API from "apt.utils/API.js";
+import authService from 'components/Authorization/AuthorizeService.js';
 
 const styles = {
     cardCategoryWhite: {
@@ -41,77 +45,51 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
+export default function CheckOut() {
+    const columns = [
+        { title: 'Visitor Name', field: 'visitorname', editable: 'never', type: 'text' },
+        { title: 'Visitor Phone', field: 'visitorphone', editable: 'never', type: 'text' },
+        { title: 'Host Name', field: 'hostname', editable: 'never', type: 'text' },
+        { title: 'Host Phone', field: 'hostphone', editable: 'never', type: 'text' },
+        { title: 'Checkin time', field: 'checkintime', editable: 'never', type: 'text' },
+        { title: 'CheckOut time', field: 'checkouttime', type: 'text' },
+    ];
 
-class CheckOut extends React.Component {
-    constructor(props) { 
-        super(props);
-        this.state = {
-            columns: [
-                { title: 'Visitor ID', field: 'visitorid', editable: 'onUpdate' },
-                { title: 'Visitor Name', field: 'visitorname', editable: 'never' },
-                { title: 'Host Name', field: 'hostname', type: 'text' }, 
-                { title: 'Host Phone', field: 'hostphone', type: 'text' },
-                { title: 'Checkin time', field: 'checkintime', type: 'text' },
-                { title: 'CheckOut time', field: 'checkouttime', type: 'text' },
-               
-            ],
-            data: [
-                { visitorid: 'Mehmet', visitorname: 'Baran', hostname: 'D', hostphone: 63, checkintime :"8:00AM" , checkouttime :""},
-                { visitorid: 'Sachin', visitorname: 'Sachin', hostname: 'D', hostphone: 63 , checkintime :"8:00AM" , checkouttime :""},
-                { visitorid: 'Suresh', visitorname: 'Suresh', hostname: 'D', hostphone: 63, checkintime :"8:00AM"  , checkouttime :""},
-                { visitorid: 'Ram', visitorname: 'Ram', hostname: 'D', hostphone: 63 , checkintime :"8:00AM" , checkouttime :""},
-                { visitorid: 'Rahim', visitorname: 'BarRahiman', hostname: 'D', hostphone: 63 , checkintime :"8:00AM" , checkouttime :""},
-            ]
-        }
-    }
- 
+    const data = [
+    ];
 
-    render() {
-        return (
-            <Card>
-                <CardHeader plain color="primary">
-                    <h5>List of Active Visitors</h5>
-                </CardHeader> 
-                    <MaterialTable
-                        title=""
-                        columns={this.state.columns}
-                        data={this.state.data}
-                        editable={{
-                            onRowAdd: newData =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        {
-                                            const data = this.state.data;
-                                            data.push(newData);
-                                            this.setState({ data }, () => resolve());
-                                        }
-                                        resolve()
-                                    }, 1000)
-                                }),
-                            onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        {
-                                            const data = this.state.data;
-                                            const index = data.indexOf(oldData);
-                                            data[index] = newData;
-                                            this.setState({ data }, () => resolve());
-                                        }
-                                        resolve()
-                                    }, 1000)
-                                })
-                        }}
-                        actions={[
-                            {
-                              icon: 'save',
-                              tooltip: 'Checkout User',
-                              onClick: (event, rowData) => alert("Checkout : " + rowData.name)
-                            } 
-                          ]}
-                    /> 
-            </Card>
-        )
-    }
+    return (
+        <MaterialTable
+            title=""
+            columns={columns}
+            data={data}
+
+            actions={[
+                {
+                    icon: 'save',
+                    tooltip: 'Checkout User',
+                    onClick: (event, rowData) => alert("Checkout : " + rowData.name)
+                }
+            ]}
+        />
+    );
 }
-export default CheckOut;
 
+
+
+/*
+editable={{
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                {
+                                    const data = data;
+                                    const index = data.indexOf(oldData);
+                                    data[index] = newData;
+                                    this.setState({ data }, () => resolve());
+                                }
+                                resolve()
+                            }, 1000)
+                        })
+                }}
+*/

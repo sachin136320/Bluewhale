@@ -56,66 +56,66 @@ const columns = [
     { title: 'Email', field: 'email', type: 'text' },
     { title: 'Notes', field: 'notes', type: 'text' },
     { title: 'Occupied', field: 'occupied', type: 'text' },
-    { title: 'Active', field: 'active', type: 'text' }
+    { title: 'Active', field: 'active', type: 'text' },
+    { title: 'Resident ID', field: 'residentid', type: 'text' }
 ]
 
 
 export default function ModifyOwner1() {
-
+ 
+    const [ownerlist, setOwnerList] = useState([]);
     const classes = useStyles();
 
     useEffect(() => {
         // Create an scoped async function in the hook
-        async function loadOwners(builderid) {
+        async function loadOwners() {
             const token = await authService.getAccessToken();
             await API.get('/owner/GetAll', {
-                params: {
-                    builderID: builderid
-                },
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
             }).then(({ data }) => {
                 const dataRows = [];
+                console.log(data);
                 data.map(function (value, key) {
                     let obj = {
                         firstname: value.firstName,
                         lastname: value.lastName,
                         blockid: value.blockID,
-                        flatNumber: value.lastNumber,
+                        bkid: value.bkID,
+                        flatid: value.flatID,
+                        flatNumber: value.flatNumber,
                         cellnumber: value.mobileNumber,
                         email: value.email,
                         notes: value.notes,
                         occupied: value.occupied,
-                        active: value.active 
+                        active: value.active,
+                        residentid: value.residentID
                     };
                     dataRows.push(obj);
                 });
-                setBuilderList(dataRows);
+                setOwnerList(dataRows);
             });
         }
 
         // Execute the created function directly
-        loadOwners('all');
+        loadOwners();
     }, []);
 
 
-    const updateOwnerDetail = async (newData, oldData) => {
+    const updateOwnerDetail = async (newData, oldData) => { 
         console.log(newData);
-        console.log(oldData);
-
         const requestBody = JSON.stringify({
             FirstName: newData.firstname,
             LastName: newData.lastname,
-            BlockID: newData.blockid,
-            FlatNumber: newData.flatNumber,
+            BlockID: newData.bkid,
+            FlatNumber: newData.flatid,
             Occupied: true,
             MobileNumber: newData.cellnumber,
             Email: newData.email,
             QRText: newData.firstname + newData.lastname + newData.blockid + newData.flatNumber + newData.cellnumber,
             Active: newData.active,
-            notes: newData.notes
-        });
-
-        console.log(requestBody);
+            notes: newData.notes,
+            residentID: newData.residentid
+        }); 
         const token = await authService.getAccessToken();
         const config = {
             headers: {
@@ -124,28 +124,32 @@ export default function ModifyOwner1() {
             }
         };
 
-        await API.put('/owner/Update', requestBody, config)
+        console.log(requestBody);
+        await API.post('/owner/Update', requestBody, config)
             .then(communityData => {
-
-                let tempData = tabledata;
+                let tempData = ownerlist;
                 const index = tempData.indexOf(oldData);
-                tempData[index] = newData;
+                tempData[index] = newData; 
                 const dataRows = [];
+                console.log(tempData);
                 tempData.map(function (value, key) {
                     let obj = {
-                        firstname: value.firstName,
-                        lastname: value.lastName,
-                        blockid: value.blockID,
-                        flatNumber: value.lastNumber,
-                        cellnumber: value.mobileNumber,
+                        firstname: value.firstname,
+                        lastname: value.lastname,
+                        blockid: value.blockid,
+                        flatNumber: value.flatNumber,
+                        cellnumber: value.mobilenumber,
                         email: value.email,
                         notes: value.notes,
                         occupied: value.occupied,
-                        active: value.active 
+                        active: value.active, 
+                        bkid: value.bkID,
+                        flatid: value.flatID,  
+                        residentid: value.residentID
                     };
                     dataRows.push(obj);
                 });
-                setTableData(dataRows);
+                setOwnerList(dataRows);
 
             })
             .catch(function (response) {
@@ -159,7 +163,7 @@ export default function ModifyOwner1() {
             <MaterialTable
                 title=""
                 columns={columns}
-                data={this.state.data}
+                data={ownerlist}
                 editable={{
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
