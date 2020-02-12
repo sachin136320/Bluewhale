@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using aptmgt.webui.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Text.Json;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace aptmgt.webui.Areas.Community.Controllers
@@ -26,11 +26,12 @@ namespace aptmgt.webui.Areas.Community.Controllers
         
         // POST api/values
         [HttpPost]
-        public JsonResult Post(aptmgt.entity.user.OwnerMaster ownerMaster)
+        public JsonResult Post([FromBody] JsonDocument testJObject)
         { 
             if (!ModelState.IsValid)
                 return new JsonResult("Bad Request");
-
+            
+            aptmgt.entity.user.OwnerMaster ownerMaster = new aptmgt.entity.user.OwnerMaster();
             appDBContext.OwnerMaster.Add(ownerMaster);
             appDBContext.SaveChanges();
 

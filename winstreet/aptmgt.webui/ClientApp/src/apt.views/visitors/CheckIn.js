@@ -14,6 +14,7 @@ import Table from "components/Table/Table.js";
 
 import Icon from "@material-ui/core/Icon";
 import CardIcon from "components/Card/CardIcon.js";
+import Webcam from "react-webcam";
 import WebCamCapture from "components/WebCam/WebcamCapture.js";
 import {
     successColor,
@@ -26,6 +27,7 @@ import {
 import { UserContext } from "store/UserContext";
 import API from "apt.utils/API.js";
 import authService from 'components/Authorization/AuthorizeService.js';
+import moment from 'moment';
 
 var QRCode = require('qrcode.react');
 
@@ -81,7 +83,11 @@ const styles = {
         width: 200,
     },
 };
-
+const videoConstraints = {
+    width: 320,
+    height: 240,
+    facingMode: "user"
+  };
 const useStyles = makeStyles(styles);
 const VisitorTypeOptions = [
     {
@@ -92,7 +98,7 @@ const VisitorTypeOptions = [
         value: 'Co-Owner',
         label: 'Co-Owner',
     }
-]; 
+];
 
 export default function CheckIn() {
     const classes = useStyles();
@@ -105,6 +111,7 @@ export default function CheckIn() {
         setOwnerType(event.target.value);
     };
 
+    const [hostid, setHostID] = useState('');
     const [hostname, setHostName] = useState('');
     const [hostphone, setHostPhone] = useState('');
 
@@ -120,7 +127,7 @@ export default function CheckIn() {
     const [visitorid, setVisitorID] = useState('');
 
     const [memebershiptype, setMemberShipType] = useState('');
-
+    const[image, setImage] = useState([]);
     const handleChangeVisitorType = event => {
 
     };
@@ -128,13 +135,11 @@ export default function CheckIn() {
     const handleMemberShipType = event => {
         setMemberShipType(event.target.value);
     };
-
-
-
+ 
     useEffect(() => {
         async function loadHostList(commid) {
             const token = await authService.getAccessToken();
-            await API.get('/Resident/GetVisitorHostDetails', {
+            await API.get('/Visitors/GetVisitorHostDetails', {
                 params: {
                     commID: commid
                 },
@@ -151,6 +156,7 @@ export default function CheckIn() {
                 setVisitingTo(dataRows);
             });
         }
+        console.log(communityid);
 
         //Execute the created function directly
         if (!communityid) {
@@ -161,12 +167,73 @@ export default function CheckIn() {
 
     }, []);
 
-    const handleHostChange = event => {
+    const handleHostChange = async (event) => {
+        console.log(event.target.value);
         //Make a service call
         //Get Host Details
-
+        const token = await authService.getAccessToken();
+        await API.get('/Visitors/GetHostDetails', {
+            params: {
+                commID: commid
+            },
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }).then(({ data }) => {
+            setHostName('banes');
+            setHostPhone('333');
+            setHostID('ada');
+        });
     };
 
+
+    const handleCheckinEvent = async(event) => {
+        setVisitorQRText(hostname + numberofvisitor + checkintimestamp + visitorphone + visitortype);
+        setCheckInTimestamp(moment().format('MMMM Do YYYY, h:mm:ss a'));
+        //call api to save visitor details 
+        const requestBody = JSON.stringify({
+            Name: hostname,
+            NumberOfVisitor: numberofvisitor,
+            CheckInDate: checkintimestamp,
+            CommunityID: communityid,
+            Address: visitoraddress,
+            MobileNumber: visitorphone,
+            VisitorType: visitortype,
+            Picture: image,
+            QRText: hostname + numberofvisitor + checkintimestamp + visitorphone + visitortype,
+            ResidentID: hostid 
+        });
+        const token = await authService.getAccessToken();
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await API.post('/Visitors/CheckIn', requestBody, config)
+        .then(communityData => { 
+            setVisitorID('VisitorID');
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
+
+
+    };
+    const webcamRef = React.useRef(null);
+   
+    const capture = React.useCallback(
+      () => {
+        const imageSrc = webcamRef.current.getScreenshot();
+        setImage(imageSrc);
+        console.log(imageSrc);
+      },
+      [webcamRef]
+    );
+
+
+    const handleCapturePhoto = (event) => {
+        //console.log(event);
+    };
 
     return (
         <Card>
@@ -223,6 +290,7 @@ export default function CheckIn() {
                             id="standard-required"
                             label="Visitor's Phone"
                             value={visitorphone}
+                            onChange={() => setVisitorPhone('2323')}
                             className={classes.textField}
                             margin="normal"
                             fullWidth
@@ -234,7 +302,7 @@ export default function CheckIn() {
                             select
                             className={classes.textField}
                             value={visitortype}
-                            onChange={handleChangeVisitorType}
+                            onChange={() => setVisitorType('2323')}
                             fullWidth
                             helperText="Visitor Type"
                             margin="normal"
@@ -254,6 +322,7 @@ export default function CheckIn() {
                             label="Visitor's Name"
                             id="visitor-name"
                             value={visitorname}
+                            onChange={() => setVisitorName('visitorName')}
                             className={classes.textField}
                             margin="normal"
                             fullWidth
@@ -264,19 +333,21 @@ export default function CheckIn() {
                             label="Number of visitors"
                             id="numberofvisitors"
                             value={numberofvisitor}
+                            onChange={() => setNumberOfVisitor('visitorName')}
                             className={classes.textField}
                             margin="normal"
                             fullWidth
                         />
                     </GridItem>
                 </GridContainer>
- 
+
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                         <TextField
                             label="Visitor Address"
                             id="visitoraddress"
                             value={visitoraddress}
+                            onChange={() => setVisitorAddress('2323')}
                             className={classes.textField}
                             margin="normal"
                             fullWidth
@@ -291,7 +362,15 @@ export default function CheckIn() {
                         */}
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={6}>
-                                <WebCamCapture />
+                            <Webcam
+                                audio={false}
+                                height={240}
+                                ref={webcamRef}
+                                screenshotFormat="image/jpeg"
+                                width={320}
+                                videoConstraints={videoConstraints}
+                                />
+                            <Button color="primary" round onClick={capture}>Capture photo</Button>
                             </GridItem>
                             <GridItem xs={12} sm={12} md={6}>
                                 {/*

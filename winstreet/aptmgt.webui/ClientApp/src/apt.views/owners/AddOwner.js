@@ -112,7 +112,7 @@ const MemberShipTypes = [
 ];
 export default function AddOwner() {
 
-    const {communityid, setCommunityID} = useContext(UserContext);
+    const { communityid, setCommunityID } = useContext(UserContext);
     const componentRef = useRef();
 
     const classes = useStyles();
@@ -140,7 +140,8 @@ export default function AddOwner() {
     const [notes, setNotes] = useState('');
     const [qrtext, setQRText] = useState('');
 
-    const [pictures, setPictures] = useState([]);
+    const [pictures, setPictures] = useState('');
+    const [picturebyte, setPictureByte] = useState([]);
 
     const handleCommunityNameChange = async (event) => {
         setSelectedCommunityName(event.target.value);
@@ -272,29 +273,39 @@ export default function AddOwner() {
     }, []);
 
     const onDrop = (picture) => {
-        console.log(picture);
-        setPictures(picture);
-    };
+        const file = picture[0];
 
-    const readFileDataAsBase64 = (e) => {
-        console.log(e);
-        const file = e.target.files[0];
-    
-        return new Promise((resolve, reject) => {
+        var g = new Promise((resolve, reject) => {
             const reader = new FileReader();
-    
+
             reader.onload = (event) => {
                 resolve(event.target.result);
             };
-    
+
             reader.onerror = (err) => {
                 reject(err);
             };
-    
+
             reader.readAsDataURL(file);
-        });
+        }).then(result => {
+            setPictures(result);
+            setPictureByte(convertStringToByteArray(result));
+        }
+        );
     };
 
+    const convertStringToByteArray = (str) => {
+        String.prototype.encodeHex = function () {
+        var bytes = [];
+        for (var i = 0; i < this.length; ++i) {
+         bytes.push(this.charCodeAt(i));
+        }
+        return bytes;
+        };
+       
+        var byteArray = str.encodeHex();
+        return byteArray
+        };
 
     return (
         <GridContainer>
@@ -479,29 +490,30 @@ export default function AddOwner() {
                         </GridContainer>
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={6}>
-                                {/*
-                                    more of qr code generation
-                                    https://medium.com/@zaran.56/how-to-generate-and-download-a-qr-code-image-in-react-a3e924a672f5
-                                */}
-                                <div>
-                                    <QRCode
-                                        id="123456"
-                                        value={qrtext}
-                                        includeMargin={true}
-                                    />
-                                    <a onClick={downloadQR}> Download QR </a>
-                                </div>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText='Choose images'
+                                    onChange={files => onDrop(files)}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                />
+
                             </GridItem>
                         </GridContainer>
                     </CardBody>
                     <CardFooter chart>
-                    <ImageUploader
-                        withIcon={true}
-                        buttonText='Choose images'
-                        onChange={onDrop}
-                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                        maxFileSize={5242880}
-                    />
+                        {/*
+                                    more of qr code generation
+                                    https://medium.com/@zaran.56/how-to-generate-and-download-a-qr-code-image-in-react-a3e924a672f5
+                                */}
+                        <div>
+                            <QRCode
+                                id="123456"
+                                value={qrtext}
+                                includeMargin={true}
+                            />
+                            <a onClick={downloadQR}> Download QR </a>
+                        </div>
                     </CardFooter>
                     <GridContainer>
                         <Button
@@ -519,7 +531,7 @@ export default function AddOwner() {
                     </CardHeader>
                     <CardAvatar profile>
                         <a href="#pablo" onClick={e => e.preventDefault()}>
-                            <img src={avatar} alt="..." />
+                            <img src={pictures} alt="..." />
                             {/* <img src={`data:image/jpeg;base64,${binary_data}`} /> */}
                         </a>
                     </CardAvatar>

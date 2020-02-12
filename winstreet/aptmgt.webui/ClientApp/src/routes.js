@@ -93,13 +93,6 @@ const dashboardRoutes = [
     layout: "/admin", // "/rtl"
   },
   {
-    path: "/user",
-    name: "Facility Booking", 
-    icon: Person,
-    component: FacilityBooking, //UserProfile,
-    layout: "/admin"
-  },
-  {
     path: "/notifications",
     name: "Notifications", 
     icon: Notifications,
@@ -116,3 +109,15 @@ const dashboardRoutes = [
 ];
 
 export default dashboardRoutes;
+
+
+/*
+,
+  {
+    path: "/user",
+    name: "Facility Booking", 
+    icon: Person,
+    component: FacilityBooking, //UserProfile,
+    layout: "/admin"
+  }
+*/
