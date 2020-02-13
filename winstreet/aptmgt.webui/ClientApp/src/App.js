@@ -24,6 +24,8 @@ import AuthorizeRoute from 'components/Authorization/AuthorizeRoute.js';
 import ApiAuthorizationRoutes from 'components/Authorization/ApiAuthorizationRoutes.js';
 import { ApplicationPaths } from 'components/Authorization/ApiAuthorizationConstants.js';
 
+import { Provider } from "react-redux";
+import { createStore } from "redux";
 import Admin from "layouts/Admin.js";
 
 import 'custom.css';
@@ -33,9 +35,9 @@ export default class App extends Component {
   static displayName = App.name;
 
   render () {
-    return (
+    return ( 
       <Layout>
-        <Switch>
+        <Switch> 
           <AuthorizeRoute path="/admin" component={Admin} />
           <Route exact path='/' component={Home} />
           <Route exact path='/SignIn' component={SignIn} />
@@ -43,7 +45,7 @@ export default class App extends Component {
           <AuthorizeRoute path='/fetch-data' component={FetchData} />
           <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
         </Switch>
-      </Layout>
+      </Layout> 
     );
   }
 }

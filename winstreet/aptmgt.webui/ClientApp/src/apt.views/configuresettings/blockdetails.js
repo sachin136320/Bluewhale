@@ -89,10 +89,7 @@ export default function BlockDetails() {
     const [selectedcommunityname, setSelectedCommunityName] = React.useState('');
     const [selectedcommunityid, setSelectedCommunityId] = React.useState('');
 
-    const [tabledata, setTableData] = React.useState([
-        { blockName: 'Mehmet', numberOfFloors: 'Baran', numberOfFlats: 'D', blockID: "1" },
-        { blockName: 'Mehmet', numberOfFloors: 'Baran', numberOfFlats: 'D', blockID: "1" },
-    ]);
+    const [tabledata, setTableData] = React.useState([]);
 
 
     useEffect(() => {
@@ -112,7 +109,7 @@ export default function BlockDetails() {
                         label: value.builderName
                     };
                     dataRows.push(obj);
-                }); 
+                });
                 setBuilderList(dataRows);
             });
         }
@@ -121,9 +118,9 @@ export default function BlockDetails() {
         loadBuilderList('all');
     }, []);
 
-    const handleBuilderName = async (event) => { 
+    const handleBuilderName = async (event) => {
         setSelectedBuilderName(event.target.value);
-        await setSelectedBuilderId(event.target.value); 
+        await setSelectedBuilderId(event.target.value);
 
         // Set Apartment Name Drop down to blank
         const token = await authService.getAccessToken();
@@ -140,15 +137,17 @@ export default function BlockDetails() {
                     label: value.commName
                 };
                 dataRows.push(obj);
-            }); 
+            });
             setCommunityList(dataRows);
+
+            setTableData([]);
         });
     };
 
     const handleCommunityNameChange = async (event) => {
         // Check if builder name is available
         setSelectedCommunityName(event.target.value);
-        await setSelectedCommunityId(event.target.value) 
+        await setSelectedCommunityId(event.target.value)
 
         // Make a request to get the list Blocks
         const token = await authService.getAccessToken();
@@ -157,13 +156,13 @@ export default function BlockDetails() {
                 commID: event.target.value
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }).then(({ data }) => { 
+        }).then(({ data }) => {
             const dataRows = [];
             data.map(function (value, key) {
                 let obj = {
                     blockName: value.blockName,
-                    numberOfFloors: value.apartmentName,
-                    numberOfFlats: value.apartmentName,
+                    numberOfFloors: value.numberOfFloors,
+                    numberOfFlats: value.numberOfFlats,
                     blockID: value.commBlockID
                 };
                 dataRows.push(obj);
@@ -199,7 +198,7 @@ export default function BlockDetails() {
 
                 let tempData = tabledata;
                 const index = tempData.indexOf(oldData);
-                tempData[index] = newData; 
+                tempData[index] = newData;
                 const dataRows = [];
                 tempData.map(function (value, key) {
                     let obj = {
@@ -210,7 +209,7 @@ export default function BlockDetails() {
                     };
                     dataRows.push(obj);
                 });
-                setTableData(dataRows); 
+                setTableData(dataRows);
 
             })
             .catch(function (response) {
@@ -219,14 +218,14 @@ export default function BlockDetails() {
             });
     }
 
-    const addBlockDetail = async (newData) => { 
+    const addBlockDetail = async (newData) => {
         const requestBody = JSON.stringify({
             Blckname: newData.blockName,
             NumberofFloors: parseInt(newData.numberOfFloors),
             NumberofFlats: parseInt(newData.numberOfFlats),
             CommunityID: selectedcommunityid
         });
-         
+
         const token = await authService.getAccessToken();
         const config = {
             headers: {
@@ -237,6 +236,8 @@ export default function BlockDetails() {
 
         await API.post('/Blocks', requestBody, config)
             .then(communityData => {
+
+                console.log(communityData.data);
                 let newBlock = {
                     blockName: communityData.data.blckname,
                     numberOfFloors: communityData.data.numberofFloors,
@@ -245,6 +246,8 @@ export default function BlockDetails() {
                 };
                 const dataRows = [];
                 let tempData = tabledata;
+
+                console.log(tempData);
                 tempData.map(function (value, key) {
                     let obj = {
                         blockName: value.blockName,
@@ -254,6 +257,8 @@ export default function BlockDetails() {
                     };
                     dataRows.push(obj);
                 });
+
+                console.log(newBlock);
                 dataRows.push(newBlock);
                 setTableData(dataRows);
                 console.log(tabledata);
@@ -264,18 +269,18 @@ export default function BlockDetails() {
             });
     }
 
-    const deleteBlockDetail = async (newData) => { 
-        const token = await authService.getAccessToken(); 
+    const deleteBlockDetail = async (newData) => {
+        const token = await authService.getAccessToken();
         await API.get('/Blocks/delete', {
             params: {
                 blockID: newData.blockID
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }).then(communityData => { 
+        }).then(communityData => {
             let tempData = tabledata;
             const index = tempData.indexOf(newData);
-            tempData.splice(index, 1); 
-            const dataRows = []; 
+            tempData.splice(index, 1);
+            const dataRows = [];
             tempData.map(function (value, key) {
                 let obj = {
                     blockName: value.blockName,
@@ -284,8 +289,8 @@ export default function BlockDetails() {
                     blockID: value.blockID
                 };
                 dataRows.push(obj);
-            }); 
-            setTableData(dataRows); 
+            });
+            setTableData(dataRows);
         }).catch(function (response) {
             //handle error
             console.log(response);
@@ -293,82 +298,75 @@ export default function BlockDetails() {
     }
 
     return (
-        <Card>
-            <CardBody>
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={6}>
-                        <TextField
-                            required
-                            id="buildername"
-                            label="Builder Name"
-                            select
-                            value={selectedbuildername}
-                            className={classes.textField}
-                            margin="normal"
-                            fullWidth
-                            onChange={handleBuilderName} 
-                            variant="outlined"
-                        >
-                            {builderlist.map(option => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </GridItem>
+        <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                    required
+                    id="buildername"
+                    label="Builder Name"
+                    select
+                    value={selectedbuildername}
+                    className={classes.textField}
+                    margin="normal"
+                    fullWidth
+                    onChange={handleBuilderName}
+                    variant="outlined"
+                >
+                    {builderlist.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            </GridItem>
 
-                    <GridItem xs={12} sm={12} md={6}>
-                        <TextField
-                            id="apartmentname"
-                            label="Apartment Name"
-                            required
-                            select
-                            value={selectedcommunityname}
-                            className={classes.textField}
-                            margin="normal"
-                            fullWidth
-                            onChange={handleCommunityNameChange} 
-                            variant="outlined"
-                        >
-                            {communitylist.map(option => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+            <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                    id="apartmentname"
+                    label="Apartment Name"
+                    required
+                    select
+                    value={selectedcommunityname}
+                    className={classes.textField}
+                    margin="normal"
+                    fullWidth
+                    onChange={handleCommunityNameChange}
+                    variant="outlined"
+                >
+                    {communitylist.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
 
-                    </GridItem>
-                </GridContainer>
-                 
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                        <MaterialTable
-                            title=""
-                            columns={tablecolumns}
-                            data={tabledata}
-                            editable={{
-                                onRowAdd: newData =>
-                                    new Promise((resolve, reject) => {
-                                        addBlockDetail(newData);
-                                        resolve();
-                                    }),
-                                onRowUpdate: (newData, oldData) =>
-                                    new Promise((resolve, reject) => {
-                                        updateBlockDetail(newData, oldData);
-                                        resolve();
-                                    }),
-                                onRowDelete: oldData =>
-                                    new Promise((resolve, reject) => {
-                                        deleteBlockDetail(oldData);
-                                        resolve(); 
-                                    }),
-                            }}
-                        />
-                    </GridItem>
-                </GridContainer>
+            </GridItem>
 
-            </CardBody>
-        </Card>
+            <GridItem xs={12} sm={12} md={12}>
+                <MaterialTable
+                    title=""
+                    columns={tablecolumns}
+                    data={tabledata}
+                    editable={{
+                        onRowAdd: newData =>
+                            new Promise((resolve, reject) => {
+                                addBlockDetail(newData);
+                                resolve();
+                            }),
+                        onRowUpdate: (newData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                updateBlockDetail(newData, oldData);
+                                resolve();
+                            }),
+                        onRowDelete: oldData =>
+                            new Promise((resolve, reject) => {
+                                deleteBlockDetail(oldData);
+                                resolve();
+                            }),
+                    }}
+                />
+            </GridItem>
+        </GridContainer>
     );
 }
 

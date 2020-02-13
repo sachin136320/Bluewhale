@@ -9,6 +9,7 @@ import AddBuilder from "apt.views/configuresettings/AddBuilder";
 import AddApartmentCommunity from "apt.views/configuresettings/apartmentdetails.js";
 import BlockDetails from "apt.views/configuresettings/blockdetails.js";
 import FacilityDetails from "apt.views/configuresettings/facilitydetails.js";
+import FlatDetails from "apt.views/configuresettings/FlatDetails.js";
 import BasicSettingSummary from "apt.views/configuresettings/basicsettingsummary.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import VerifiedUser from "@material-ui/icons/VerifiedUser"; 
@@ -74,6 +75,13 @@ export default function ConfigureBasicSettings() {
                             tabIcon: Code,
                             tabContent: (
                                 <BlockDetails/>
+                            )
+                        },
+                        {
+                            tabName: "Flats",
+                            tabIcon: Code,
+                            tabContent: (
+                                <FlatDetails />
                             )
                         },
                         {

@@ -11,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-
+using System.IO;
+using System;
 
 namespace aptmgt.webui
 {
@@ -119,6 +120,17 @@ namespace aptmgt.webui
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             }); 
+
+            #if DEBUG
+                try
+                {
+                    File.WriteAllText("browsersync-update.txt", DateTime.Now.ToString());
+                }
+                catch { 
+                    // ignore
+                }
+            #endif
+
         }
     }
 }

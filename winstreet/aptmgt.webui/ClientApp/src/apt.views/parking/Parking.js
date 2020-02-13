@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -13,6 +13,7 @@ import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import VerifiedUser from "@material-ui/icons/VerifiedUser"; 
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+import { UserContext } from "store/UserContext";
  
 const styles = {
     cardCategoryWhite: {
@@ -48,6 +49,8 @@ const useStyles = makeStyles(styles);
 
 export default function Parking() {
     const classes = useStyles();
+    const {communityid, setCommunityID} = useContext(UserContext);
+
     return (
         <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
@@ -55,7 +58,7 @@ export default function Parking() {
                     headerColor="primary"
                     tabs={[
                         {
-                            tabName: "Parking Summary",
+                            tabName: "Parking Summary ",
                             tabIcon: VerifiedUser,
                             tabContent: (
                                 <ParkingSummary/>

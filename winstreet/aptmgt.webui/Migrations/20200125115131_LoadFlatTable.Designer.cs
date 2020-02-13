@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using aptmgt.webui.Data;
 
-namespace aptmgt.webui.Migrations.ApplicationDB
+namespace aptmgt.webui.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20200111194349_CommunityDetails1")]
-    partial class CommunityDetails1
+    [Migration("20200125115131_LoadFlatTable")]
+    partial class LoadFlatTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,16 +167,33 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<int>("FloorNumber")
                         .HasColumnType("integer");
 
-                    b.Property<int>("OwnerID")
-                        .HasColumnType("integer");
-
                     b.HasKey("FlatID");
 
                     b.HasIndex("BlockID");
 
-                    b.HasIndex("OwnerID");
-
                     b.ToTable("CommunityFlats");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Bookable")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CommunityID");
+
+                    b.ToTable("FacilityMaster");
                 });
 
             modelBuilder.Entity("aptmgt.entity.user.CommunityUser", b =>
@@ -195,51 +212,6 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.HasKey("ID");
 
                     b.ToTable("CommunityUser");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.user.OwnerMaster", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Active")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Blckname")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fltno")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fname")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Lname")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Mobno")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Occupied")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Ownradddate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<byte[]>("Ownrpic")
-                        .HasColumnType("bytea");
-
-                    b.Property<byte[]>("Ownrqr")
-                        .HasColumnType("bytea");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("OwnerMaster");
                 });
 
             modelBuilder.Entity("aptmgt.entity.community.CommunityBlock", b =>
@@ -261,12 +233,13 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.HasOne("aptmgt.entity.community.CommunityBlock", "Block")
                         .WithMany("Flats")
                         .HasForeignKey("BlockID");
+                });
 
-                    b.HasOne("aptmgt.entity.user.OwnerMaster", "owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany("facility")
+                        .HasForeignKey("CommunityID");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using aptmgt.entity.facility;
 
 namespace aptmgt.entity.community
 {
@@ -24,9 +24,15 @@ namespace aptmgt.entity.community
         public string State { get => _state; set => _state = value; }
         public string City { get => _city; set => _city = value; }
         public int Pincode { get => _pincode; set => _pincode = value; }
+        
         public string BuilderID { get; set; }
         [ForeignKey("BuilderID")]
         public builder.Builder Builder { get; set; }
+
         public ICollection<CommunityBlock> Blocks { get; set; }
+
+        public ICollection<FacilityMaster> facility { get; set; }
+        
+        
     }
 }

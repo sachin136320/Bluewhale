@@ -7,13 +7,12 @@ namespace aptmgt.entity.user
 {
     public class CommunityUser
     {
-        
+        //to store one to many relation between user and communities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
         [Key]
-        private string _userID;
-        public string UserID { get => _userID; set => _userID = value; }
+        public int ID { get; set; }
+ 
+        public string UserID { get; set; }
         public string CommunityID { get; set; }
 
 

@@ -37,21 +37,21 @@ import { Home } from 'apt.utils/Home.js';
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
 import { FetchData } from 'apt.utils/FetchData.js';
-import { Counter } from 'apt.utils/Counter.js'; 
+import { Counter } from 'apt.utils/Counter.js';  
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
 
-const hist = createBrowserHistory();
+const hist = createBrowserHistory(); 
 
 ReactDOM.render(
-  <Router history={hist}>
+  <Router history={hist}>  
     <Switch>
       <AuthorizeRoute path="/admin" component={Admin} />
       <AuthorizeRoute exact path='/' component={Admin} />
       <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-    </Switch>
+    </Switch> 
   </Router>,
   rootElement);
 

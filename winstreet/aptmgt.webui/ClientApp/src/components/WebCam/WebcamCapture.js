@@ -29,10 +29,7 @@ const videoConstraints = {
           width={320}
           videoConstraints={videoConstraints}
         />
-         <Button color="primary" round onClick={capture}>
-         Capture photo
-                </Button> 
-         
+         <Button color="primary" round onClick={capture}>Capture photo</Button>
       </>
     );
   };

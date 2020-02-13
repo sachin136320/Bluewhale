@@ -13,7 +13,7 @@ import Button from "components/CustomButtons/Button.js";
 import API from "apt.utils/API.js";
 import TextField from '@material-ui/core/TextField';
 import authService from 'components/Authorization/AuthorizeService.js';
- 
+
 const styles = {
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
@@ -45,7 +45,7 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
- 
+
 export default function AddBuilder() {
     const classes = useStyles();
 
@@ -57,7 +57,7 @@ export default function AddBuilder() {
     const [builderId, setBuilderId] = React.useState('Not Generated');
 
 
-    const saveBuilder = async () => { 
+    const saveBuilder = async () => {
         const requestBody = JSON.stringify({
             Name: buildername,
             Address: builderaddress,
@@ -77,7 +77,7 @@ export default function AddBuilder() {
         await API.post('/Builder', requestBody, config)
             .then(({ data }) => {
                 console.log(data);
-                setBuilderId(data.builderId); 
+                setBuilderId(data.builderId);
             })
             .catch(function (response) {
                 //handle error
@@ -182,7 +182,7 @@ export default function AddBuilder() {
                                 className={classes.button}
                                 onClick={() => saveBuilder()}>
                                 Add
-                        </Button>
+                            </Button>
                         </GridItem>
                     </GridContainer>
                 </CardFooter>

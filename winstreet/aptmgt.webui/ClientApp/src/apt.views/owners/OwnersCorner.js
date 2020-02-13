@@ -58,7 +58,7 @@ export default function OwnersCorner() {
     const classes = useStyles();
     return (
         <GridContainer>
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem xs={12} sm={12} md={12}>
                 <CustomTabs
                     headerColor="primary"
                     tabs={[
@@ -82,40 +82,11 @@ export default function OwnersCorner() {
                             tabContent: (
                                 <Tenants />
                             )
-                        },
-                        {
-                            tabName: "Socialize",
-                            tabIcon: Cloud,
-                            tabContent: (
-                                <Tasks
-                                    checkedIndexes={[1]}
-                                    tasksIndexes={[0, 1, 2]}
-                                    tasks={server}
-                                />
-                            )
-                        }
+                        } 
                     ]}
                 />
             </GridItem>
-            <GridItem xs={12} sm={12} md={4}>
-                <Card profile>
-                    <CardAvatar profile>
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                            <img src={avatar} alt="..." />
-                        </a>
-                    </CardAvatar>
-                    <CardBody profile>
-                        <h2 className={classes.cardCategory}>Name</h2>
-                        <h5 className={classes.cardTitle}>Flat No</h5>
-                        <h5 className={classes.cardTitle}>Owner Type</h5>
-                        <h5 className={classes.cardTitle}>Contact Number</h5> 
-                    </CardBody>
-                </Card>
-
-                <Button color="primary" round>
-                Share
-                </Button>
-            </GridItem>
+             
         </GridContainer>
     );
 }

@@ -1,4 +1,4 @@
-import React, { Component }  from "react";
+import React, { Component, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -14,6 +14,7 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import routes from "routes.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
+import { UserContext } from "store/UserContext";
 
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
@@ -22,6 +23,7 @@ import logo from "assets/img/reactlogo.png";
 let ps;
 
 const switchRoutes = (
+
   <Switch>
     {routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -44,7 +46,9 @@ const useStyles = makeStyles(styles);
 
 
 export default function Admin({ ...rest }) {
-  
+
+  const [communityid, setCommunityID] = useState('silvanus');
+
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -78,7 +82,7 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
-  
+
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -100,35 +104,36 @@ export default function Admin({ ...rest }) {
 
 
   return (
-    <div className={classes.wrapper}>
-      <Sidebar
-        routes={routes}
-        logoText={"winsgate"}
-        logo={logo}
-        image={image}
-        handleDrawerToggle={handleDrawerToggle}
-        open={mobileOpen}
-        color={color}
-        {...rest}
-      />
-      <div className={classes.mainPanel} ref={mainPanel}>
-        <Navbar
+    <UserContext.Provider value={{ communityid, setCommunityID }}>
+      <div className={classes.wrapper}>
+        <Sidebar
           routes={routes}
+          logoText={"winsgate"}
+          logo={logo}
+          image={image}
           handleDrawerToggle={handleDrawerToggle}
+          open={mobileOpen}
+          color={color}
           {...rest}
         />
-        {/* On the /maps route we want the map to be on full screen - 
+        <div className={classes.mainPanel} ref={mainPanel}>
+          <Navbar
+            routes={routes}
+            handleDrawerToggle={handleDrawerToggle}
+            {...rest}
+          />
+          {/* On the /maps route we want the map to be on full screen - 
         this is not possible if the content and conatiner classes are 
         present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
-        ) : (
-          <div className={classes.map}>{switchRoutes}</div>
-        )}
-        {getRoute() ? <Footer /> : null}
-        {/*
+          {getRoute() ? (
+            <div className={classes.content}>
+              <div className={classes.container}>{switchRoutes}</div>
+            </div>
+          ) : (
+              <div className={classes.map}>{switchRoutes}</div>
+            )}
+          {getRoute() ? <Footer /> : null}
+          {/*
         <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}
@@ -138,7 +143,8 @@ export default function Admin({ ...rest }) {
           fixedClasses={fixedClasses}
         />
         */}
+        </div>
       </div>
-    </div>
+    </UserContext.Provider>
   );
 }
