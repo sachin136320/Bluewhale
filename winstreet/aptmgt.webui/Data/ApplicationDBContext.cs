@@ -35,5 +35,33 @@ namespace aptmgt.webui.Data
         public DbSet<CommunityBlock> CommunityBlock { get; set; }
         public DbSet<CommunityDetails> CommunityDetails { get; set; }
         public DbSet<CommunityFlats> CommunityFlats { get; set; }
+        public DbSet<AssetRequest> AssetRequest { get; set; }
+        public DbSet<ServiceDetails> ServiceDetails { get; set; }
+        public DbSet<ServiceHistory> ServiceHistory { get; set; }
+        public DbSet<entity.facility.FacilityBooking> FacilityBooking { get; set; }
+        public DbSet<entity.facility.FacilityBookingHistory> FacilityBookingHistory { get; set; }
+        public DbSet<entity.facility.FacilityMaster> FacilityMaster { get; set; }
+        public DbSet<entity.parking.ParkingAssignment> ParkingAssignment { get; set; }
+        public DbSet<entity.parking.ParkingAssignmentHistory> ParkingAssignmentHistory { get; set; }
+        public DbSet<AddOwner> AddOwner { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<OwnerMaster> OwnerMaster { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<entity.vehicles.VehicleDetails> VehicleDetails { get; set; }
+        public DbSet<entity.vehicles.VehicleDetailsHistory> VehicleDetailsHistory { get; set; }
+
+        public DbSet<entity.Accounts.Account> Account { get; set; }
+        public DbSet<entity.Accounts.Expense> Expense { get; set; }
+        public DbSet<entity.Accounts.maintMaster> maintMaster { get; set; }
+        public DbSet<entity.Accounts.MonthlyMaint> MonthlyMaint { get; set; }
+        public DbSet<entity.Accounts.SourceOthers> SourceOthers { get; set; }
+        public DbSet<entity.Accounts.TransactionMaster> TransactionMaster { get; set; }
+
+        public DbSet<entity.poll.poll> poll { get; set; }
+        public DbSet<entity.poll.poll_question> poll_question { get; set; }
+        public DbSet<entity.poll.response> response { get; set; }
+
+
+
     }
 }

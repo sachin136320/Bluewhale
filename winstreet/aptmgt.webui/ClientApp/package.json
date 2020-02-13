@@ -16,7 +16,6 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
     "fibers": "^4.0.2",
-    "fsevents": "^2.1.2",
     "history": "4.9.0",
     "lodash": "^4.17.12",
     "material-table": "^1.52.0",
