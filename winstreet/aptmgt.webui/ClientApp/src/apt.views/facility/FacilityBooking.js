@@ -116,7 +116,8 @@ export default function FacilityBooking() {
             secondary={true}
             keyboardFocused={true}
             onClick={() => {
-                deleteEvent(), handleClose();
+                deleteEvent();
+                handleClose();
             }}
         />,
         <FlatButton
@@ -125,7 +126,8 @@ export default function FacilityBooking() {
             keyboardFocused={true}
             onClick={handleClose}
             onClick={() => {
-                updateEvent(), handleClose();
+                updateEvent();
+                handleClose();
             }}
         />
     ];
@@ -136,7 +138,8 @@ export default function FacilityBooking() {
             primary={true}
             keyboardFocused={true}
             onClick={() => {
-                setNewAppointment(), handleClose();
+                setNewAppointment();
+                handleClose();
             }}
         />
     ];
