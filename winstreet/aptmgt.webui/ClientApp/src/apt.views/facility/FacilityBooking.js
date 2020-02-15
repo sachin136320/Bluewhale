@@ -5,7 +5,6 @@ import Dialog from "@material-ui/core/Dialog";
 import FlatButton from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import TimePicker from "@material-ui/pickers/TimePicker";
-require("react-big-calendar/lib/css/react-big-calendar.css");
 
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -180,7 +179,7 @@ export default function FacilityBooking() {
                     <TextField
                         floatingLabelText="Description"
                         onChange={e => {
-                            setDescription(e.target.value);
+                            setDesc(e.target.value);
                         }}
                     />
                     <TimePicker
@@ -222,7 +221,7 @@ export default function FacilityBooking() {
                         multiLine={true}
                         defaultValue={desc}
                         onChange={e => {
-                            setDescription(e.target.value);
+                            setDesc(e.target.value);
                         }}
                     />
                     <TimePicker

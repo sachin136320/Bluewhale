@@ -219,9 +219,9 @@ export default function FlatDetails() {
                 const dataRows = [];
                 tempData.map(function (value, key) {
                     let obj = {
-                        flatID: flatData.data.flatID,
-                        flatnumber: flatData.data.flatNumber,
-                        floornumber: flatData.data.floorNumber
+                        flatID: value.flatID,
+                        flatnumber: value.flatNumber,
+                        floornumber: value.floorNumber
                     };
                     dataRows.push(obj);
                 });

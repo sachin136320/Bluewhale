@@ -32,7 +32,8 @@ namespace aptmgt.webui
             .AddMvc()
             .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
             //.AddApplicationPart(Assembly.Load(new AssemblyName("aptmgt.webapi")))
-            .AddControllersAsServices();
+            .AddControllersAsServices()
+            .AddNewtonsoftJson();
 
             services.AddEntityFrameworkNpgsql()
         .AddDbContext<SecurityDbContext>(options =>

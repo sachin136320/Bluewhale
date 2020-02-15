@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using aptmgt.webui.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Newtonsoft.Json.Linq;
+// For more informatio`n on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace aptmgt.webui.Areas.Community.Controllers
 {
@@ -26,12 +25,53 @@ namespace aptmgt.webui.Areas.Community.Controllers
         
         // POST api/values
         [HttpPost]
-        public JsonResult Post([FromBody] JsonDocument testJObject)
-        { 
+        public JsonResult Post(JObject testJObject)
+        {
+            if (testJObject is null)
+            {
+                throw new System.ArgumentNullException(nameof(testJObject));
+            }
+
             if (!ModelState.IsValid)
                 return new JsonResult("Bad Request");
-            
+
             aptmgt.entity.user.OwnerMaster ownerMaster = new aptmgt.entity.user.OwnerMaster();
+            foreach (JProperty property in testJObject.Properties())
+            {
+                switch(property.Name)
+                {
+                    case "FirstName":
+                        ownerMaster.FirstName = property.Value.ToString();
+                        break;
+                    case "LastName":
+                        ownerMaster.LastName = property.Value.ToString();
+                        break;
+                    case "BlockID":
+                        ownerMaster.BlockID = property.Value.ToString();
+                        break;
+                    case "FlatNumber":
+                        ownerMaster.FlatNumber = property.Value.ToString();
+                        break;
+                    case "MobileNumber":
+                        ownerMaster.MobileNumber = property.Value.ToString();
+                        break;
+                    case "notes":
+                        ownerMaster.notes = property.Value.ToString();
+                        break;
+                    case "Occupied":
+                        ownerMaster.Occupied = (property.Value.ToString() == "true" ? true : false);
+                        break;
+                    case "Picture":
+                        ownerMaster.Picture = property.Value.ToString();
+                        break;
+                    case "QRText":
+                        ownerMaster.QRText = property.Value.ToString();
+                        break;
+                    case "Active":
+                        ownerMaster.Active = (property.Value.ToString() == "true" ? true : false);
+                        break;
+                }
+            }
             appDBContext.OwnerMaster.Add(ownerMaster);
             appDBContext.SaveChanges();
 
