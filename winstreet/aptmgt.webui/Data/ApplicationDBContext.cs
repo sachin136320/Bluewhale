@@ -29,6 +29,7 @@ namespace aptmgt.webui.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Tenants> Tenants { get; set; }
         public DbSet<CommunityUser> CommunityUser { get; set; }
         public DbSet<AssetDetails> AssetDetails { get; set; }
         public DbSet<entity.builder.Builder> Builder { get; set; }
@@ -36,6 +37,8 @@ namespace aptmgt.webui.Data
         public DbSet<CommunityDetails> CommunityDetails { get; set; }
         public DbSet<CommunityFlats> CommunityFlats { get; set; }
         public DbSet<AssetRequest> AssetRequest { get; set; }
+
+
         public DbSet<ServiceDetails> ServiceDetails { get; set; }
         public DbSet<ServiceHistory> ServiceHistory { get; set; }
         public DbSet<entity.facility.FacilityBooking> FacilityBooking { get; set; }
@@ -43,7 +46,7 @@ namespace aptmgt.webui.Data
         public DbSet<entity.facility.FacilityMaster> FacilityMaster { get; set; }
         public DbSet<entity.parking.ParkingAssignment> ParkingAssignment { get; set; }
         public DbSet<entity.parking.ParkingAssignmentHistory> ParkingAssignmentHistory { get; set; }
-        public DbSet<AddOwner> AddOwner { get; set; }
+        //public DbSet<AddOwner> AddOwner { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<OwnerMaster> OwnerMaster { get; set; }
         public DbSet<Role> Role { get; set; }
