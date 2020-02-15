@@ -13,7 +13,7 @@ namespace aptmgt.entity.builder
         private string _address;
         private string _pincode;
         private string _state;
-        private string _ciy;
+        private string _city;
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -22,7 +22,7 @@ namespace aptmgt.entity.builder
         public string Address { get => _address; set => _address = value; }
         public string Pincode { get => _pincode; set => _pincode = value; }
         public string State { get => _state; set => _state = value; }
-        public string Ciy { get => _ciy; set => _ciy = value; }
+        public string City { get => _city; set => _city = value; }
         public ICollection<community.CommunityDetails> Communities { get; set; }
 
     }

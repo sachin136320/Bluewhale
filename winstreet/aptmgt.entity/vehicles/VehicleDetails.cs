@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace aptmgt.entity.parking
+namespace aptmgt.entity.vehicles
 
 {
     public class VehicleDetails

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using aptmgt.webui.Data;
@@ -9,9 +10,10 @@ using aptmgt.webui.Data;
 namespace aptmgt.webui.Migrations.ApplicationDB
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200117030420_mymigration2")]
+    partial class mymigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,183 +21,6 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("aptmgt.entity.Accounts.Account", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AccountType")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Accountno")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Bankname")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("CurrntBalance")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Dateadded")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Account");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.Accounts.Expense", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ExpenseType")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TranID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Expense");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.Accounts.MonthlyMaint", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fltno")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Mobno")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("OwnerName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TranID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("MonthlyMaint");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.Accounts.SourceOthers", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("SourceName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TranID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("SourceOthers");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.Accounts.TransactionMaster", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("TranID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TranType")
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("TransactionMaster");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.Accounts.maintMaster", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fltno")
-                        .HasColumnType("text");
-
-                    b.Property<int>("MaintAmount")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("maintMaster");
-                });
 
             modelBuilder.Entity("aptmgt.entity.assets.AssetDetails", b =>
                 {
@@ -676,105 +501,6 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.HasKey("ID");
 
                     b.ToTable("ParkingAssignmentHistory");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.poll.poll", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("IsOpen")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("PollEnd")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("PollID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PollName")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("PollStart")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("poll");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.poll.poll_question", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("PollID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PollName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PollQuestion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuestionID")
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("poll_question");
-                });
-
-            modelBuilder.Entity("aptmgt.entity.poll.response", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Currdate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("PollID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PollName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PollResponse")
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuestionID")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ResponseID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("User")
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("response");
                 });
 
             modelBuilder.Entity("aptmgt.entity.user.AddOwner", b =>
