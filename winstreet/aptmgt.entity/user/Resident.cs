@@ -7,9 +7,7 @@ namespace aptmgt.entity.user
 {
 
     public class Resident
-    {
-        private byte[] picture;
-
+    { 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int ResidentID { get; set; }
@@ -21,11 +19,7 @@ namespace aptmgt.entity.user
         public bool Occupied { get; set; }
         public string MobileNumber { get; set; }
         public string Email { get; set; }
-        public string Picture
-        {
-            get => Encoding.ASCII.GetString(picture);
-            set => picture = Encoding.ASCII.GetBytes(value);
-        }
+        public byte[] Picture;
         public string QRText { get; set; }
         public DateTime AddDate { get; set; }
         public bool Active { get; set; }

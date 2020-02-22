@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using aptmgt.webui.Data;
 
-namespace aptmgt.webui.Migrations.ApplicationDB
+namespace aptmgt.webui.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace aptmgt.webui.Migrations.ApplicationDB
             modelBuilder
                 .HasDefaultSchema("AppData")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("aptmgt.entity.Accounts.Account", b =>
@@ -199,13 +199,9 @@ namespace aptmgt.webui.Migrations.ApplicationDB
 
             modelBuilder.Entity("aptmgt.entity.assets.AssetDetails", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("AssetId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
                     b.Property<string>("Asset_NR")
                         .HasColumnType("text");
@@ -225,32 +221,30 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<DateTime>("Asset_procure_Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<byte[]>("Asset_qr_img")
-                        .HasColumnType("bytea");
-
                     b.Property<string>("Asset_service_Freq")
                         .HasColumnType("text");
 
                     b.Property<string>("Asset_service_flag")
                         .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityId")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Currdate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("ID");
+                    b.HasKey("AssetId");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("AssetDetails");
                 });
 
             modelBuilder.Entity("aptmgt.entity.assets.AssetRequest", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("AssetRequestID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
                     b.Property<string>("Asset_Name")
                         .HasColumnType("text");
@@ -264,10 +258,10 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Ast_added")
                         .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Procure_approval")
@@ -279,26 +273,24 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<DateTime>("RequestDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("RequestID")
-                        .HasColumnType("text");
-
                     b.Property<string>("Requeststatus")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("AssetRequestID");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("AssetRequest");
                 });
 
             modelBuilder.Entity("aptmgt.entity.assets.ServiceDetails", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("ServiceDetailID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AssetId")
+                        .HasColumnType("text");
 
                     b.Property<string>("Asset_NR")
                         .HasColumnType("text");
@@ -321,26 +313,27 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Asset_service_flag")
                         .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("ID");
+                    b.HasKey("ServiceDetailID");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("ServiceDetails");
                 });
 
             modelBuilder.Entity("aptmgt.entity.assets.ServiceHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("ServiceHistoryID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AssetId")
+                        .HasColumnType("text");
 
                     b.Property<string>("Asset_NR")
                         .HasColumnType("text");
@@ -360,13 +353,15 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Asset_service_flag")
                         .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("ID");
+                    b.HasKey("ServiceHistoryID");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("ServiceHistory");
                 });
@@ -424,7 +419,7 @@ namespace aptmgt.webui.Migrations.ApplicationDB
 
             modelBuilder.Entity("aptmgt.entity.community.CommunityDetails", b =>
                 {
-                    b.Property<string>("CommID")
+                    b.Property<string>("CommunityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
@@ -440,13 +435,13 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Pincode")
-                        .HasColumnType("integer");
+                    b.Property<string>("Pincode")
+                        .HasColumnType("text");
 
                     b.Property<string>("State")
                         .HasColumnType("text");
 
-                    b.HasKey("CommID");
+                    b.HasKey("CommunityId");
 
                     b.HasIndex("BuilderID");
 
@@ -465,27 +460,21 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("FlatNumber")
                         .HasColumnType("text");
 
-                    b.Property<int>("FloorNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OwnerID")
-                        .HasColumnType("integer");
+                    b.Property<string>("FloorNumber")
+                        .HasColumnType("text");
 
                     b.HasKey("FlatID");
 
                     b.HasIndex("BlockID");
-
-                    b.HasIndex("OwnerID");
 
                     b.ToTable("CommunityFlats");
                 });
 
             modelBuilder.Entity("aptmgt.entity.facility.FacilityBooking", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("FacilityBookingID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
                     b.Property<string>("Booking_ID")
                         .HasColumnType("text");
@@ -496,8 +485,8 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Booking_description")
                         .HasColumnType("text");
 
-                    b.Property<int>("Booking_duration")
-                        .HasColumnType("integer");
+                    b.Property<string>("Booking_duration")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Booking_end_time")
                         .HasColumnType("timestamp without time zone");
@@ -511,7 +500,7 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Booking_status")
                         .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityId")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Currdate")
@@ -523,17 +512,18 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Owner_name")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("FacilityBookingID");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("FacilityBooking");
                 });
 
             modelBuilder.Entity("aptmgt.entity.facility.FacilityBookingHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("FacilityBookingHistoryID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
                     b.Property<string>("Booking_ID")
                         .HasColumnType("text");
@@ -544,8 +534,8 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Booking_description")
                         .HasColumnType("text");
 
-                    b.Property<int>("Booking_duration")
-                        .HasColumnType("integer");
+                    b.Property<string>("Booking_duration")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Booking_end_time")
                         .HasColumnType("timestamp without time zone");
@@ -559,7 +549,7 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Booking_status")
                         .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityId")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Currdate")
@@ -571,40 +561,42 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Owner_name")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("FacilityBookingHistoryID");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("FacilityBookingHistory");
                 });
 
             modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("FacilityMasterID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Bkable")
                         .HasColumnType("text");
 
-                    b.Property<string>("CommId")
+                    b.Property<string>("Bookable")
                         .HasColumnType("text");
 
-                    b.Property<string>("Facility_name")
+                    b.Property<string>("CommunityID")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("text");
+
+                    b.HasKey("FacilityMasterID");
+
+                    b.HasIndex("CommunityID");
 
                     b.ToTable("FacilityMaster");
                 });
 
             modelBuilder.Entity("aptmgt.entity.parking.ParkingAssignment", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("ParkingAssignmentID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityID")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Currdate")
@@ -625,8 +617,8 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Owner_lname")
                         .HasColumnType("text");
 
-                    b.Property<int>("Owner_phno")
-                        .HasColumnType("integer");
+                    b.Property<string>("Owner_phno")
+                        .HasColumnType("text");
 
                     b.Property<string>("Owner_slotno")
                         .HasColumnType("text");
@@ -634,19 +626,20 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Parking_ID")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("ParkingAssignmentID");
+
+                    b.HasIndex("CommunityID");
 
                     b.ToTable("ParkingAssignment");
                 });
 
             modelBuilder.Entity("aptmgt.entity.parking.ParkingAssignmentHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("ParkingAssignmentHistoryID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityID")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Currdate")
@@ -664,8 +657,8 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Owner_lname")
                         .HasColumnType("text");
 
-                    b.Property<int>("Owner_phno")
-                        .HasColumnType("integer");
+                    b.Property<string>("Owner_phno")
+                        .HasColumnType("text");
 
                     b.Property<string>("Owner_slotno")
                         .HasColumnType("text");
@@ -673,19 +666,20 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Parking_ID")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("ParkingAssignmentHistoryID");
+
+                    b.HasIndex("CommunityID");
 
                     b.ToTable("ParkingAssignmentHistory");
                 });
 
-            modelBuilder.Entity("aptmgt.entity.poll.poll", b =>
+            modelBuilder.Entity("aptmgt.entity.poll.Poll", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("PollID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("text");
 
-                    b.Property<string>("Commid")
+                    b.Property<string>("CommunityID")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Currdate")
@@ -697,123 +691,85 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<DateTime>("PollEnd")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("PollID")
-                        .HasColumnType("integer");
-
                     b.Property<string>("PollName")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("PollStart")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("ID");
+                    b.HasKey("PollID");
 
-                    b.ToTable("poll");
+                    b.HasIndex("CommunityID");
+
+                    b.ToTable("Poll");
                 });
 
-            modelBuilder.Entity("aptmgt.entity.poll.poll_question", b =>
+            modelBuilder.Entity("aptmgt.entity.poll.PollQuestion", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("PollQuestionID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("PollID")
-                        .HasColumnType("integer");
+                    b.Property<string>("PollID")
+                        .HasColumnType("text");
 
                     b.Property<string>("PollName")
                         .HasColumnType("text");
 
-                    b.Property<string>("PollQuestion")
+                    b.Property<string>("Question")
                         .HasColumnType("text");
 
-                    b.Property<string>("QuestionID")
-                        .HasColumnType("text");
+                    b.HasKey("PollQuestionID");
 
-                    b.HasKey("ID");
+                    b.HasIndex("CommunityID");
 
-                    b.ToTable("poll_question");
+                    b.HasIndex("PollID");
+
+                    b.ToTable("PollQuestion");
                 });
 
-            modelBuilder.Entity("aptmgt.entity.poll.response", b =>
+            modelBuilder.Entity("aptmgt.entity.poll.PollResponse", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("PollResponseID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("PollID")
-                        .HasColumnType("integer");
+                    b.Property<string>("PollID")
+                        .HasColumnType("text");
 
                     b.Property<string>("PollName")
                         .HasColumnType("text");
 
-                    b.Property<string>("PollResponse")
+                    b.Property<string>("PollQuestionID")
                         .HasColumnType("text");
 
-                    b.Property<string>("QuestionID")
+                    b.Property<string>("Response")
                         .HasColumnType("text");
-
-                    b.Property<int>("ResponseID")
-                        .HasColumnType("integer");
 
                     b.Property<string>("User")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("PollResponseID");
 
-                    b.ToTable("response");
-                });
+                    b.HasIndex("CommunityID");
 
-            modelBuilder.Entity("aptmgt.entity.user.AddOwner", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.HasIndex("PollID");
 
-                    b.Property<string>("Blckname")
-                        .HasColumnType("text");
+                    b.HasIndex("PollQuestionID");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fltno")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fname")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Lname")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Mobno")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Ocutype")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("Ownrpic")
-                        .HasColumnType("bytea");
-
-                    b.Property<byte[]>("Ownrqr")
-                        .HasColumnType("bytea");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("AddOwner");
+                    b.ToTable("PollResponse");
                 });
 
             modelBuilder.Entity("aptmgt.entity.user.ApplicationUser", b =>
@@ -888,78 +844,125 @@ namespace aptmgt.webui.Migrations.ApplicationDB
 
             modelBuilder.Entity("aptmgt.entity.user.OwnerMaster", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("ResidentID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Active")
                         .HasColumnType("text");
 
-                    b.Property<string>("Blckname")
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("AgreementCopySubmitted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("CommunityID")
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Fltno")
+                    b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Fname")
+                    b.Property<string>("FlatID")
                         .HasColumnType("text");
 
-                    b.Property<string>("Lname")
+                    b.Property<string>("FlatNumber")
                         .HasColumnType("text");
 
-                    b.Property<int>("Mobno")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Occupied")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Ownradddate")
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<byte[]>("Ownrpic")
-                        .HasColumnType("bytea");
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
 
-                    b.Property<byte[]>("Ownrqr")
-                        .HasColumnType("bytea");
+                    b.Property<string>("MobileNumber")
+                        .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Occupied")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OwnerType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("QRText")
+                        .HasColumnType("text");
+
+                    b.HasKey("ResidentID");
+
+                    b.HasIndex("CommunityID");
+
+                    b.HasIndex("FlatID");
 
                     b.ToTable("OwnerMaster");
                 });
 
             modelBuilder.Entity("aptmgt.entity.user.Role", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
                     b.Property<string>("RoleID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("Rolename")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("RoleID");
 
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("aptmgt.entity.vehicles.VehicleDetails", b =>
+            modelBuilder.Entity("aptmgt.entity.user.VisitorDetails", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("VisitID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CheckInDate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MobileNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NumberOfVisitor")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("ResidentID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VisitorType")
+                        .HasColumnType("text");
+
+                    b.HasKey("VisitID");
+
+                    b.HasIndex("CommunityID");
+
+                    b.ToTable("VisitorDetails");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.vehicles.VehicleDetails", b =>
+                {
+                    b.Property<string>("VehicleDetailsID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Owner_email")
@@ -974,37 +977,32 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Owner_lname")
                         .HasColumnType("text");
 
-                    b.Property<int>("Owner_phno")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Owner_slotno")
+                    b.Property<string>("Owner_phno")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("Parking_qr_img")
-                        .HasColumnType("bytea");
-
-                    b.Property<string>("Vehicle_ID")
+                    b.Property<string>("Owner_slotno")
                         .HasColumnType("text");
 
                     b.Property<string>("Vehicle_no")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("VehicleDetailsID");
+
+                    b.HasIndex("CommunityID");
 
                     b.ToTable("VehicleDetails");
                 });
 
             modelBuilder.Entity("aptmgt.entity.vehicles.VehicleDetailsHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<string>("VehicleDetailsHistoryID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Commid")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Currdate")
+                    b.Property<string>("CommunityID")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Owner_email")
@@ -1019,21 +1017,53 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.Property<string>("Owner_lname")
                         .HasColumnType("text");
 
-                    b.Property<int>("Owner_phno")
-                        .HasColumnType("integer");
+                    b.Property<string>("Owner_phno")
+                        .HasColumnType("text");
 
                     b.Property<string>("Owner_slotno")
                         .HasColumnType("text");
 
-                    b.Property<string>("Vehicle_ID")
+                    b.Property<string>("VehicleDetailsID")
                         .HasColumnType("text");
 
                     b.Property<string>("Vehicle_no")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.HasKey("VehicleDetailsHistoryID");
+
+                    b.HasIndex("CommunityID");
+
+                    b.HasIndex("VehicleDetailsID");
 
                     b.ToTable("VehicleDetailsHistory");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.assets.AssetDetails", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityId");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.assets.AssetRequest", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityId");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.assets.ServiceDetails", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityId");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.assets.ServiceHistory", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityId");
                 });
 
             modelBuilder.Entity("aptmgt.entity.community.CommunityBlock", b =>
@@ -1055,12 +1085,110 @@ namespace aptmgt.webui.Migrations.ApplicationDB
                     b.HasOne("aptmgt.entity.community.CommunityBlock", "Block")
                         .WithMany("Flats")
                         .HasForeignKey("BlockID");
+                });
 
-                    b.HasOne("aptmgt.entity.user.OwnerMaster", "owner")
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityBooking", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
                         .WithMany()
-                        .HasForeignKey("OwnerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CommunityId");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityBookingHistory", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityId");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.facility.FacilityMaster", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany("Facility")
+                        .HasForeignKey("CommunityID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.parking.ParkingAssignment", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.parking.ParkingAssignmentHistory", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.poll.Poll", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.poll.PollQuestion", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+
+                    b.HasOne("aptmgt.entity.poll.Poll", "Poll")
+                        .WithMany()
+                        .HasForeignKey("PollID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.poll.PollResponse", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+
+                    b.HasOne("aptmgt.entity.poll.Poll", "Poll")
+                        .WithMany()
+                        .HasForeignKey("PollID");
+
+                    b.HasOne("aptmgt.entity.poll.PollQuestion", "PollQuestion")
+                        .WithMany()
+                        .HasForeignKey("PollQuestionID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.user.OwnerMaster", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+
+                    b.HasOne("aptmgt.entity.community.CommunityFlats", "CommunityFlats")
+                        .WithMany()
+                        .HasForeignKey("FlatID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.user.VisitorDetails", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.vehicles.VehicleDetails", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+                });
+
+            modelBuilder.Entity("aptmgt.entity.vehicles.VehicleDetailsHistory", b =>
+                {
+                    b.HasOne("aptmgt.entity.community.CommunityDetails", "ParentCommunity")
+                        .WithMany()
+                        .HasForeignKey("CommunityID");
+
+                    b.HasOne("aptmgt.entity.vehicles.VehicleDetails", "VehicleDetails")
+                        .WithMany()
+                        .HasForeignKey("VehicleDetailsID");
                 });
 #pragma warning restore 612, 618
         }

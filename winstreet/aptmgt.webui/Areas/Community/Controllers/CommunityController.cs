@@ -52,7 +52,7 @@ namespace aptmgt.webui.Areas.Community.Controllers
         { 
             var communityList = appDBContext.CommunityDetails.Select(comm => new
             {
-                CommID = comm.CommID,
+                CommID = comm.CommunityId,
                 Name = comm.Name
             });
 
@@ -63,9 +63,9 @@ namespace aptmgt.webui.Areas.Community.Controllers
         [HttpGet]
         public JsonResult GetCommunityDetail(string commID)
         { 
-            var communityList = appDBContext.CommunityDetails.Where(community => community.CommID == commID).Select(comm => new
+            var communityList = appDBContext.CommunityDetails.Where(community => community.CommunityId == commID).Select(comm => new
             {
-                CommID = comm.CommID,
+                CommID = comm.CommunityId,
                 Name = comm.Name,
                 Address = comm.Address,
                 State = comm.State,

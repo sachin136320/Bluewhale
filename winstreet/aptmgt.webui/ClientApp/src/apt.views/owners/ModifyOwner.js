@@ -50,7 +50,7 @@ const useStyles = makeStyles(styles);
 const columns = [
     { title: 'First Name', field: 'firstname', type: 'text' },
     { title: 'Last Name', field: 'lastname', type: 'text' },
-    { title: 'BlockID', field: 'blockid', type: 'text' },
+    { title: 'Flat', field: 'flatid', type: 'text' },
     { title: 'Flat', field: 'flatNumber', type: 'text' },
     { title: 'Cell', field: 'cellnumber', type: 'text' },
     { title: 'Email', field: 'email', type: 'text' },
@@ -79,7 +79,7 @@ export default function ModifyOwner1() {
                     let obj = {
                         firstname: value.firstName,
                         lastname: value.lastName,
-                        blockid: value.blockID,
+                        flatid: value.flatID,
                         bkid: value.bkID,
                         flatid: value.flatID,
                         flatNumber: value.flatNumber,
@@ -106,12 +106,12 @@ export default function ModifyOwner1() {
         const requestBody = JSON.stringify({
             FirstName: newData.firstname,
             LastName: newData.lastname,
-            BlockID: newData.bkid,
+            FlatID: newData.flatid,
             FlatNumber: newData.flatid,
             Occupied: true,
             MobileNumber: newData.cellnumber,
             Email: newData.email,
-            QRText: newData.firstname + newData.lastname + newData.blockid + newData.flatNumber + newData.cellnumber,
+            QRText: newData.firstname + newData.lastname + newData.flatNumber + newData.cellnumber,
             Active: newData.active,
             notes: newData.notes,
             residentID: newData.residentid
@@ -135,8 +135,7 @@ export default function ModifyOwner1() {
                 tempData.map(function (value, key) {
                     let obj = {
                         firstname: value.firstname,
-                        lastname: value.lastname,
-                        blockid: value.blockid,
+                        lastname: value.lastname, 
                         flatNumber: value.flatNumber,
                         cellnumber: value.mobilenumber,
                         email: value.email,

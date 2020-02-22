@@ -20,6 +20,7 @@ import authService from 'components/Authorization/AuthorizeService.js';
 import avatar from "assets/img/faces/marc.jpg";
 import CardAvatar from "components/Card/CardAvatar.js";
 import { UserContext } from "store/UserContext";
+import base64 from 'react-native-base64'
 
 var QRCode = require('qrcode.react');
 
@@ -196,7 +197,7 @@ export default function AddOwner() {
         await setSelectedFlatId(event.target.value)
     }
 
-    const saveUser = async (event) => {
+    const saveUser = async (event) => { 
         const requestBody = JSON.stringify({
             FirstName: firstname,
             LastName: lastname,
@@ -219,7 +220,8 @@ export default function AddOwner() {
         };
 
         await API.post('/Owner', requestBody, config)
-            .then(communityData => {
+            .then(communityData => { 
+                setPictures(base64.decode(communityData.data.picture));
                 setQRText(communityData.data.qrText)
             })
             .catch(function (response) {

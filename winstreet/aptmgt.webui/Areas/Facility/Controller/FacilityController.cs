@@ -32,7 +32,7 @@ namespace aptmgt.webui.Areas.Facility.Controllers
         { 
             var facilityList = appDBContext.FacilityMaster.Where(facility => facility.CommunityID == commID).Select(f => new
             {
-                FacilityID = f.ID,
+                FacilityID = f.FacilityMasterID,
                 Bookable = f.Bookable,
                 FacilityName = f.FacilityName
             });
@@ -77,7 +77,7 @@ namespace aptmgt.webui.Areas.Facility.Controllers
             .RemoveRange(
                 appDBContext.FacilityMaster
                 .Where(
-                    condition => condition.ID == facilityID
+                    condition => condition.FacilityMasterID == facilityID
                 )
             );
             appDBContext.SaveChanges();

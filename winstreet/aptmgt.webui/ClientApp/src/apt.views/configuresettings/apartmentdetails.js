@@ -111,7 +111,7 @@ export default function AddApartmentCommunity() {
 
         await API.post('/Community', requestBody, config)
             .then(communityData => { 
-                setApartmentID(communityData.data.commID); 
+                setApartmentID(communityData.data.communityId); 
             })
             .catch(function (response) {
                 //handle error

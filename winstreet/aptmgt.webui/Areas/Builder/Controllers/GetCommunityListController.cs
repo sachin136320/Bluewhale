@@ -34,7 +34,7 @@ namespace aptmgt.webui.Builder.Controllers
 
             var communityList = appDBContext.CommunityDetails.Where(community => community.BuilderID == builder.FirstOrDefault().BuilderId).Select(comm => new
             {
-                CommunityID = comm.CommID,
+                CommunityID = comm.CommunityId,
                 CommName = comm.Name
             });
              

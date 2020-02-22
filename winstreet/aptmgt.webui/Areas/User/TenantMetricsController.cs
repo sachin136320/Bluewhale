@@ -39,17 +39,17 @@ namespace aptmgt.webui.Areas.Community.Controllers
                 const [expiringrentagreement, setExpiringRentAgreement] = React.useState('');
                 
             */
-            var AgreementCopySubmitted = appDBContext.Tenants
+            var AgreementCopySubmitted = appDBContext.OwnerMaster
             .Where(
-                    condition => condition.CommID == commID
+                    condition => condition.CommunityID == commID
                 )
                 .Where(
                     condition => condition.AgreementCopySubmitted == true
                 ).Count();
 
-            var AgreementCopyNotSubmitted = appDBContext.Tenants
+            var AgreementCopyNotSubmitted = appDBContext.OwnerMaster
             .Where(
-                    condition => condition.CommID == commID
+                    condition => condition.CommunityID == commID
                 )
                 .Where(
                     condition => condition.AgreementCopySubmitted == false

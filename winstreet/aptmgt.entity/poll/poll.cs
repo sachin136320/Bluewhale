@@ -4,27 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace aptmgt.entity.poll
 {
-    public class poll
+    public class Poll
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
         [Key]
-        private int _pollID;
-        private string commid;
-        private DateTime _currdate;
-        private string _pollName;
-        private DateTime _pollStart;
-        private DateTime _pollEnd;
-        private string _isOpen;
+        public string PollID { get; set; }
 
-        public int PollID { get => _pollID; set => _pollID = value; }
-        public string Commid { get => commid; set => commid = value; }
-        public DateTime Currdate { get => _currdate; set => _currdate = value; }
-        public string PollName { get => _pollName; set => _pollName = value; }
-        public DateTime PollStart { get => _pollStart; set => _pollStart = value; }
-        public DateTime PollEnd { get => _pollEnd; set => _pollEnd = value; }
-        public string IsOpen { get => _isOpen; set => _isOpen = value; }
+        public string CommunityID { get; set; }
+        [ForeignKey("CommunityID")]
+        public community.CommunityDetails ParentCommunity { get; set; }
+
+        public DateTime Currdate { get; set; }
+        public string PollName { get; set; }
+        public DateTime PollStart { get; set; }
+        public DateTime PollEnd { get; set; }
+        public string IsOpen { get; set; }
 
     }
 }

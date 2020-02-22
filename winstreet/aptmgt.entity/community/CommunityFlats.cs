@@ -13,7 +13,7 @@ namespace aptmgt.entity.community
         public string FlatID { get => _flatID; set => _flatID = "FlatID_" + value; }
         
         public string FlatNumber { get; set; }
-        public int FloorNumber { get; set; }
+        public string FloorNumber { get; set; }
  
         public string BlockID { get; set; }
         [ForeignKey("BlockID")]

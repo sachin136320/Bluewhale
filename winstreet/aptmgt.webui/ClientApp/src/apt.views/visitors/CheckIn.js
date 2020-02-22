@@ -131,7 +131,11 @@ export default function CheckIn() {
     const handleChangeVisitorType = event => {
 
     };
+    const saveUser = () => 
+    {
 
+    };
+    
     const handleMemberShipType = event => {
         setMemberShipType(event.target.value);
     };
@@ -174,7 +178,7 @@ export default function CheckIn() {
         const token = await authService.getAccessToken();
         await API.get('/Visitors/GetHostDetails', {
             params: {
-                commID: commid
+                commID: communityid
             },
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         }).then(({ data }) => {

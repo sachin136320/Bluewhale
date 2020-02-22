@@ -13,11 +13,11 @@ namespace aptmgt.webui.Areas.Community.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class OwnerController : Controller
+    public class VisitorsController : Controller
     {
         private readonly ApplicationDBContext appDBContext;
 
-        public OwnerController(ApplicationDBContext applicationDBContext)
+        public VisitorsController(ApplicationDBContext applicationDBContext)
         {
             appDBContext = applicationDBContext;
 
@@ -47,7 +47,7 @@ namespace aptmgt.webui.Areas.Community.Controllers
                     case "LastName":
                         ownerMaster.LastName = property.Value.ToString();
                         break;
-                    case "BlockID":
+                    case "FlatID":
                         ownerMaster.FlatID = property.Value.ToString();
                         break;
                     case "FlatNumber":
@@ -95,7 +95,18 @@ namespace aptmgt.webui.Areas.Community.Controllers
 
             return new JsonResult(ownerMaster);
         }
- 
+
+        //GetVisitorHostDetails
+        [Route("[action]")]
+        [HttpGet]
+        public JsonResult GetVisitorHostDetails(string flatid)
+        { 
+            //var owner = appDBContext.CommunityFlats.Where(o => o.ResidentID == ownerID).Select(own => own); 
+            //return Json(owner); 
+            return null;
+        }
+
+
         [HttpGet]
         public JsonResult Get(string ownerID)
         { 
@@ -122,7 +133,7 @@ namespace aptmgt.webui.Areas.Community.Controllers
                     flatNumber = owner.FlatNumber, 
                     lastName = owner.LastName,
                     mobileNumber = owner.MobileNumber,
-                    notes = owner.Notes,
+                    Notes = owner.Notes,
                     occupied = owner.Occupied,
                     residentid = owner.ResidentID
                 }
@@ -141,7 +152,7 @@ namespace aptmgt.webui.Areas.Community.Controllers
                     flatNumber = flat.FlatNumber, 
                     lastName = owner.lastName,
                     mobileNumber = owner.mobileNumber,
-                    notes = owner.notes,
+                    notes = owner.Notes,
                     occupied = owner.occupied,
                     residentid = owner.residentid
                 }

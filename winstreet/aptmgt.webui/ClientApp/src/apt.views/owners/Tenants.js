@@ -102,7 +102,7 @@ const useStyles = makeStyles(styles);
 
 export default function Tenants() {
   const classes = useStyles();
-  const [communityid, setCommunityID] = useContext(UserContext);
+  const {communityid, setCommunityID} = useContext(UserContext);
 
   const [tenantcompliant, setTenantCompliant] = React.useState('');
   const [tenantnoncompliant, setTenantNonCompliant] = React.useState('');

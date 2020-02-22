@@ -251,8 +251,8 @@ export default function BlockDetails() {
                 tempData.map(function (value, key) {
                     let obj = {
                         blockName: value.blockName,
-                        numberOfFloors: value.apartmentName,
-                        numberOfFlats: value.apartmentName,
+                        numberOfFloors: value.numberOfFloors,
+                        numberOfFlats: value.numberOfFlats,
                         blockID: value.blockID
                     };
                     dataRows.push(obj);

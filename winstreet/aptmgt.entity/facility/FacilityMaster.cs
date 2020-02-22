@@ -9,7 +9,7 @@ namespace aptmgt.entity.facility
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string ID { get; set; } 
+        public string FacilityMasterID { get; set; } 
   
         public string Bookable { get; set; }
         public string FacilityName { get; set; }

@@ -121,17 +121,6 @@ namespace aptmgt.webui
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             }); 
-
-            #if DEBUG
-                try
-                {
-                    File.WriteAllText("browsersync-update.txt", DateTime.Now.ToString());
-                }
-                catch { 
-                    // ignore
-                }
-            #endif
-
         }
     }
 }

@@ -34,5 +34,9 @@
     <Compile Remove="intfc\user\ApplicationUser.cs" />
     <Compile Remove="impl\user\ApplicationUser.cs" />
     <Compile Remove="Class1.cs" />
+    <Compile Remove="user\Resident.cs" />
+    <Compile Remove="user\Tenants.cs" />
+    <Compile Remove="community\CommunityDignitories.cs" />
+    <Compile Remove="community\CommunityFlatAssignment.cs" />
   </ItemGroup>
 </Project>

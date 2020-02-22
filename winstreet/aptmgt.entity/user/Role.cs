@@ -9,7 +9,8 @@ namespace aptmgt.entity.user
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string ID { get; set; }
+        public string RoleID { get; set; }
+
         public string Rolename { get; set; }
     }
 }
