@@ -46,12 +46,13 @@ namespace aptmgt.webui.Areas.Community.Controllers
                         break;
                     case "LastName":
                         ownerMaster.LastName = property.Value.ToString();
-                        break;
-                    case "BlockID":
-                        ownerMaster.FlatID = property.Value.ToString();
-                        break;
+                        break; 
                     case "FlatNumber":
-                        ownerMaster.FlatNumber = property.Value.ToString();
+                        ownerMaster.FlatID = property.Value.ToString();
+                        ownerMaster.FlatNumber = appDBContext.CommunityFlats.Where(flat => flat.FlatID == property.Value.ToString()).Select(flat => flat.FlatNumber).ToList().FirstOrDefault();
+                        break;
+                    case "Email":
+                        ownerMaster.Email = property.Value.ToString();
                         break;
                     case "MobileNumber":
                         ownerMaster.MobileNumber = property.Value.ToString();
@@ -62,8 +63,7 @@ namespace aptmgt.webui.Areas.Community.Controllers
                     case "Occupied":
                         ownerMaster.Occupied = (property.Value.ToString() == "true" ? true : false);
                         break;
-                    case "Picture":
-                        
+                    case "Picture": 
                         ownerMaster.Picture = Encoding.ASCII.GetBytes(property.Value.ToString());
             //Encoding.ASCII.GetBytes(value);
                         break;
@@ -72,6 +72,15 @@ namespace aptmgt.webui.Areas.Community.Controllers
                         break;
                     case "Active":
                         ownerMaster.Active = (property.Value.ToString() == "true" ? true : false);
+                        break;
+                    case "CommunityID":
+                        ownerMaster.CommunityID = property.Value.ToString();
+                        break;
+                    case "OwnerType":
+                        ownerMaster.OwnerType = property.Value.ToString();
+                        break;
+                    case "MemberShipType":
+                        //ownerMaster.Active = property.Value.ToString();
                         break;
                 }
             }

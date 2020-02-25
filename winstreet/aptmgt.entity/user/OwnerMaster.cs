@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace aptmgt.entity.user
 {
-
+//MemberShipTypes is missing in next revision add it
     public class OwnerMaster 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

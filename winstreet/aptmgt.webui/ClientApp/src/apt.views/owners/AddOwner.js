@@ -209,6 +209,9 @@ export default function AddOwner() {
             Email: email,
             QRText: firstname + lastname + selectedblockid + selectedflatid + contactnumber,
             Active: true,
+            CommunityID: selectedcommunityid,
+            OwnerType: ownertype,
+            MemberShipType: memebershiptype,
             notes: notes
         });
         const token = await authService.getAccessToken();

@@ -114,6 +114,7 @@ export default function AdminNavbarLinks() {
 }, []);
 
 const handleCommunityNameChange = async (event) => {
+  //console.log(event);
   setSelectedCommunityName(event.target.value);
   //await setSelectedCommunityId(event.target.value)
   setCommunityID(event.target.value);

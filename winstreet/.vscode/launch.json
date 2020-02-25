@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/aptmgt.webui/bin/Debug/netcoreapp3.0/aptmgt.webui.dll",
+            "program": "${workspaceFolder}/aptmgt.webui/bin/Debug/netcoreapp3.1/aptmgt.webui.dll",
             "args": [],
             "cwd": "${workspaceFolder}/aptmgt.webui",
             "requireExactSource": false,

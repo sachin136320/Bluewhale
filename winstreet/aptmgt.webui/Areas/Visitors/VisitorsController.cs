@@ -6,6 +6,7 @@ using aptmgt.webui.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 // For more informatio`n on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace aptmgt.webui.Areas.Community.Controllers
@@ -16,70 +17,67 @@ namespace aptmgt.webui.Areas.Community.Controllers
     public class VisitorsController : Controller
     {
         private readonly ApplicationDBContext appDBContext;
+        private readonly ILogger<VisitorsController> _logger;
 
-        public VisitorsController(ApplicationDBContext applicationDBContext)
+        public VisitorsController(ApplicationDBContext applicationDBContext, ILogger<VisitorsController> logger)
         {
             appDBContext = applicationDBContext;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog injected into HomeController");
+        }
 
-        } 
-        
         // POST api/values
         [HttpPost]
         public JsonResult Post([FromBody] JObject testJObject)
         {
-            
             if (testJObject is null)
             {
                 throw new System.ArgumentNullException(nameof(testJObject));
             }
-            
+
             if (!ModelState.IsValid)
                 return new JsonResult("Bad Request");
-             
-            aptmgt.entity.user.OwnerMaster ownerMaster = new aptmgt.entity.user.OwnerMaster();
+
+
+            aptmgt.entity.user.VisitorDetails visitorDetails = new aptmgt.entity.user.VisitorDetails();
             foreach (JProperty property in testJObject.Properties())
             {
-                switch(property.Name)
+                switch (property.Name)
                 {
-                    case "FirstName":
-                        ownerMaster.FirstName = property.Value.ToString();
+                    case "Name":
+                        visitorDetails.Name = property.Value.ToString();
                         break;
-                    case "LastName":
-                        ownerMaster.LastName = property.Value.ToString();
+                    case "NumberOfVisitor":
+                        visitorDetails.NumberOfVisitor = property.Value.ToString();
                         break;
-                    case "FlatID":
-                        ownerMaster.FlatID = property.Value.ToString();
+                    case "CommunityID":
+                        visitorDetails.CommunityID = property.Value.ToString();
                         break;
-                    case "FlatNumber":
-                        ownerMaster.FlatNumber = property.Value.ToString();
+                    case "Address":
+                        visitorDetails.Address = property.Value.ToString();
                         break;
                     case "MobileNumber":
-                        ownerMaster.MobileNumber = property.Value.ToString();
+                        visitorDetails.MobileNumber = property.Value.ToString();
                         break;
-                    case "notes":
-                        ownerMaster.Notes = property.Value.ToString();
+                    case "VisitorType":
+                        visitorDetails.VisitorType = property.Value.ToString();
                         break;
-                    case "Occupied":
-                        ownerMaster.Occupied = (property.Value.ToString() == "true" ? true : false);
+                    case "ResidentID":
+                        visitorDetails.ResidentID = property.Value.ToString();
                         break;
                     case "Picture":
-                        
-                        ownerMaster.Picture = Encoding.ASCII.GetBytes(property.Value.ToString());
-            //Encoding.ASCII.GetBytes(value);
+                        visitorDetails.Picture = Encoding.ASCII.GetBytes(property.Value.ToString());
                         break;
-                    case "QRText":
-                        ownerMaster.QRText = property.Value.ToString();
-                        break;
-                    case "Active":
-                        ownerMaster.Active = (property.Value.ToString() == "true" ? true : false);
+                    case "CheckInDate":
+                        visitorDetails.CheckInDate = property.Value.ToString();
                         break;
                 }
             }
-            
-            appDBContext.OwnerMaster.Add(ownerMaster);
-            appDBContext.SaveChanges(); 
 
-            return new JsonResult(ownerMaster); 
+            appDBContext.VisitorDetails.Add(visitorDetails);
+            appDBContext.SaveChanges();
+
+            return new JsonResult(visitorDetails);
         }
 
         // POST api/values
@@ -90,7 +88,7 @@ namespace aptmgt.webui.Areas.Community.Controllers
             if (!ModelState.IsValid)
                 return new JsonResult("Bad Request");
 
-            appDBContext.OwnerMaster.Update(ownerMaster); 
+            appDBContext.OwnerMaster.Update(ownerMaster);
             appDBContext.SaveChanges();
 
             return new JsonResult(ownerMaster);
@@ -99,38 +97,64 @@ namespace aptmgt.webui.Areas.Community.Controllers
         //GetVisitorHostDetails
         [Route("[action]")]
         [HttpGet]
-        public JsonResult GetVisitorHostDetails(string flatid)
-        { 
-            //var owner = appDBContext.CommunityFlats.Where(o => o.ResidentID == ownerID).Select(own => own); 
-            //return Json(owner); 
-            return null;
+        public JsonResult GetVisitorHostDetails(string flatID)
+        {
+            var owner = appDBContext.OwnerMaster
+                            .Where(o => o.FlatID == flatID)
+                            .Select(own => new
+                            {
+                                Name = own.FirstName + " " + own.LastName,
+                                Phone = own.MobileNumber,
+                                HostID = own.ResidentID
+                            }).FirstOrDefault();
+            return Json(owner);
         }
 
 
         [HttpGet]
         public JsonResult Get(string ownerID)
-        { 
-            var owner = appDBContext.OwnerMaster.Where(o => o.ResidentID == ownerID).Select(own => own); 
-            return Json(owner); 
+        {
+            var owner = appDBContext.OwnerMaster.Where(o => o.ResidentID == ownerID).Select(own => own);
+            return Json(owner);
         }
 
         // GET api/values/5 
         [Route("[action]")]
         [HttpGet]
-        public JsonResult GetAll()
-        {   
-            var owners = appDBContext.OwnerMaster
+        public JsonResult GetAll(string communityID)
+        {
+
+            _logger.LogInformation("Community ID: " + communityID);
+            var flatList = appDBContext.CommunityFlats
+            .Join(
+                appDBContext.CommunityBlock,
+                flat => flat.BlockID,
+                block => block.BlockID,
+                (flat, block) => new
+                {
+                    CommunityID = block.CommunityID,
+                    Flat = block.Blckname + " - " + flat.FlatNumber,
+                    FlatID = flat.FlatID
+                })
+                .Where(f => f.CommunityID == communityID)
+                .Select(all => all);
+
+            _logger.LogInformation(flatList.ToList().ToString());
+            return Json(flatList);
+
+            /* var owners = appDBContext.OwnerMaster
+            .Where(com => com.CommunityID == communityID)
             .Join(
                 appDBContext.CommunityBlock,
                 owner => owner.FlatID,
                 block => block.BlockID,
-                (owner, block) => new 
+                (owner, block) => new
                 {
                     flatID = owner.FlatID,
-                    blockName = block.Blckname, 
+                    blockName = block.Blckname,
                     email = owner.Email,
                     firstName = owner.FirstName,
-                    flatNumber = owner.FlatNumber, 
+                    flatNumber = owner.FlatNumber,
                     lastName = owner.LastName,
                     mobileNumber = owner.MobileNumber,
                     Notes = owner.Notes,
@@ -144,12 +168,12 @@ namespace aptmgt.webui.Areas.Community.Controllers
                 flat => flat.FlatID,
                 (owner, flat) => new
                 {
-                    blockID = owner.blockName, 
+                    blockID = owner.blockName,
                     bkID = owner.flatID,
                     email = owner.email,
                     firstName = owner.firstName,
                     flatID = owner.flatNumber,
-                    flatNumber = flat.FlatNumber, 
+                    flatNumber = flat.FlatNumber,
                     lastName = owner.lastName,
                     mobileNumber = owner.mobileNumber,
                     notes = owner.Notes,
@@ -157,8 +181,20 @@ namespace aptmgt.webui.Areas.Community.Controllers
                     residentid = owner.residentid
                 }
             ).Select(own => own);
-            return Json(owners); 
+            return Json(owners);
+            */
         }
 
+
+        [Route("[action]")]
+        [HttpGet]
+        public JsonResult GetVisitorType()
+        {
+            var VisitorType = new List<string>();
+            VisitorType.Add("Delivery");
+            VisitorType.Add("House Service");
+            VisitorType.Add("Friend");
+            return Json(VisitorType);
+        }
     }
 }
