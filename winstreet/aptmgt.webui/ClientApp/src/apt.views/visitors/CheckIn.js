@@ -236,7 +236,7 @@ export default function CheckIn() {
         await API.post('/Visitors', requestBody, config)
             .then(communityData => {
                 console.log(communityData);
-                setVisitorID(communityData.value.visitID);
+                setVisitorID(communityData.data.visitID);
             })
             .catch(function (response) {
                 console.log(response);

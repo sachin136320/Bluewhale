@@ -122,11 +122,9 @@ namespace aptmgt.webui.Areas.Community.Controllers
         [Route("[action]")]
         [HttpGet]
         public JsonResult GetAll(string communityID)
-        {
-
-            _logger.LogInformation("Community ID: " + communityID);
+        { 
             var flatList = appDBContext.CommunityFlats
-            .Join(
+                .Join(
                 appDBContext.CommunityBlock,
                 flat => flat.BlockID,
                 block => block.BlockID,
@@ -138,53 +136,34 @@ namespace aptmgt.webui.Areas.Community.Controllers
                 })
                 .Where(f => f.CommunityID == communityID)
                 .Select(all => all);
-
-            _logger.LogInformation(flatList.ToList().ToString());
+ 
             return Json(flatList);
-
-            /* var owners = appDBContext.OwnerMaster
-            .Where(com => com.CommunityID == communityID)
-            .Join(
-                appDBContext.CommunityBlock,
-                owner => owner.FlatID,
-                block => block.BlockID,
-                (owner, block) => new
-                {
-                    flatID = owner.FlatID,
-                    blockName = block.Blckname,
-                    email = owner.Email,
-                    firstName = owner.FirstName,
-                    flatNumber = owner.FlatNumber,
-                    lastName = owner.LastName,
-                    mobileNumber = owner.MobileNumber,
-                    Notes = owner.Notes,
-                    occupied = owner.Occupied,
-                    residentid = owner.ResidentID
-                }
-            )
-            .Join(
-                appDBContext.CommunityFlats,
-                owner => owner.flatNumber,
-                flat => flat.FlatID,
-                (owner, flat) => new
-                {
-                    blockID = owner.blockName,
-                    bkID = owner.flatID,
-                    email = owner.email,
-                    firstName = owner.firstName,
-                    flatID = owner.flatNumber,
-                    flatNumber = flat.FlatNumber,
-                    lastName = owner.lastName,
-                    mobileNumber = owner.mobileNumber,
-                    notes = owner.Notes,
-                    occupied = owner.occupied,
-                    residentid = owner.residentid
-                }
-            ).Select(own => own);
-            return Json(owners);
-            */
         }
 
+        [Route("[action]")]
+        [HttpGet]
+        public JsonResult GetAllVisitor(string communityID)
+        { 
+            var visitorList = appDBContext.VisitorDetails
+                .Where(f => f.CommunityID == communityID)
+                .Join(
+                appDBContext.OwnerMaster,
+                visitor => visitor.CommunityID,
+                owner => owner.CommunityID,
+                (visitor, owner) => new
+                {
+                    Name = visitor.Name,
+                    Phone = visitor.MobileNumber,
+                    HostName = owner.FirstName + " " + owner.LastName,
+                    HostPhone = owner.MobileNumber,
+                    CheckinDate = visitor.CheckInDate,
+                    CheckOutDate = visitor.CheckOutDate,
+                    VisitID = visitor.VisitID
+                })
+                .Select(all => all);
+ 
+            return Json(visitorList);
+        }
 
         [Route("[action]")]
         [HttpGet]
@@ -196,5 +175,21 @@ namespace aptmgt.webui.Areas.Community.Controllers
             VisitorType.Add("Friend");
             return Json(VisitorType);
         }
+
+        [Route("[action]")]
+        [HttpGet]
+        public JsonResult CheckOut(string visitid)
+        {
+            var visitorList = appDBContext.VisitorDetails
+                .Where(f => f.VisitID == visitid).FirstOrDefault();
+            visitorList.CheckOutDate = System.DateTime.Now.ToString();
+
+            
+            appDBContext.VisitorDetails.Update(visitorList);
+            appDBContext.SaveChanges();
+
+            return Json(visitorList.CheckOutDate);
+        }
+
     }
 }

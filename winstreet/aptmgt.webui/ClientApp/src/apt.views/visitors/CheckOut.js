@@ -46,6 +46,9 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 export default function CheckOut() {
+
+    const { communityid, setCommunityID } = useContext(UserContext);
+ 
     const columns = [
         { title: 'Visitor Name', field: 'visitorname', editable: 'never', type: 'text' },
         { title: 'Visitor Phone', field: 'visitorphone', editable: 'never', type: 'text' },
@@ -55,8 +58,68 @@ export default function CheckOut() {
         { title: 'CheckOut time', field: 'checkouttime', type: 'text' },
     ];
 
-    const data = [
-    ];
+    const [data, setData] = useState([]);
+
+
+    useEffect(() => {
+        async function loadVisitorList(commid) {
+            const token = await authService.getAccessToken();
+            await API.get('/Visitors/GetAllVisitor', {
+                params: {
+                    communityID: commid
+                },
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            }).then(({ data }) => {
+                const dataRows = [];
+                data.map(function (value, key) {
+                    let obj = {
+                        visitorname: value.name,
+                        visitorphone: value.phone,
+                        hostname: value.hostName,
+                        hostphone: value.hostPhone,
+                        checkintime: value.checkInDate,
+                        checkouttime: value.checkOutDate,
+                        visitid: value.visitid
+                    };
+                    dataRows.push(obj);
+                });
+                setData(dataRows);
+            });
+        }
+
+        //Execute the created function directly
+        if (!communityid) {
+            alert("Please select community ID.")
+        } else {
+            loadVisitorList(communityid);
+        }
+
+    }, []);
+
+    const handleCheckOutEvent = async (newData) => {
+        console.log(newData); 
+        const token = await authService.getAccessToken();
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await API.get.get('/Visitors/CheckOut', {
+            params: {
+                visitid: newData.visitid
+            },
+            config
+        })
+            .then(communityData => {
+                console.log(communityData);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
+    }
 
     return (
         <MaterialTable
@@ -67,8 +130,12 @@ export default function CheckOut() {
             actions={[
                 {
                     icon: 'save',
-                    tooltip: 'Checkout User',
-                    onClick: (event, rowData) => alert("Checkout : " + rowData.name)
+                    tooltip: 'Checkout User', 
+                    onClick: (event, rowData) =>
+                        new Promise((resolve, reject) => {
+                            handleCheckOutEvent(rowData);
+                            resolve();
+                        })
                 }
             ]}
         />

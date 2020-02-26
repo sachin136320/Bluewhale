@@ -14,6 +14,7 @@ namespace aptmgt.entity.user
         public string Name { get; set; }
         public string NumberOfVisitor { get; set; }
         public string CheckInDate { get; set; }
+        public string CheckOutDate { get; set; }
 
         public string CommunityID { get; set; }
         [ForeignKey("CommunityID")]
