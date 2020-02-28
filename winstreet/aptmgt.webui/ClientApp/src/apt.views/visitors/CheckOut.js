@@ -1,15 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import MaterialTable from "material-table";
-import { makeStyles } from "@material-ui/core/styles";
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardBody from "components/Card/CardBody.js";
-
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Table from "components/Table/Table.js";
-
+import { makeStyles } from "@material-ui/core/styles"; 
 import { UserContext } from "store/UserContext";
 import API from "apt.utils/API.js";
 import authService from 'components/Authorization/AuthorizeService.js';
@@ -69,7 +60,7 @@ export default function CheckOut() {
                     communityID: commid
                 },
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-            }).then(({ data }) => {
+            }).then(({ data }) => { 
                 const dataRows = [];
                 data.map(function (value, key) {
                     let obj = {
@@ -77,9 +68,9 @@ export default function CheckOut() {
                         visitorphone: value.phone,
                         hostname: value.hostName,
                         hostphone: value.hostPhone,
-                        checkintime: value.checkInDate,
+                        checkintime: value.checkinDate,
                         checkouttime: value.checkOutDate,
-                        visitid: value.visitid
+                        visitid: value.visitID
                     };
                     dataRows.push(obj);
                 });
@@ -96,31 +87,40 @@ export default function CheckOut() {
 
     }, []);
 
-    const handleCheckOutEvent = async (newData) => {
-        console.log(newData); 
-        const token = await authService.getAccessToken();
-        const config = {
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        };
+    const handleCheckOutEvent1 = async(checkoutrow) => { 
+        const token = await authService.getAccessToken(); 
 
-        await API.get.get('/Visitors/CheckOut', {
+        await API.get('/Visitors/CheckOut', {
             params: {
-                visitid: newData.visitid
+                visitid: checkoutrow.visitid
             },
-            config
-        })
-            .then(communityData => {
-                console.log(communityData);
-            })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
-            });
-    }
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }).then(( checkouttime ) => {  
+            let tempData = data;
+            const index = tempData.indexOf(checkoutrow);
+            checkoutrow.checkouttime = checkouttime.data;
+            tempData[index] = checkoutrow; 
+            const dataRows = [];
+            tempData.map(function (value, key) {
+                let obj = {
+                    visitorname: value.visitorname,
+                    visitorphone: value.visitorphone,
+                    hostname: value.hostname,
+                    hostphone: value.hostphone,
+                    checkintime: value.checkintime,
+                    checkouttime: value.checkouttime,
+                    visitid: value.visitid
+                };
+                dataRows.push(obj);
+            }); 
+            setData(dataRows);
 
+        }).catch(function (response) {
+            //handle error
+            console.log(response);
+        });;
+    } 
+    
     return (
         <MaterialTable
             title=""
@@ -133,7 +133,7 @@ export default function CheckOut() {
                     tooltip: 'Checkout User', 
                     onClick: (event, rowData) =>
                         new Promise((resolve, reject) => {
-                            handleCheckOutEvent(rowData);
+                            handleCheckOutEvent1(rowData);
                             resolve();
                         })
                 }
