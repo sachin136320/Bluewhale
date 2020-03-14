@@ -6,25 +6,19 @@ namespace aptmgt.entity.assets
 {
     public class ServiceDetails
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public string ServiceDetailID { get; set; }
-
+        public string ServiceFrequencyinDays { get; set; } // in terms of days
+        public DateTime NextServiceDate { get; set; }
+        public DateTime ServiceDoneDate { get; set; } 
+        public string ServiceNotes {get; set;}
+        public DateTime InsertDateTime { get; set; }
         public string CommunityId { get; set; }
         [ForeignKey("CommunityId")]
         public community.CommunityDetails ParentCommunity { get; set; }
-
-        public DateTime InsertDateTime { get; set; }
         public string AssetId { get; set; }
-        public string Asset_NR { get; set; }
-        public string Asset_Name { get; set; }
-        public string Asset_service_Freq { get; set; }
-        public DateTime Asset_last_servce { get; set; }
-        public string Asset_service_flag { get; set; }
-        public DateTime Asset_next_service { get; set; }
-        public DateTime Asset_service_date { get; set; }
+        [ForeignKey("AssetId")]
+        public AssetDetails AssetDetails { get; set; }
     }
-
-
 }

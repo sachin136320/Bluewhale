@@ -28,41 +28,62 @@ namespace aptmgt.webui.Data
 
             base.OnModelCreating(modelBuilder);
         }
-         
-        public DbSet<CommunityUser> CommunityUser { get; set; }
+
+
+        #region Community
         public DbSet<entity.builder.Builder> Builder { get; set; }
         public DbSet<CommunityBlock> CommunityBlock { get; set; }
         public DbSet<CommunityDetails> CommunityDetails { get; set; }
         public DbSet<CommunityFlats> CommunityFlats { get; set; }
-        public DbSet<AssetRequest> AssetRequest { get; set; }
+        #endregion Community
+
+        #region AssestRelatedTables 
         public DbSet<AssetDetails> AssetDetails { get; set; }
-
-        public DbSet<VisitorDetails> VisitorDetails { get; set; }
-
         public DbSet<ServiceDetails> ServiceDetails { get; set; }
         public DbSet<ServiceHistory> ServiceHistory { get; set; }
+        #endregion AssestRelatedTables
+
+        #region Visitor
+        public DbSet<VisitorDetails> VisitorDetails { get; set; }
+        #endregion Visitor
+
+        #region Facility
         public DbSet<entity.facility.FacilityBooking> FacilityBooking { get; set; }
         public DbSet<entity.facility.FacilityBookingHistory> FacilityBookingHistory { get; set; }
         public DbSet<entity.facility.FacilityMaster> FacilityMaster { get; set; }
-        public DbSet<entity.parking.ParkingAssignment> ParkingAssignment { get; set; }
-        public DbSet<entity.parking.ParkingAssignmentHistory> ParkingAssignmentHistory { get; set; }
+        #endregion Facility
 
+        #region ParkingManagement 
+        //public DbSet<entity.parking.ParkingAssignment> ParkingAssignment { get; set; }
+        //public DbSet<entity.parking.ParkingAssignmentHistory> ParkingAssignmentHistory { get; set; }
+        #endregion ParkingManagement 
+
+        #region User
+        public DbSet<CommunityUser> CommunityUser { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<OwnerMaster> OwnerMaster { get; set; }
         public DbSet<Role> Role { get; set; }
-        public DbSet<entity.vehicles.VehicleDetails> VehicleDetails { get; set; }
-        public DbSet<entity.vehicles.VehicleDetailsHistory> VehicleDetailsHistory { get; set; }
+        #endregion User
 
-        public DbSet<entity.Accounts.Account> Account { get; set; }
-        public DbSet<entity.Accounts.Expense> Expense { get; set; }
-        public DbSet<entity.Accounts.maintMaster> maintMaster { get; set; }
-        public DbSet<entity.Accounts.MonthlyMaint> MonthlyMaint { get; set; }
-        public DbSet<entity.Accounts.SourceOthers> SourceOthers { get; set; }
-        public DbSet<entity.Accounts.TransactionMaster> TransactionMaster { get; set; }
+        #region Vehicle
+        //public DbSet<entity.vehicles.VehicleDetails> VehicleDetails { get; set; }
+        //public DbSet<entity.vehicles.VehicleDetailsHistory> VehicleDetailsHistory { get; set; }
+        #endregion Vehicle
 
-        public DbSet<entity.poll.Poll> Poll { get; set; }
-        public DbSet<entity.poll.PollQuestion> PollQuestion { get; set; }
-        public DbSet<entity.poll.PollResponse> PollResponse { get; set; }
+        #region Accounts
+        //public DbSet<entity.Accounts.Account> Account { get; set; }
+        //public DbSet<entity.Accounts.Expense> Expense { get; set; }
+        //public DbSet<entity.Accounts.maintMaster> maintMaster { get; set; }
+        //public DbSet<entity.Accounts.MonthlyMaint> MonthlyMaint { get; set; }
+        //public DbSet<entity.Accounts.SourceOthers> SourceOthers { get; set; }
+        //public DbSet<entity.Accounts.TransactionMaster> TransactionMaster { get; set; }
+        #endregion Accounts
+
+        #region Polls
+        //public DbSet<entity.poll.Poll> Poll { get; set; }
+        //public DbSet<entity.poll.PollQuestion> PollQuestion { get; set; }
+        //public DbSet<entity.poll.PollResponse> PollResponse { get; set; }
+        #endregion Polls
 
 
 

@@ -27,20 +27,28 @@ namespace aptmgt.entity.assets
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string AssetId {get; set;}
+        public string AssetId { get; set; }
 
+        public string AssetName { get; set; }
+        public string Purpose { get; set; }
+        public string Cost {get; set;}
+        public string RequestDate {get; set;}
+        public string RequestStatus {get; set;} //Open, Closed
+        public string AssestStatus {get; set;} //InProgress, Procured, Cancelled, Approved, Rejected
+
+        public string AssetType { get; set; } //General Purpose, Eletrical etc
+        public string AssetCategory { get; set; } //Hazardous, Toxic, NonToxic
+        public DateTime AssetProcureDate { get; set; }
+        public DateTime AssetApproveDate { get; set; }
+        public string Notes {get; set;} //if cancelled then why.. or any other notes
+
+        public bool AssetRequireServiceFlag { get; set; } 
+        
+        public DateTime InsertDateTime { get; set; }
         public string CommunityId { get; set; }
         [ForeignKey("CommunityId")]
         public community.CommunityDetails ParentCommunity { get; set; }
 
-        public DateTime Currdate { get; set; }
-        public string Asset_NR { get; set; }
-        public string Asset_name { get; set; }
-        public string Asset_Type { get; set; }
-        public string Asset_category { get; set; }
-        public string Asset_service_Freq { get; set; }
-        public DateTime Asset_last_servce { get; set; }
-        public string Asset_service_flag { get; set; }
-        public DateTime Asset_procure_Date { get; set; }
+
     }
 }

@@ -15,6 +15,7 @@ import Cloud from "@material-ui/icons/Cloud";
 import ProcureNewAsset from "apt.views/assets/ProcureNewAsset";
 import AddAsset from "apt.views/assets/AddAsset";
 import ServiceRecord from "apt.views/assets/ServiceRecord";
+import RequestNewAsset from "./RequestNewAsset";
 
 
 const styles = {
@@ -58,21 +59,21 @@ export default function AssetManagement() {
                     headerColor="primary"
                     tabs={[
                         {
-                            tabName: "Procure New Asset",
+                            tabName: "New Request",
+                            tabIcon: Code,
+                            tabContent: (
+                                <RequestNewAsset />
+                            )
+                        },
+                        {
+                            tabName: "Procure",
                             tabIcon: Code,
                             tabContent: (
                                 <ProcureNewAsset />
                             )
-                        },
+                        }, 
                         {
-                            tabName: "Add Assets",
-                            tabIcon: VerifiedUser,
-                            tabContent: (
-                                <AddAsset />
-                            )
-                        },
-                        {
-                            tabName: "Service Record",
+                            tabName: "Service & Maintainence",
                             tabIcon: Cloud,
                             tabContent: (
                                 <ServiceRecord />
@@ -80,26 +81,7 @@ export default function AssetManagement() {
                         }
                     ]}
                 />
-            </GridItem>
-            {/*<GridItem xs={12} sm={12} md={4}>
-                <Card profile>
-                    <CardAvatar profile>
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                            <img src={avatar} alt="..." />
-                        </a>
-                    </CardAvatar>
-                    <CardBody profile>
-                        <h2 className={classes.cardCategory}>Name</h2>
-                        <h5 className={classes.cardTitle}>Flat No</h5>
-                        <h5 className={classes.cardTitle}>Owner Type</h5>
-                        <h5 className={classes.cardTitle}>Contact Number</h5> 
-                    </CardBody>
-                </Card>
-
-                <Button color="primary" round>
-                Share
-                </Button>
-                </GridItem>*/}
+            </GridItem> 
         </GridContainer>
     );
 }

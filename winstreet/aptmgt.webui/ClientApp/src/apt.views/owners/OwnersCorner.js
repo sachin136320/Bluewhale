@@ -15,10 +15,7 @@ import { bugs, website, server } from "variables/general.js";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
  
-import ModifyOwner1 from "apt.views/owners/ModifyOwner";
-import avatar from "assets/img/faces/marc.jpg";
-import Button from "components/CustomButtons/Button.js"; 
-import CardAvatar from "components/Card/CardAvatar.js";
+import ModifyOwner1 from "apt.views/owners/ModifyOwner"; 
 import Tenants from "apt.views/owners/Tenants.js";
 
 
