@@ -23,29 +23,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace aptmgt.entity.assets
 {
-    public class AssetDetails
+    public class AssetRequest
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string AssetId { get; set; }
+        public string AssetRequestId { get; set; }
 
-        public string Name { get; set; }        
-        public string Type { get; set; } //General Purpose, Eletrical etc
-        public string Category { get; set; } //Hazardous, Toxic, NonToxic
-
-
-        public string Description { get; set; }
+        public string Name { get; set; }
+        public string Purpose { get; set; }
+        public string EstimatedCost {get; set;}
         public string ActualCost {get; set;}
-        public string Notes {get; set;} //if cancelled then why.. or any other notes
+        public string RequestDate {get; set;}
+        public string RequestStatus {get; set;} //Open, Closed
+        
+        public string ApprovalStatus {get; set;} 
+        //Approved, Rejected
+        public DateTime ApproveDate { get; set; }
+        
+        public string ProcurementStatus {get; set;} 
+        //InProgress, Procured, Cancelled
+        public DateTime ProcureDate { get; set; }
 
 
+        public string Notes {get; set;} 
+        //if cancelled then why.. or any other notes
         public DateTime InsertDateTime { get; set; }
         public string CommunityId { get; set; }
         [ForeignKey("CommunityId")]
-        public community.CommunityDetails ParentCommunity { get; set; }
-
-        public string AssetRequestId { get; set; }
-        [ForeignKey("AssetRequestId")]
-        public AssetRequest AssetRequest { get; set; }
+        public community.CommunityDetails ParentCommunity { get; set; } 
     }
 }

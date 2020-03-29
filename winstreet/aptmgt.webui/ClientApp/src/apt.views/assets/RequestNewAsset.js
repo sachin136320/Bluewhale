@@ -89,7 +89,7 @@ export default function RequestNewAsset() {
     const [estimatedcost, setEstimatedCost] = useState('');
 
     const [assetstatus, setAssetStatus] = useState('New');
-    const [requeststatus, setRequestStatus] = useState('New');
+    const [requeststatus, setRequestStatus] = useState('');
     const [requestnumber, setRequestNumber] = useState('Not Generated');
 
     useEffect(() => { 
@@ -103,13 +103,12 @@ export default function RequestNewAsset() {
 
         //call api to save visitor details 
         const requestBody = JSON.stringify({
-            AssetName: assetname,
+            Name: assetname,
             Purpose: assetpurpose,
-            Cost: estimatedcost,
+            EstimatedCost: estimatedcost,
             RequestDate: moment().format('MMMM Do YYYY, h:mm:ss a'),
-            RequestStatus: requeststatus,
-            CommunityID: communityid,
-            AssestStatus: assetstatus
+            RequestStatus: 'open',
+            CommunityID: communityid
         });
         const token = await authService.getAccessToken();
         const config = {
@@ -121,7 +120,7 @@ export default function RequestNewAsset() {
 
         await API.post('/Asset/New', requestBody, config)
             .then(communityData => {  
-                setRequestNumber(communityData.data.assetId);
+                setRequestNumber(communityData.data.assetRequestId);
                 setRequestStatus(communityData.data.requestStatus);
             })
             .catch(function (response) {

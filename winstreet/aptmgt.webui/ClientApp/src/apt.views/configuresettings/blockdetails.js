@@ -172,10 +172,7 @@ export default function BlockDetails() {
 
     };
 
-    const updateBlockDetail = async (newData, oldData) => {
-        console.log(newData);
-        console.log(oldData);
-
+    const updateBlockDetail = async (newData, oldData) => {  
         const requestBody = JSON.stringify({
             Blckname: newData.blockName,
             NumberofFloors: parseInt(newData.numberOfFloors),

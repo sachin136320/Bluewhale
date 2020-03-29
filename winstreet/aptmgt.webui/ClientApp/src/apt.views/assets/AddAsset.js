@@ -3,15 +3,12 @@ import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Card from "components/Card/Card.js";
-
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import VerifiedUser from "@material-ui/icons/VerifiedUser";
-import Code from "@material-ui/icons/Code";
 import { UserContext } from "store/UserContext";
 import API from "apt.utils/API.js";
 import authService from 'components/Authorization/AuthorizeService.js';
-import moment from 'moment';
+import TextField from '@material-ui/core/TextField';
+import Button from "components/CustomButtons/Button.js";
+import AddAssetDetails from "./AddAssetDetails";
 
 const styles = {
     cardCategoryWhite: {
@@ -68,46 +65,37 @@ const AssetStatusOptions = [
 const useStyles = makeStyles(styles);
 
 const columns = [
-    { title: 'Asset Name', field: 'assetname', type: 'text' },
-    { title: 'Purpose', field: 'purpose', type: 'text' },
-    { title: 'Cost', field: 'cost', type: 'text' },
-    { title: 'Request Date', field: 'requestdate', type: 'text' },
-    { title: 'Request Status', field: 'requeststatus', type: 'text' },
-    { title: 'Asset Status', field: 'assetstatus', type: 'text' },
-    { title: 'Approved', field: 'approved', type: 'text' }
+    { title: 'Asset Name', field: 'name', type: 'string' },
+    { title: 'Actual Cost', field: 'actualcost', type: 'string' },
+    { title: 'Notes', field: 'notes', type: 'string' }
 ]
 
 export default function AddAsset() {
 
-    const [openrequestdata, setOpenRequestData] = useState([]);
-    const [assetactualcost, setAssetActualCost] = useState('');
-    const [assetnotes, setAssetNotes] = useState('');
+    const [procuredrequestdata, setProcuredRequestData] = useState([]);
 
     const { communityid, setCommunityID } = useContext(UserContext);
 
     useEffect(() => {
-        async function loadOpenRequest(commid) {
+        async function loadProcuredRequest(commid) {
             const token = await authService.getAccessToken();
-            await API.get('/Asset/GetAllOpenRequest', {
+            await API.get('/Asset/GetRecentlyProcuredAsset', {
                 params: {
                     communityID: commid
                 },
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-            }).then(({ data }) => {
+            }).then(({ data }) => { 
                 const dataRows = [];
                 data.map(function (value, key) {
                     let obj = {
-                        assetname: value.AssetName,
-                        purpose: value.purpose,
-                        cost: value.cost,
-                        requestdate: value.requestDate,
-                        assetstatus: value.AssetStatus,
-                        approved: value.approved,
-                        assetid: value.assetid
+                        name: value.name,
+                        actualcost: value.actualCost,
+                        notes: value.notes,
+                        assetRequestID: value.assetRequestId
                     };
                     dataRows.push(obj);
                 });
-                setOpenRequestData(dataRows);
+                setProcuredRequestData(dataRows);
             });
         }
 
@@ -115,127 +103,24 @@ export default function AddAsset() {
         if (!communityid) {
             alert("Please select community ID.")
         } else {
-            loadOpenRequest(communityid);
+            loadProcuredRequest(communityid);
         }
 
     }, []);
 
-    const handleProcuredEvent = async (assetid) => {
-        const token = await authService.getAccessToken();
-        await API.get('/Asset/ProcureAsset', {
-            params: {
-                communityID: commid,
-                assetID: assetid
-            },
-            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }).then(({ data }) => {
-            const dataRows = [];
-            data.map(function (value, key) {
-                let obj = {
-                    assetname: value.AssetName,
-                    purpose: value.purpose,
-                    cost: value.cost,
-                    requestdate: value.requestDate,
-                    assetstatus: value.AssetStatus,
-                    approved: value.approved,
-                    assetid: value.assetid
-                };
-                dataRows.push(obj);
-            });
-            setOpenRequestData(dataRows);
-        });
-    };
-
-    const handleApproveEvent = async () => {
-
-        const token = await authService.getAccessToken();
-        await API.get('/Asset/ApproveAsset', {
-            params: {
-                communityID: commid,
-                assetID: assetid
-            },
-            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }).then(({ data }) => {
-            const dataRows = [];
-            data.map(function (value, key) {
-                let obj = {
-                    assetname: value.AssetName,
-                    purpose: value.purpose,
-                    cost: value.cost,
-                    requestdate: value.requestDate,
-                    assetstatus: value.AssetStatus,
-                    approved: value.approved,
-                    assetid: value.assetid
-                };
-                dataRows.push(obj);
-            });
-            setOpenRequestData(dataRows);
-        });
-    };
-
-    const handleUnApproveEvent = async () => {
-
-    };
 
     return (
         <MaterialTable
             title="All open requests"
             columns={columns}
-            data={openrequestdata}
+            data={procuredrequestdata}
             detailPanel={rowData => {
                 return (
-                    <GridContainer>
-                        <GridItem xs={12} sm={6} md={6}>
-                            <TextField
-                                labelText="Actual Cost"
-                                id="actualcost"
-                                label="Actual Cost"
-                                value={assetactualcost}
-                                onChange={e => setAssetActualCost(e.target.value)}
-                                className={classes.textField}
-                                margin="normal"
-                                fullWidth
-                            />
-                        </GridItem>
-                        <GridItem xs={12} sm={12} md={12}>
-                            <TextField
-                                id="assetnotes"
-                                label="Notes"
-                                className={classes.textField}
-                                onChange={e => setAssetNotes(e.target.value)}
-                                margin="normal"
-                                multiline
-                                rowsMax="5"
-                                value={assetnotes}
-                                fullWidth
-                            />
-                        </GridItem>
-
-                        <GridItem xs={12} sm={6} md={6}>
-                            <Button
-                                color="primary"
-                                round
-                                onClick={handleProcuredEvent}>
-                                Procured
-                            </Button>
-                        </GridItem>
-                        <GridItem xs={12} sm={6} md={6}>
-                            <Button
-                                color="primary"
-                                round
-                                onClick={handleApproveEvent}>
-                                Approved
-                            </Button>
-                        </GridItem>
-                        <GridItem xs={12} sm={6} md={6}>
-                            <Button
-                                color="primary"
-                                round
-                                onClick={handleUnApproveEvent}>
-                                Not Approved
-                            </Button>
-                        </GridItem>
-                    </GridContainer>
+                    <AddAssetDetails
+                        tableData={procuredrequestdata}
+                        tableDataEvent={setProcuredRequestData}
+                        option={rowData}
+                    />
                 )
             }}
             onRowClick={(event, rowData, togglePanel) => togglePanel()}

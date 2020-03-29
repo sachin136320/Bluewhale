@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import { UserContext } from "store/UserContext";
+import API from "apt.utils/API.js";
+import authService from 'components/Authorization/AuthorizeService.js';
 import Card from "components/Card/Card.js";
-import MaterialTable from "material-table"; 
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.js";
+import ServiceHistory from "./ServiceHistory";
 
 import {
   successColor,
@@ -77,86 +75,141 @@ const styles = {
     marginRight: 1,
     width: 200,
   },
-};
-
-const TableData = [
-  { title: 'Name', field: 'name', editable: 'onUpdate' },
-  { title: 'Surname', field: 'surname', editable: 'never' },
-  { title: 'Flat', field: 'flatNumber', type: 'text' },
-  {
-    title: 'Block',
-    field: 'block',
-    lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-  },
-];
-const data = [
-  { name: 'Mehmet', surname: 'Baran', flatNumber: 'D', block: 63 },
-  { name: 'Zerya Betül', surname: 'Baran', flatNumber: 'D', block: 34 },
-];
+}; 
+ 
 const useStyles = makeStyles(styles);
 
+const columns = [
+  { title: 'Asset Name', field: 'assetname', type: 'string' },
+  { title: 'Serviceable', field: 'serviceable', type: 'boolean' },
+  { title: 'Service Frequency', field: 'servicefrequency', type: 'string' },
+  { title: 'Last Service Date', field: 'lastservicedate', type: 'date' },
+  { title: 'Last Service Notes', field: 'lastservicenotes', type: 'string' },
+  { title: 'Next Service Date', field: 'nextservicedate', type: 'date' }
+]
+
 export default function ServiceRecord() {
+
   const classes = useStyles();
+  const { communityid, setCommunityID } = useContext(UserContext);
+
+  const [assetservicedata, setAssetServiceData] = useState([]); 
+
+  useEffect(() => {
+    async function loadOpenRequest(commid) {
+        const token = await authService.getAccessToken();
+        await API.get('/Asset/GetServiceDetails', {
+            params: {
+                communityID: commid
+            },
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }).then(({ data }) => {
+            const dataRows = [];
+            data.map(function (value, key) {   
+              console.log(value);
+                let obj = {
+                    assetname: value.name,
+                    serviceable: value.requireServiceFlag,
+                    servicefrequency: value.serviceFrequencyinDays,
+                    lastservicedate: value.lastServiceDoneDate,
+                    lastservicenotes: value.lastServiceNotes,
+                    nextservicedate: value.nextServiceDate,
+                    servicedetailid: value.serviceDetailID,
+                    assetid: value.assetid
+                };
+                dataRows.push(obj);
+            });
+            setAssetServiceData(dataRows);
+        });
+    }
+
+    //Execute the created function directly
+    if (!communityid) {
+        alert("Please select community ID.")
+    } else {
+        loadOpenRequest(communityid);
+    }
+
+}, []);
+
+
+const updateServiceDetail = async (newData, oldData) => { 
+
+  const requestBody = JSON.stringify({ 
+    RequireServiceFlag: newData.serviceable,
+    ServiceFrequencyinDays: newData.servicefrequency,
+    LastServiceDoneDate: newData.lastservicedate,
+    LastServiceNotes: newData.lastservicenotes,
+    NextServiceDate: newData.nextservicedate,
+    ServiceDetailID: newData.servicedetailid,
+    assetId: newData.assetid 
+  });
+ 
+  const token = await authService.getAccessToken();
+  const config = {
+      headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+      }
+  };
+
+  await API.post('/Asset/UpdateServiceDetails', requestBody, config)
+      .then(communityData => { 
+          let tempData = assetservicedata;
+          const index = tempData.indexOf(oldData);
+          tempData[index] = newData;
+          const dataRows = [];
+          tempData.map(function (value, key) {
+              let obj = {
+                assetname: value.name,
+                serviceable: value.requireServiceFlag,
+                servicefrequency: value.serviceFrequencyinDays,
+                lastservicedate: value.lastServiceDoneDate,
+                lastservicenotes: value.lastServiceNotes,
+                nextservicedate: value.nextServiceDate,
+                servicedetailid: value.serviceDetailID,
+                assetid: value.assetId
+              };
+              dataRows.push(obj);
+          });
+          setAssetServiceData(dataRows);
+
+      })
+      .catch(function (response) { 
+          console.log(response);
+      });
+}
+
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <MaterialTable
-            title="hj"
-            columns={TableData}
-            data={data}
+            title="Service Details"
+            columns={columns}
+            data={assetservicedata}
             options={{
               selection: true,
               filtering: true
-            }}
-            actions={[
-              {
-                tooltip: 'Procured',
-                icon: 'delete',
-                onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
-              },
-              {
-                tooltip: 'Not Procured',
-                icon: 'delete',
-                onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
-              },
-              {
-                tooltip: 'Approved',
-                icon: 'delete',
-                onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
-              },
-              {
-                tooltip: 'Reject',
-                icon: 'delete',
-                onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
-              }
-            ]}
-            editable={{
+            }} 
+
+            editable={{ 
               onRowUpdate: (newData, oldData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    {
-                      const data = this.state.data;
-                      const index = data.indexOf(oldData);
-                      data[index] = newData;
-                      this.setState({ data }, () => resolve());
-                    }
-                    resolve()
-                  }, 1000)
-                }),
-              onRowDelete: oldData =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    {
-                      let data = this.state.data;
-                      const index = data.indexOf(oldData);
-                      data.splice(index, 1);
-                      this.setState({ data }, () => resolve());
-                    }
-                    resolve()
-                  }, 1000)
-                }),
-            }}
+                  new Promise((resolve, reject) => {
+                      updateServiceDetail(newData, oldData);
+                      resolve();
+                  }) 
+          }}
+            detailPanel={rowData => {
+              return (
+                  <ServiceHistory 
+                      assetid={rowData.assetid}
+                      servicedtlid = {rowData.servicedetailid}
+                  />
+              )
+          }}
+          onRowClick={(event, rowData, togglePanel) => togglePanel()}
           />
         </Card>
       </GridItem>

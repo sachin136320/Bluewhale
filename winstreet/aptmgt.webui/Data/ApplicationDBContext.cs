@@ -38,7 +38,8 @@ namespace aptmgt.webui.Data
         #endregion Community
 
         #region AssestRelatedTables 
-        public DbSet<AssetDetails> AssetDetails { get; set; }
+        public DbSet<AssetDetails> AssetDetails { get; set; }        
+        public DbSet<AssetRequest> AssetRequest { get; set; }
         public DbSet<ServiceDetails> ServiceDetails { get; set; }
         public DbSet<ServiceHistory> ServiceHistory { get; set; }
         #endregion AssestRelatedTables
