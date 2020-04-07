@@ -65,13 +65,6 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/typography",
-    name: "Housekeeping", 
-    icon: LibraryBooks,
-    component: HouseKeeping, //Typography, //HouseKeeping,
-    layout: "/admin"
-  },
-  {
     path: "/icons",
     name: "Visitor Management", 
     icon: BubbleChart,
@@ -93,13 +86,6 @@ const dashboardRoutes = [
     layout: "/admin", // "/rtl"
   },
   {
-    path: "/notifications",
-    name: "Notifications", 
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin"
-  },
-  {
     path: "/configurebasicsettings",
     name: "Configure Basic Settings", 
     icon: SettingsTowTone,
@@ -112,12 +98,25 @@ export default dashboardRoutes;
 
 
 /*
-,
   {
-    path: "/user",
-    name: "Facility Booking", 
-    icon: Person,
-    component: FacilityBooking, //UserProfile,
+    path: "/typography",
+    name: "Housekeeping", 
+    icon: LibraryBooks,
+    component: HouseKeeping, //Typography, //HouseKeeping,
     layout: "/admin"
-  }
+  },
+  {
+    path: "/notifications",
+    name: "Notifications", 
+    icon: Notifications,
+    component: NotificationsPage,
+    layout: "/admin"
+  },
+  {
+      path: "/user",
+      name: "Facility Booking", 
+      icon: Person,
+      component: FacilityBooking, //UserProfile,
+      layout: "/admin"
+  },
 */

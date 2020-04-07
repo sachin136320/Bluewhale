@@ -19,6 +19,7 @@ import Search from "@material-ui/icons/Search";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import { LoginMenu1 } from "components/Authorization/LoginMenu1"; 
+import { LoginMenu } from "components/Authorization/LoginMenu"; 
 import { UserContext } from "store/UserContext";
 
 import API from "apt.utils/API.js";
@@ -123,27 +124,6 @@ const handleCommunityNameChange = async (event) => {
 
   return (
     <div>
-      {/*
-       SEARCH BUTTON AND EDIT BOX
-       */}
-      { /*
-      <div className={classes.searchWrapper}>
-        <CustomInput
-          formControlProps={{
-            className: classes.margin + " " + classes.search
-          }}
-          inputProps={{
-            placeholder: "Search",
-            inputProps: {
-              "aria-label": "Search"
-            }
-          }}
-        />
-        <Button color="white" aria-label="edit" justIcon round>
-          <Search />
-        </Button>
-      </div>
-        */ }
 
       <div className={classes.manager}>
         <TextField
@@ -223,25 +203,8 @@ const handleCommunityNameChange = async (event) => {
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
-                  <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Settings
-                    </MenuItem>
-                    <Divider light />
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >  <LoginMenu1 />
-                    </MenuItem>
+                  <MenuList role="menu"> 
+                    <LoginMenu />
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -254,6 +217,7 @@ const handleCommunityNameChange = async (event) => {
       {/*
         Notification icon just after dashbboard icon
         */}
+        {/*
       <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -294,8 +258,7 @@ const handleCommunityNameChange = async (event) => {
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseNotification}>
-                  <MenuList role="menu">
-                    {/** Get the list of notification for user from api and show here */}
+                  <MenuList role="menu"> 
                     <MenuItem
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
@@ -333,9 +296,50 @@ const handleCommunityNameChange = async (event) => {
           )}
         </Poppers>
       </div>
-
+            */}
 
 
     </div>
   );
 }
+
+
+      /*
+       SEARCH BUTTON AND EDIT BOX
+       */
+        /*
+        <div className={classes.searchWrapper}>
+          <CustomInput
+            formControlProps={{
+              className: classes.margin + " " + classes.search
+            }}
+            inputProps={{
+              placeholder: "Search",
+              inputProps: {
+                "aria-label": "Search"
+              }
+            }}
+          />
+          <Button color="white" aria-label="edit" justIcon round>
+            <Search />
+          </Button>
+        </div>
+          */ 
+/*
+<MenuList role="menu">
+                    <MenuItem
+                      onClick={handleCloseProfile}
+                      className={classes.dropdownItem}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleCloseProfile}
+                      className={classes.dropdownItem}
+                    >
+                      Settings
+                    </MenuItem>
+                    <Divider light /> 
+                    <LoginMenu />
+                  </MenuList>
+*/
