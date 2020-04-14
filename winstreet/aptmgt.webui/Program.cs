@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using aptmgt.entity.user;
 
 namespace aptmgt.webui
 {
@@ -20,7 +23,23 @@ namespace aptmgt.webui
             try
             {
                 logger.Debug("init main");
-                CreateWebHostBuilder(args).Build().Run();
+                var host = CreateWebHostBuilder(args).Build();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var serviceProvider = scope.ServiceProvider;
+                    try
+                    {
+                        var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                        UserAndRoleDataInitializer.SeedData(userManager, roleManager);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex.Message);
+                    }
+                }
+                host.Run();
+
             }
             catch (Exception exception)
             {

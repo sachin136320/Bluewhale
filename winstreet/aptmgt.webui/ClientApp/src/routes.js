@@ -20,101 +20,115 @@
 //https://takeai.silverpigeon.jp/icon-list-material-ui-30-nov-2018/
 
 // @material-ui/icons
+import React from "react";
 import HomeOutlined from "@material-ui/icons/HomeOutlined";
-import Person from "@material-ui/icons/Person";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import SettingsTowTone from "@material-ui/icons/SettingsTwoTone";
 import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
-import DashboardPage from "views/Dashboard/Dashboard.js";
-import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
-import Typography from "views/Typography/Typography.js";
-import Icons from "views/Icons/Icons.js";
-import Maps from "views/Maps/Maps.js";
-import NotificationsPage from "views/Notifications/Notifications.js";
-import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
-// core components/views for RTL layout
-import RTLPage from "views/RTLPage/RTLPage.js";
 
 import OwnersCorner from "apt.views/owners/OwnersCorner.js";
-import HouseKeeping from "apt.views/housekeeping/Housekeeping.js";
 import AptDashboard from "apt.views/dashboard/AptDashboard.js";
 import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSettings.js";
 import VisitorDashBoard from "apt.views/visitors/VisitorDashBoard.js";
 import AssetManagement from "apt.views/assets/AssetManagement";
 import Parking from "apt.views/parking/Parking.js";
-import FacilityBooking from "apt.views/facility/FacilityBooking"; 
-
-const dashboardRoutes = [
+import API from "apt.utils/API.js";
+import authService from 'components/Authorization/AuthorizeService.js';
+  
+const dashboardRoutes1 = [
   {
     path: "/dashboard",
-    name: "Home", 
-    icon: HomeOutlined,
+    name: "Home",
+    icon: "HomeOutlined",
     component: AptDashboard, //AptDashboard, //DashboardPage
     layout: "/admin"
   },
   {
     path: "/table",
-    name: "Owner's Corner", 
+    name: "Owner's Corner",
     icon: "content_paste",
     component: OwnersCorner, //TableList, //OwnersCorner,
     layout: "/admin"
   },
   {
     path: "/icons",
-    name: "Visitor Management", 
-    icon: BubbleChart,
+    name: "Visitor Management",
+    icon: "BubbleChart",
     component: VisitorDashBoard, //Icons,
     layout: "/admin"
   },
   {
     path: "/maps",
-    name: "Parking Management", 
-    icon: LocationOn,
+    name: "Parking Management",
+    icon: "LocationOn",
     component: Parking, //Maps,
     layout: "/admin"
   },
   {
     path: "/rtl-page",
-    name: "Asset Management", 
-    icon: Language,
+    name: "Asset Management",
+    icon: "Language",
     component: AssetManagement, //RTLPage,
     layout: "/admin", // "/rtl"
   },
   {
     path: "/configurebasicsettings",
-    name: "Configure Basic Settings", 
-    icon: SettingsTowTone,
+    name: "Configure Basic Settings",
+    icon: "SettingsTowTone",
     component: ConfigureBasicSettings,
     layout: "/admin"
   }
 ];
 
-export default dashboardRoutes;
+function functionReponse() {
+  //const sections = await loadData(); 
+  const Components = {
+    AptDashboard: AptDashboard,
+    OwnersCorner: OwnersCorner,
+    VisitorDashBoard: VisitorDashBoard,
+    Parking: Parking,
+    AssetManagement: AssetManagement,
+    ConfigureBasicSettings: ConfigureBasicSettings
+  };
 
+  const token = authService.getAccessToken();
+
+  API.get('/SideBar', {
+    headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+  }).then(({ data }) => {
+    data.map((prop, key) => {
+      prop.component = Components[prop.component];
+    });
+    console.log(data);
+    return data;
+  });
+}
+ 
+const dash = functionReponse();
+
+export default dashboardRoutes1;
 
 /*
   {
     path: "/typography",
-    name: "Housekeeping", 
+    name: "Housekeeping",
     icon: LibraryBooks,
     component: HouseKeeping, //Typography, //HouseKeeping,
     layout: "/admin"
   },
   {
     path: "/notifications",
-    name: "Notifications", 
+    name: "Notifications",
     icon: Notifications,
     component: NotificationsPage,
     layout: "/admin"
   },
   {
       path: "/user",
-      name: "Facility Booking", 
+      name: "Facility Booking",
       icon: Person,
       component: FacilityBooking, //UserProfile,
       layout: "/admin"

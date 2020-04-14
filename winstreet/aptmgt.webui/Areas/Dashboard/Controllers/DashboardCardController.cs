@@ -16,6 +16,7 @@ namespace aptmgt.webui.Areas.Dashboard.Controllers
     public class DashboardCardController : Controller
     {
         // GET: api/values
+        [Authorize(Policy = "RequireAdministratorRole")] 
         [HttpGet]
         public JsonResult Get(string cardId)
         {

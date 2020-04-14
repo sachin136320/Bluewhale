@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.IO;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace aptmgt.webui
 {
@@ -47,17 +48,37 @@ namespace aptmgt.webui
 
             //services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<SecurityDbContext>();
+
+
+            //services.AddDefaultIdentity<ApplicationUser>()
+              // .AddRoles<IdentityRole>()
+               //.AddEntityFrameworkStores<SecurityDbContext>();
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+                    //.AddRoleManager<RoleManager<IdentityRole>>()
+                    //.AddDefaultUI()
+                    //.AddDefaultTokenProviders()
+                    //.AddEntityFrameworkStores<SecurityDbContext>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, SecurityDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
-
+                
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("RequireAdministratorRole",
+                         policy => policy.RequireRole("Admin"));
+                });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -69,7 +90,7 @@ namespace aptmgt.webui
             {
                 options.EnableEndpointRouting = false;
             });
- 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,7 +117,7 @@ namespace aptmgt.webui
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -114,14 +135,14 @@ namespace aptmgt.webui
                         });
             */
             app.UseSpa(spa =>
-            {  
+            {
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            }); 
+            });
         }
     }
 }

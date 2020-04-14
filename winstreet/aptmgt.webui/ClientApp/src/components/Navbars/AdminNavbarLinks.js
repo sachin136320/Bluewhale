@@ -63,8 +63,6 @@ export default function AdminNavbarLinks() {
 
  const {communityid, setCommunityID} = useContext(UserContext);
  const [communitylist, setCommunityList] = useState([]); 
-
- //const [selectedcommunityid, setSelectedCommunityId] = useState('');
  const [selectedcommunityname, setSelectedCommunityName] = useState('');
  
   const classes = useStyles();

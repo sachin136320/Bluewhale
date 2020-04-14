@@ -20,11 +20,10 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
 
-let ps;
+let ps; 
 
-const switchRoutes = (
-
-  <Switch>
+const switchRoutes  = (
+  <Switch> 
     {routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
@@ -40,6 +39,7 @@ const switchRoutes = (
     <Redirect from="/admin" to="/admin/dashboard" />
   </Switch>
 );
+ 
 
 const useStyles = makeStyles(styles);
 
@@ -47,7 +47,7 @@ const useStyles = makeStyles(styles);
 
 export default function Admin({ ...rest }) {
 
-  const [communityid, setCommunityID] = useState('silvanus');
+  const [communityid, setCommunityID] = useState('silvanus'); 
 
   // styles
   const classes = useStyles();
@@ -58,6 +58,9 @@ export default function Admin({ ...rest }) {
   const [color, setColor] = React.useState("blue");
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  
+  
+
   const handleImageClick = image => {
     setImage(image);
   };

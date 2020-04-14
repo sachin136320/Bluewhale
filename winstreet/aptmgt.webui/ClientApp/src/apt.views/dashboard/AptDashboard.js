@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-// @material-ui/core
-import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
-// @material-ui/icons 
 import AccessTime from "@material-ui/icons/AccessTime";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
@@ -20,10 +17,10 @@ import CardFooter from "components/Card/CardFooter.js";
 import { bugs, website, server } from "variables/general.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import API from "apt.utils/API.js";
-import axios from "axios";
-
+import API from "apt.utils/API.js"; 
 import authService from 'components/Authorization/AuthorizeService.js';
+import { HandleResponse } from "apt.utils/HandleResponse";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(styles);
 
@@ -43,15 +40,16 @@ export default function AptDashboard() {
     // Create an scoped async function in the hook
     async function loadData() {
       const token = await authService.getAccessToken();
-      //console.log(token);
-
+      //console.log(token); 
+      
       await API.get('/DashboardCard', {
         params: {
           cardID: 'primary'
         },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
       }).then(({ data }) => {
-        setPrimaryCard(prepareArray(data.dashboardCardItems));
+        if (data != null)
+          setPrimaryCard(prepareArray(data.dashboardCardItems));
       });
 
 
@@ -61,54 +59,57 @@ export default function AptDashboard() {
         },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
       }).then(({ data }) => {
-        setOwnerCard(prepareArray(data.dashboardCardItems));
+        if (data != null)
+          setOwnerCard(prepareArray(data.dashboardCardItems));
       });
-  
-  
+
+
       await API.get('/DashboardCard', {
         params: {
           cardID: 'visitors'
         },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-      }).then(({ data }) => {
-        setVisitorsCard(prepareArray(data.dashboardCardItems));
+      })
+      //.then(HandleResponse)
+      .then(({ data }) => {
+        if (data != null)
+          setVisitorsCard(prepareArray(data.dashboardCardItems));
       });
-  
+
       await API.get('/DashboardCard', {
         params: {
           cardID: 'assets'
         },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
       }).then(({ data }) => {
-        setAssetsCard(prepareArray(data.dashboardCardItems));
+        if (data != null)
+          setAssetsCard(prepareArray(data.dashboardCardItems));
       });
-  
+
       await API.get('/DashboardCard', {
         params: {
           cardID: 'parking'
         },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
       }).then(({ data }) => {
-        setParkingCard(prepareArray(data.dashboardCardItems));
+        if (data != null)
+          setParkingCard(prepareArray(data.dashboardCardItems));
       });
-  
+
       await API.get('/DashboardCard', {
         params: {
           cardID: 'facility'
         },
         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
       }).then(({ data }) => {
-        setFacilityCard(prepareArray(data.dashboardCardItems));
+        if (data != null)
+          setFacilityCard(prepareArray(data.dashboardCardItems));
       });
 
     }
 
     // Execute the created function directly
-    loadData();
-
-    console.log("crosseD");
-
-
+    loadData(); 
     /*
         API.get('/DashboardCard', {
           params: {
