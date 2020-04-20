@@ -38,7 +38,7 @@ import Parking from "apt.views/parking/Parking.js";
 import API from "apt.utils/API.js";
 import authService from 'components/Authorization/AuthorizeService.js';
 
-const dashboardRoutes1 =   [
+const dashboardRoutes1 = [
   {
     path: "/dashboard",
     name: "Home",
@@ -92,9 +92,11 @@ const Components = {
   ConfigureBasicSettings: ConfigureBasicSettings
 };
 
-async function functionReponse() { 
+
+//
+let getMenu1 = function () {
   const token = authService.getAccessToken();
-  await API.get('/SideBar', {
+  const a = API.get('/SideBar', {
     headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
   }).then(({ data }) => {
     data.map((prop, key) => {
@@ -102,37 +104,66 @@ async function functionReponse() {
     });
     //console.log(data);
     return data;
-  });  
-} 
+  }).then(data => {
+    //console.log(data);
+    return data;
+  });
+  //console.log(a);
+  return a
+  /*Promise.all([a]).then(function(values) {
+    //console.log(values);
+    values[0].data.map((prop, key) => {
+      prop.component = Components[prop.component];
+    });
+    return values[0].data;
+  }); */
+}
+export async function getMenu() {
+  const token = await authService.getAccessToken();
+  const a = await API.get('/SideBar', {
+    headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+  }).then(({ data }) => {
+    data.map((prop, key) => {
+      prop.component = Components[prop.component];
+    });
+    //console.log(data);
+    return data;
+  }) 
+  console.log(await a);
+  return a
+  /*Promise.all([a]).then(function(values) {
+    //console.log(values);
+    values[0].data.map((prop, key) => {
+      prop.component = Components[prop.component];
+    });
+    return values[0].data;
+  }); */
+};
 
-const dash = functionReponse();
+export function cube() {
+ //return 32;
 
-export default dashboardRoutes1; //dash;//
+  let c = getMenu1().then(data => {return data;});
+  //console.log(userToken) // Promise { <pending> }
 
+  /*let c = userToken.then(function (result) {
+   console.log(result) // "Some User token"
+   return result;
+  })*/
+  //console.log(c);
+  return c;
+  //console.log(await getMenu().then(data => {return data}).then(data => {return data}));
 
+  /*Promise.all([getMenu()]).then(function (values) {
+    console.log(values);
+    values[0].data.map((prop, key) => {
+      prop.component = Components[prop.component];
+    });
+    console.log(values[0].data);
+    return values[0].data;
+  });*/
 
+  //return x * x * x;
+}; 
 
-
-/*
-  {
-    path: "/typography",
-    name: "Housekeeping",
-    icon: LibraryBooks,
-    component: HouseKeeping, //Typography, //HouseKeeping,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin"
-  },
-  {
-      path: "/user",
-      name: "Facility Booking",
-      icon: Person,
-      component: FacilityBooking, //UserProfile,
-      layout: "/admin"
-  },
-*/
+ 

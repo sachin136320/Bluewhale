@@ -11,7 +11,8 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
-import routes from "routes.js";
+import {cube} from "routes1.js";
+//import routes from "routes.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 import { UserContext } from "store/UserContext";
@@ -20,37 +21,36 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
 
-let ps; 
+import OwnersCorner from "apt.views/owners/OwnersCorner.js";
+import AptDashboard from "apt.views/dashboard/AptDashboard.js";
+import ConfigureBasicSettings from "apt.views/configuresettings/ConfigureBasicSettings.js";
+import VisitorDashBoard from "apt.views/visitors/VisitorDashBoard.js";
+import AssetManagement from "apt.views/assets/AssetManagement";
+import Parking from "apt.views/parking/Parking.js";
+import API from "apt.utils/API.js";
+import authService from 'components/Authorization/AuthorizeService.js';
 
-const switchRoutes  = (
-  <Switch> 
-    {routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      }
-      return null;
-    })}
-    <Redirect from="/admin" to="/admin/dashboard" />
-  </Switch>
-);
- 
+let ps;
+
+const Components = {
+  AptDashboard: AptDashboard,
+  OwnersCorner: OwnersCorner,
+  VisitorDashBoard: VisitorDashBoard,
+  Parking: Parking,
+  AssetManagement: AssetManagement,
+  ConfigureBasicSettings: ConfigureBasicSettings
+}; 
 
 const useStyles = makeStyles(styles);
-
-
+const cube1 = cube();
 
 export default function Admin({ ...rest }) {
 
-  const [communityid, setCommunityID] = useState('silvanus'); 
+  const [communityid, setCommunityID] = useState('silvanus');
 
   // styles
   const classes = useStyles();
+  //console.log(classes);
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
   // states and functions
@@ -58,9 +58,35 @@ export default function Admin({ ...rest }) {
   const [color, setColor] = React.useState("blue");
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  
-  
+  const [routes, setRoute] = React.useState([]);
 
+  Promise.resolve(cube1).then(function(value) {
+    console.log(value); // "Success"
+    setRoute(value);
+  }, function(value) {
+    // not called
+  }); 
+
+  //functionReponse(); 
+  const switchRoutes = (  
+    <Switch>
+       {routes.map((prop, key) => {
+         if (prop.layout === "/admin") {
+           //console.log(prop); 
+           return (
+             <Route
+               path={prop.layout + prop.path}
+               component={prop.component}
+               key={key}
+             />
+           );
+         }
+         return null;
+       })}
+       <Redirect from="/admin" to="/admin/dashboard" />
+     </Switch>
+     );
+   //};
   const handleImageClick = image => {
     setImage(image);
   };
@@ -85,10 +111,24 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
+ 
+  async function functionReponse() {
+    const token = await authService.getAccessToken();
+    await API.get('/SideBar', {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    }).then(({ data }) => {
+      data.map((prop, key) => {
+        prop.component = Components[prop.component];
+      });
+      console.log(data);
+      setRoute(data); 
+    });
+  }
 
   // initialize and destroy the PerfectScrollbar plugin
-  React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
+  React.useEffect(() => { 
+    //functionReponse(); 
+    if (navigator.platform.indexOf("Win") > -1) { 
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
         suppressScrollY: false
@@ -104,7 +144,6 @@ export default function Admin({ ...rest }) {
       window.removeEventListener("resize", resizeFunction);
     };
   }, [mainPanel]);
-
 
   return (
     <UserContext.Provider value={{ communityid, setCommunityID }}>
