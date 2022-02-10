@@ -24,7 +24,7 @@
     "moment": "^2.24.0",
     "moments": "0.0.2",
     "node-gyp": "^6.0.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "oidc-client": "^1.9.1",
     "perfect-scrollbar": "1.4.0",
     "prop-types": "15.7.2",
